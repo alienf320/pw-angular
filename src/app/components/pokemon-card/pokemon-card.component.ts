@@ -9,14 +9,9 @@ import { Pokemon } from 'src/app/models/pokemon.models';
 export class PokemonCardComponent {
 
   @Input() pokemon!: Pokemon;
+  collapsed = false;
 
-  getPokemonMoves(moves: { level: number; move: string; _id: string }[]): string {
-    // Implementa la lógica para obtener una representación de los movimientos del Pokémon
-    return moves.map(move => move.move).join(', ');
-  }
-
-  getPokemonEvolutions(evolutions: { to: string; method: string; parameter: string; _id: string }[]): string {
-    // Implementa la lógica para obtener una representación de las evoluciones del Pokémon
-    return evolutions.map(evolution => evolution.to).join(', ');
+  extend() {
+    this.collapsed = !this.collapsed
   }
 }

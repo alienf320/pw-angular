@@ -1,4 +1,4 @@
-<div class="card" *ngIf="pokemon">
+<div class="card" *ngIf="pokemon" (click)="extend()">
   <h2>{{ pokemon.name }}</h2>
   <div class="info">
     <div class="item">
@@ -25,17 +25,31 @@
       <span class="label">Hidden Ability:</span>
       <span class="value">{{ pokemon.hiddenAbility }}</span>
     </div>
-    <div class="item">
-      <span class="label">Moves:</span>
-      <span class="value">{{ getPokemonMoves(pokemon.moves) }}</span>
-    </div>
-    <div class="item">
-      <span class="label">Egg Moves:</span>
-      <span class="value">{{ pokemon.eggMoves.join(', ') }}</span>
-    </div>
-    <div class="item">
-      <span class="label">Evolutions:</span>
-      <span class="value">{{ getPokemonEvolutions(pokemon.evolutions) }}</span>
+    <div class="collapsed" *ngIf="collapsed">
+      <div class="item">
+        <span class="label">Moves:</span>
+        <table class="moves-table">
+          <tr>
+            <th>Level</th>
+            <th>Name</th>
+          </tr>
+          <tr *ngFor="let move of pokemon.moves">
+            <td>{{ move.level }}</td>
+            <td>{{ move.move }}</td>
+          </tr>
+        </table>
+      </div>
+      <div class="item">
+        <span class="label">Egg Moves:</span>
+        <span class="value">{{ pokemon.eggMoves.join(', ') }}</span>
+      </div>
+      <div class="item">
+        <span class="label">Evolutions:</span>
+        <div class="evo" *ngFor="let evo of pokemon.evolutions">
+          <span class="value">{{evo.to}}</span>
+          <span class="value">{{evo.method}} {{evo.parameter}}</span>
+        </div>
+      </div>      
     </div>
   </div>
 </div>
