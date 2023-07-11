@@ -1,0 +1,41 @@
+<div class="card" *ngIf="pokemon">
+  <h2>{{ pokemon.name }}</h2>
+  <div class="info">
+    <div class="item">
+      <span class="label">Internal Name:</span>
+      <span class="value">{{ pokemon.internalName }}</span>
+    </div>
+    <div class="item">
+      <span class="label">Type 1:</span>
+      <span class="value">{{ pokemon.type1 }}</span>
+    </div>
+    <div class="item" *ngIf="pokemon.type2">
+      <span class="label">Type 2:</span>
+      <span class="value">{{ pokemon.type2 }}</span>
+    </div>
+    <div class="item">
+      <span class="label">Base Stats:</span>
+      <span class="value">{{ pokemon.baseStats.join(', ') }}</span>
+    </div>
+    <div class="item">
+      <span class="label">Abilities:</span>
+      <span class="value">{{ pokemon.abilities.join(', ') }}</span>
+    </div>
+    <div class="item">
+      <span class="label">Hidden Ability:</span>
+      <span class="value">{{ pokemon.hiddenAbility }}</span>
+    </div>
+    <div class="item">
+      <span class="label">Moves:</span>
+      <span class="value">{{ getPokemonMoves(pokemon.moves) }}</span>
+    </div>
+    <div class="item">
+      <span class="label">Egg Moves:</span>
+      <span class="value">{{ pokemon.eggMoves.join(', ') }}</span>
+    </div>
+    <div class="item">
+      <span class="label">Evolutions:</span>
+      <span class="value">{{ getPokemonEvolutions(pokemon.evolutions) }}</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,7 @@
+<div>
+  <input type="text" [(ngModel)]="pokemonName" placeholder="Nombre del Pokémon">
+  <button (click)="searchPokemon()">Buscar</button>
+</div>
+<div *ngFor="let pok of pokemons">
+  <app-pokemon-card [pokemon]="pok"></app-pokemon-card>
+</div>
