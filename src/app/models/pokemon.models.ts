@@ -1,3 +1,5 @@
+import { Resistances } from "./resistances.model";
+
 export interface Pokemon {
   _id: string;
   name: string;
@@ -37,4 +39,5 @@ export interface Pokemon {
     _id: string;
   }[];
   __v: number;
+  weakness?: Resistances
 }

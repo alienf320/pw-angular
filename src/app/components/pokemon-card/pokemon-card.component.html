@@ -49,7 +49,49 @@
           <span class="value">{{evo.to}}</span>
           <span class="value">{{evo.method}} {{evo.parameter}}</span>
         </div>
-      </div>      
+      </div>   
+      <div class="resistances" *ngIf="pokemon.weakness">
+        <table class="modern-table">
+          <thead>
+            <tr>
+              <th>Super Weak</th>
+              <th>Weak</th>
+              <th>Resistance</th>
+              <th>Super Resistance</th>
+              <th>Immunities</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <ul>
+                  <li *ngFor="let type of pokemon.weakness.superWeak">{{ type }}</li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li *ngFor="let type of pokemon.weakness.weak">{{ type }}</li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li *ngFor="let type of pokemon.weakness.resistance">{{ type }}</li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li *ngFor="let type of pokemon.weakness.superResistance">{{ type }}</li>
+                </ul>
+              </td>
+              <td>
+                <ul>
+                  <li *ngFor="let type of pokemon.weakness.immunities">{{ type }}</li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>        
+      </div>   
     </div>
   </div>
 </div>

@@ -1,0 +1,2 @@
+- Corregir backend para que envíe dos arrays: Weakness y Resistances
+- Desplegarlo en las PokemonCards
