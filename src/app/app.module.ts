@@ -11,6 +11,7 @@ import { TableTypesComponent } from './components/table-types/table-types.compon
 import { TrainerComponent } from './components/trainer/trainer.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { TrainerCardComponent } from './components/trainer-card/trainer-card.component';
+import { TrainerInfoComponent } from './components/trainer-info/trainer-info.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { TrainerCardComponent } from './components/trainer-card/trainer-card.com
     TableTypesComponent,
     TrainerComponent,
     NavbarComponent,
-    TrainerCardComponent
+    TrainerCardComponent,
+    TrainerInfoComponent
   ],
   imports: [
     BrowserModule,

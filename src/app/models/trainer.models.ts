@@ -9,6 +9,8 @@ export interface Trainer {
 
 export interface TeamMember {
   name: string;
+  type1?: string;
+  type2?: string
   level: number;
   item: string;
   moves: string[];

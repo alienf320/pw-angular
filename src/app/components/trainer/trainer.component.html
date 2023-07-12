@@ -19,12 +19,17 @@
   <button (click)="getTrainers()">Obtener Entrenadores</button>
 </div>
 
-
-
-<div *ngIf="trainers.length > 0">
+<div *ngIf="trainers.length > 0 && !selectedTrainer">
   <h2>Entrenadores</h2>
   <div class="card-container">
-    <app-trainer-card *ngFor="let trainer of trainers" [trainer]="trainer"></app-trainer-card>
+    <app-trainer-card *ngFor="let trainer of trainers" [trainer]="trainer" (trainerClicked)="onTrainerClicked($event)"></app-trainer-card>
+  </div>
+</div>
+
+<div *ngIf="selectedTrainer">
+  <h2>Entrenadores</h2>
+  <div class="card-container">
+    <app-trainer-info [trainer]="selectedTrainer"></app-trainer-info>
   </div>
 </div>
 

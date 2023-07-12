@@ -58,8 +58,8 @@
         <span class="value">{{ pokemon.eggMoves.join(", ") }}</span>
       </div>
 
-      <div class="resistances" *ngIf="pokemon.weakness">
-        <app-table-types [typesWR]="pokemon.weakness"></app-table-types>
+      <div class="resistances" *ngIf="pokemon">
+        <app-table-types [type1]="pokemon.type1" [type2]="pokemon.type2"></app-table-types>
       </div>
     </div>
 </div>

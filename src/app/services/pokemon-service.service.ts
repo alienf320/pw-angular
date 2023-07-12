@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Pokemon } from '../models/pokemon.models';
 
@@ -11,8 +11,18 @@ export class PokemonService {
 
   constructor(private http: HttpClient) { }
 
-  getPokemonByName(name: string): Observable<Pokemon[]> {
-    const url = `${this.apiUrl}?name=${name}`;
-    return this.http.get<any>(url);
+  getPokemonByName(name?: string, internalName?: string): Observable<Pokemon[]> {
+    let params = new HttpParams();
+
+    if (name) {
+      params = params.append('name', name);
+    }
+
+    if (internalName) {
+      params = params.append('internalName', internalName);
+    }
+
+  
+    return this.http.get<Pokemon[]>(this.apiUrl, { params });
   }
 }

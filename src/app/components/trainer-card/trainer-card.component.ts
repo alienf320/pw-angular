@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Trainer } from 'src/app/models/trainer.models';
 
 @Component({
@@ -9,6 +9,11 @@ import { Trainer } from 'src/app/models/trainer.models';
 export class TrainerCardComponent  {
 
   @Input() trainer!: Trainer;
+  @Output() trainerClicked: EventEmitter<Trainer> = new EventEmitter<Trainer>();
+
+  onCardClicked() {
+    this.trainerClicked.emit(this.trainer);
+  }
 
   getCleanMoves(moves: string[]): string[] {
     const cleanedMoves = moves.filter(move => move.length > 3);
