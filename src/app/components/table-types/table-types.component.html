@@ -1,0 +1,40 @@
+<table class="modern-table">
+  <thead>
+    <tr>
+      <th>Super Weak</th>
+      <th>Weak</th>
+      <th>Resistance</th>
+      <th>Super Resistance</th>
+      <th>Immunities</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <ul>
+          <li *ngFor="let type of typesWR.superWeak">{{ type }}</li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li *ngFor="let type of typesWR.weak">{{ type }}</li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li *ngFor="let type of typesWR.resistance">{{ type }}</li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li *ngFor="let type of typesWR.superResistance">{{ type }}</li>
+        </ul>
+      </td>
+      <td>
+        <ul>
+          <li *ngFor="let type of typesWR.immunities">{{ type }}</li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>   

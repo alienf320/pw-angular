@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Pokemon } from 'src/app/models/pokemon.models';
 import { PokemonService } from 'src/app/services/pokemon-service.service';
 import { WeaknessService } from 'src/app/services/weakness-service.service';
@@ -8,14 +8,18 @@ import { WeaknessService } from 'src/app/services/weakness-service.service';
   templateUrl: './trainer-card.component.html',
   styleUrls: ['./trainer-card.component.scss'],
 })
-export class TrainerCardComponent {
-  pokemonName!: string;
+export class TrainerCardComponent implements OnInit {
+  pokemonName: string = "aron";
   pokemons!: Pokemon[];
 
   constructor(
     private pokemonService: PokemonService,
     private weaknessService: WeaknessService
   ) {}
+
+  ngOnInit() {
+    this.searchPokemon()
+  }
 
   searchPokemon() {
     if (this.pokemonName) {

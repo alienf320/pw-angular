@@ -1,31 +1,45 @@
 <div class="card" *ngIf="pokemon" (click)="extend()">
   <h2>{{ pokemon.name }}</h2>
-  <div class="info">
-    <div class="item">
-      <span class="label">Internal Name:</span>
-      <span class="value">{{ pokemon.internalName }}</span>
+  <div class="section-1">
+    <div class="left">
+      <div class="info">
+        <div class="item">
+          <span class="label">Internal Name:</span>
+          <span class="value">{{ pokemon.internalName }}</span>
+        </div>
+        <div class="item">
+          <span class="label">Type 1:</span>
+          <span class="value">{{ pokemon.type1 }}</span>
+        </div>
+        <div class="item" *ngIf="pokemon.type2">
+          <span class="label">Type 2:</span>
+          <span class="value">{{ pokemon.type2 }}</span>
+        </div>
+        <div class="item">
+          <span class="label">Base Stats:</span>
+          <span class="value">{{ pokemon.baseStats.join(", ") }}</span>
+        </div>
+        <div class="item">
+          <span class="label">Abilities:</span>
+          <span class="value">{{ pokemon.abilities.join(", ") }}</span>
+        </div>
+        <div class="item">
+          <span class="label">Hidden Ability:</span>
+          <span class="value">{{ pokemon.hiddenAbility }}</span>
+        </div>
+      </div>
     </div>
-    <div class="item">
-      <span class="label">Type 1:</span>
-      <span class="value">{{ pokemon.type1 }}</span>
+    <div class="right">
+      <div class="item">
+        <span class="label">Evolutions:</span>
+        <div class="evo" *ngFor="let evo of pokemon.evolutions">
+          <span class="value">{{ evo.to }}</span>
+          <span class="value">{{ evo.method }} {{ evo.parameter }}</span>
+        </div>
+      </div>
     </div>
-    <div class="item" *ngIf="pokemon.type2">
-      <span class="label">Type 2:</span>
-      <span class="value">{{ pokemon.type2 }}</span>
-    </div>
-    <div class="item">
-      <span class="label">Base Stats:</span>
-      <span class="value">{{ pokemon.baseStats.join(', ') }}</span>
-    </div>
-    <div class="item">
-      <span class="label">Abilities:</span>
-      <span class="value">{{ pokemon.abilities.join(', ') }}</span>
-    </div>
-    <div class="item">
-      <span class="label">Hidden Ability:</span>
-      <span class="value">{{ pokemon.hiddenAbility }}</span>
-    </div>
-    <div class="collapsed" *ngIf="collapsed">
+  </div>
+  <div class="collapsed" *ngIf="collapsed">
       <div class="item">
         <span class="label">Moves:</span>
         <table class="moves-table">
@@ -41,57 +55,11 @@
       </div>
       <div class="item">
         <span class="label">Egg Moves:</span>
-        <span class="value">{{ pokemon.eggMoves.join(', ') }}</span>
+        <span class="value">{{ pokemon.eggMoves.join(", ") }}</span>
       </div>
-      <div class="item">
-        <span class="label">Evolutions:</span>
-        <div class="evo" *ngFor="let evo of pokemon.evolutions">
-          <span class="value">{{evo.to}}</span>
-          <span class="value">{{evo.method}} {{evo.parameter}}</span>
-        </div>
-      </div>   
+
       <div class="resistances" *ngIf="pokemon.weakness">
-        <table class="modern-table">
-          <thead>
-            <tr>
-              <th>Super Weak</th>
-              <th>Weak</th>
-              <th>Resistance</th>
-              <th>Super Resistance</th>
-              <th>Immunities</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <ul>
-                  <li *ngFor="let type of pokemon.weakness.superWeak">{{ type }}</li>
-                </ul>
-              </td>
-              <td>
-                <ul>
-                  <li *ngFor="let type of pokemon.weakness.weak">{{ type }}</li>
-                </ul>
-              </td>
-              <td>
-                <ul>
-                  <li *ngFor="let type of pokemon.weakness.resistance">{{ type }}</li>
-                </ul>
-              </td>
-              <td>
-                <ul>
-                  <li *ngFor="let type of pokemon.weakness.superResistance">{{ type }}</li>
-                </ul>
-              </td>
-              <td>
-                <ul>
-                  <li *ngFor="let type of pokemon.weakness.immunities">{{ type }}</li>
-                </ul>
-              </td>
-            </tr>
-          </tbody>
-        </table>        
-      </div>   
+        <app-table-types [typesWR]="pokemon.weakness"></app-table-types>
+      </div>
     </div>
-  </div>
 </div>
