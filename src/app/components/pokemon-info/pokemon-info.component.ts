@@ -4,11 +4,11 @@ import { PokemonService } from 'src/app/services/pokemon-service.service';
 import { WeaknessService } from 'src/app/services/weakness-service.service';
 
 @Component({
-  selector: 'app-trainer-card',
-  templateUrl: './trainer-card.component.html',
-  styleUrls: ['./trainer-card.component.scss'],
+  selector: 'app-pokemon-info',
+  templateUrl: './pokemon-info.component.html',
+  styleUrls: ['./pokemon-info.component.scss'],
 })
-export class TrainerCardComponent implements OnInit {
+export class PokemonInfoComponent implements OnInit {
   pokemonName: string = "aron";
   pokemons!: Pokemon[];
 
