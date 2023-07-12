@@ -1,1 +1,30 @@
-<p>trainer works!</p>
+<div class="container">
+  <div class="input-container">
+    <div class="label-input-container">
+      <label for="name">Nombre:</label>
+      <input type="text" id="name" [(ngModel)]="name">
+    </div>
+
+    <div class="label-input-container">
+      <label for="type">Tipo:</label>
+      <input type="text" id="type" [(ngModel)]="type">
+    </div>
+
+    <div class="label-input-container">
+      <label for="pokemon">Nombre del Pokémon:</label>
+      <input type="text" id="pokemon" [(ngModel)]="pokemon">
+    </div>
+
+  </div>
+  <button (click)="getTrainers()">Obtener Entrenadores</button>
+</div>
+
+
+
+<div *ngIf="trainers.length > 0">
+  <h2>Entrenadores</h2>
+  <div class="card-container">
+    <app-trainer-card *ngFor="let trainer of trainers" [trainer]="trainer"></app-trainer-card>
+  </div>
+</div>
+

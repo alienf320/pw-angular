@@ -1,0 +1,17 @@
+<div class="card">
+  <h3>{{ trainer.name }}</h3>
+  <p>Tipo: {{ trainer.type }}</p>
+  <p>Equipo de Pokémon:</p>
+  <ul>
+    <li *ngFor="let teamMember of trainer.team">
+      <p>{{ teamMember.name }} - Nivel: {{ teamMember.level }}</p>
+      <p>Movimientos:</p>
+      <ul>
+        <li *ngFor="let move of getCleanMoves(teamMember.moves)">
+          {{ move }}
+        </li>
+      </ul>
+      <p>Ítem: {{ teamMember.item }}</p>
+    </li>
+  </ul>
+</div>
