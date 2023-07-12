@@ -8,13 +8,19 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { PokemonCardComponent } from './components/pokemon-card/pokemon-card.component';
 import { TableTypesComponent } from './components/table-types/table-types.component';
+import { TrainerComponent } from './components/trainer/trainer.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { TrainerCardComponent } from './components/trainer-card/trainer-card.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PokemonInfoComponent,
     PokemonCardComponent,
-    TableTypesComponent
+    TableTypesComponent,
+    TrainerComponent,
+    NavbarComponent,
+    TrainerCardComponent
   ],
   imports: [
     BrowserModule,
