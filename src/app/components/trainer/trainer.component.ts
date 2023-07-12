@@ -22,6 +22,7 @@ export class TrainerComponent implements OnInit {
   }
 
   getTrainers() {
+    this.selectedTrainer = null
     this.trainerService.getTrainers(this.name, this.type, this.pokemon)
       .subscribe(
         (trainers: Trainer[]) => {
@@ -35,6 +36,5 @@ export class TrainerComponent implements OnInit {
 
   onTrainerClicked(trainer: Trainer) {
     this.selectedTrainer = trainer;
-    console.log(this.selectedTrainer  )
   }
 }

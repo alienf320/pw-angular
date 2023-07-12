@@ -10,7 +10,7 @@
         <app-table-types [type1]="teamMember.type1" [type2]="teamMember.type2 ?? '' "></app-table-types>
       </div>
       <p>Movimientos:</p>
-      <ul *ngIf="team">
+      <ul>
         <li *ngFor="let move of teamMember.moves">
           {{ move }}
         </li>

@@ -16,7 +16,6 @@ export class TableTypesComponent implements OnInit {
   constructor(private weaknessService: WeaknessService) { }
 
   ngOnInit(): void {
-    console.log('table', this.type1, this.type2)
     if(this.type1) {
       this.weaknessService.getWeaknesses(this.type1, this.type2).subscribe( data => {
         this.typesWR = data

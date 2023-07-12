@@ -23,10 +23,8 @@ export class TrainerInfoComponent implements OnInit {
       this.pokemonService.getPokemonByName('', teamMember.name)
         .subscribe(
           (pokemonDetails: any) => {
-            //console.log('details:', pokemonDetails)
             teamMember.type1 = pokemonDetails[0].type1;
             teamMember.type2 = pokemonDetails[0].type2;
-            console.log(teamMember.type1, teamMember.type2)
           },
           (error) => {
             console.error(error);
