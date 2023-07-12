@@ -3,16 +3,18 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { TrainerCardComponent } from './components/trainer-card/trainer-card.component';
+import { PokemonInfoComponent } from './components/pokemon-info/pokemon-info.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { PokemonCardComponent } from './components/pokemon-card/pokemon-card.component';
+import { TableTypesComponent } from './components/table-types/table-types.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TrainerCardComponent,
-    PokemonCardComponent
+    PokemonInfoComponent,
+    PokemonCardComponent,
+    TableTypesComponent
   ],
   imports: [
     BrowserModule,
