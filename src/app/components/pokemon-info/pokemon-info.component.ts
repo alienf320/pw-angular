@@ -25,6 +25,7 @@ export class PokemonInfoComponent implements OnInit {
     if (this.pokemonName) {
       this.pokemonService.getPokemonByName(this.pokemonName).subscribe(
         (pokemon) => {
+          console.log(pokemon)
           this.pokemons = pokemon;
         },
         (error) => {

@@ -1,19 +1,19 @@
 <div class="card" *ngIf="pokemon" (click)="extend()">
-  <h2>{{ pokemon.name }}</h2>
+  <h2>{{ pokemon.name | titlecase}}</h2>
   <div class="section-1">
     <div class="left">
       <div class="info">
         <div class="item">
           <span class="label">Internal Name:</span>
-          <span class="value">{{ pokemon.internalName }}</span>
+          <span class="value">{{ pokemon.internalName | titlecase}}</span>
         </div>
         <div class="item">
           <span class="label">Type 1:</span>
-          <span class="value">{{ pokemon.type1 }}</span>
+          <span class="value">{{ pokemon.type1 | titlecase}}</span>
         </div>
         <div class="item" *ngIf="pokemon.type2">
           <span class="label">Type 2:</span>
-          <span class="value">{{ pokemon.type2 }}</span>
+          <span class="value">{{ pokemon.type2 | titlecase}}</span>
         </div>
         <div class="item">
           <span class="label">Base Stats:</span>
@@ -25,7 +25,7 @@
         </div>
         <div class="item">
           <span class="label">Hidden Ability:</span>
-          <span class="value">{{ pokemon.hiddenAbility }}</span>
+          <span class="value">{{ pokemon.hiddenAbility | titlecase}}</span>
         </div>
       </div>
     </div>
@@ -49,7 +49,7 @@
           </tr>
           <tr *ngFor="let move of pokemon.moves">
             <td>{{ move.level }}</td>
-            <td>{{ move.move }}</td>
+            <td>{{ move.move.displayName | titlecase }}</td>
           </tr>
         </table>
       </div>

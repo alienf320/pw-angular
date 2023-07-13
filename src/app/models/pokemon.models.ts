@@ -1,3 +1,4 @@
+import { Move } from "./moves.models";
 import { Resistances } from "./resistances.model";
 
 export interface Pokemon {
@@ -17,7 +18,7 @@ export interface Pokemon {
   hiddenAbility: string;
   moves: {
     level: number;
-    move: string;
+    move: Move;
     _id: string;
   }[];
   eggMoves: string[];
