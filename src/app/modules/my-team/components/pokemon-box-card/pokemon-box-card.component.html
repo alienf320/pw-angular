@@ -1,0 +1,14 @@
+<div class="pokemon-box-card-container">
+  <div class="pokemon-actions">
+    <button class="action-button modify-button" (click)="modifyPokemon()"><i class="ri-pencil-line"></i></button>
+    <button class="action-button delete-button" (click)="deletePokemon()"><i class="ri-delete-bin-line"></i></button>
+  </div>
+  
+  <div class="pk-name">{{myPokemon.pokemon.name | titlecase}}</div>
+  <div class="types">
+    <div class="pk-type">{{myPokemon.pokemon.type1 | uppercase}}</div>
+    <div class="pk-type" *ngIf="myPokemon.pokemon.type2">{{myPokemon.pokemon.type2 | uppercase}}</div>
+  </div>
+  <div class="pk-attr">{{myPokemon.level}}</div>
+  <div class="pk-attr">{{myPokemon.nature | titlecase}}</div>
+</div>

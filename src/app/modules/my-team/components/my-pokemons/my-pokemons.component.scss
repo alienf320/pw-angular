@@ -50,27 +50,7 @@
       align-items: center;
       padding: 12px;
 
-      .pk-name {
-        font-size: 1.3rem;
-        padding-bottom: 5px;
-        font-weight: 500;
-      }
 
-      .types {
-        display: flex;
-        gap: 10px;
-        margin: 10px;
-
-        .pk-type {
-          border: 1px solid #9c9c9c;
-          border-radius: 5px;
-          padding: 5px;
-          width: 80px;
-          text-align: center;
-          font-weight: 500;
-          font-size: 0.9rem;
-        }
-      }
     }
   }
 }

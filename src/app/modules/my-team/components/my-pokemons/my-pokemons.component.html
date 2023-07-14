@@ -15,13 +15,7 @@
     <div class="box" *ngIf="box">
       <div class="box-container">
         <div class="pokemon-box" *ngFor="let pk of box">
-          <div class="pk-name">{{pk.pokemon.name | titlecase}}</div>
-          <div class="types">
-            <div class="pk-type">{{pk.pokemon.type1 | uppercase}}</div>
-            <div class="pk-type" *ngIf="pk.pokemon.type2">{{pk.pokemon.type2 | uppercase}}</div>
-          </div>
-          <div class="pk-attr">{{pk.level}}</div>
-          <div class="pk-attr">{{pk.nature | titlecase}}</div>
+          <app-pokemon-box-card [myPokemon]="pk"></app-pokemon-box-card>
         </div>
       </div>
     </div>

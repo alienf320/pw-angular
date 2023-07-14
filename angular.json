@@ -31,7 +31,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "https://cdn.jsdelivr.net/npm/remixicon@2.5.0/remixicon.css"
             ],
             "scripts": []
           },

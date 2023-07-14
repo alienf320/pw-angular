@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditStatsOverlayComponent } from './components/edit-stats-overlay/edit-stats-overlay.component';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { PortalModule } from '@angular/cdk/portal';
+import { PokemonBoxCardComponent } from './components/pokemon-box-card/pokemon-box-card.component';
 
 const routes: Routes = [
   {
@@ -19,7 +20,8 @@ const routes: Routes = [
   declarations: [
     MyPokemonsComponent,
     MyTeamComponent,
-    EditStatsOverlayComponent
+    EditStatsOverlayComponent,
+    PokemonBoxCardComponent
   ],
   imports: [
     CommonModule,
