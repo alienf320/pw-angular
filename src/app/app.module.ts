@@ -12,6 +12,7 @@ import { TrainerComponent } from './components/trainer/trainer.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { TrainerCardComponent } from './components/trainer-card/trainer-card.component';
 import { TrainerInfoComponent } from './components/trainer-info/trainer-info.component';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { TrainerInfoComponent } from './components/trainer-info/trainer-info.com
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    OverlayModule,
     HttpClientModule
   ],
   providers: [],

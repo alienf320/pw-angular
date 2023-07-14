@@ -4,6 +4,9 @@ import { MyPokemonsComponent } from './components/my-pokemons/my-pokemons.compon
 import { RouterModule, Routes } from '@angular/router';
 import { MyTeamComponent } from './components/my-team/my-team.component';
 import { FormsModule } from '@angular/forms';
+import { EditStatsOverlayComponent } from './components/edit-stats-overlay/edit-stats-overlay.component';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { PortalModule } from '@angular/cdk/portal';
 
 const routes: Routes = [
   {
@@ -15,11 +18,14 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     MyPokemonsComponent,
-    MyTeamComponent
+    MyTeamComponent,
+    EditStatsOverlayComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
+    OverlayModule,
+    PortalModule,
     RouterModule.forChild(routes)
   ]
 })

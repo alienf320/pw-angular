@@ -1,0 +1,128 @@
+/* edit-stats-overlay.component.scss */
+
+.edit-stats-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 800px;
+  max-width: 100%;
+
+  h2 {
+    margin-bottom: 20px;
+    font-size: 20px;
+    color: #333;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+
+    .stat-inputs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+
+      .stat-input {
+        width: calc(50% - 12px);
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        label {
+          display: block;
+          margin-bottom: 4px;
+          font-size: 14px;
+          font-weight: bold;
+          color: #555;
+        }
+
+        input[type="number"] {
+          width: 100%;
+          padding: 8px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          font-size: 14px;
+          color: #333;
+          background-color: #fff;
+          transition: border-color 0.2s ease-in-out;
+
+          &:focus {
+            outline: none;
+            border-color: #86b7fe;
+          }
+        }
+      }
+    }
+
+    label {
+      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    input[type="number"],
+    input[type="text"],
+    select {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      color: #333;
+      background-color: #fff;
+      transition: border-color 0.2s ease-in-out;
+
+      &:focus {
+        outline: none;
+        border-color: #86b7fe;
+      }
+    }
+  }
+
+  .evs-ivs,
+  .general {
+    display: flex;
+    gap: 30px;
+  }
+
+  .evs-ivs {
+    input {
+      width: 80px !important;
+    }
+  }
+
+  .general {
+    #level {
+      width: 80px !important;
+    }
+  }
+
+  .button-group {
+    display: flex;
+    justify-content: center;
+
+    button {
+      padding: 10px 16px;
+      margin: 0 8px;
+      font-size: 14px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: #fff;
+      background-color: #007bff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+  }
+}
