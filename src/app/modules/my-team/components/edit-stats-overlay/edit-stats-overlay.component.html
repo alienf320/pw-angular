@@ -1,43 +1,45 @@
 <div class="edit-stats-overlay">
   <h2>Edit Pokémon Stats</h2>
-  <div class="general">
-    <div class="form-group">
-      <label for="level">Level:</label>
-      <input type="number" id="level" [(ngModel)]="level">
+  <form [formGroup]="form" (ngSubmit)="onSave()">
+    <div class="general">
+      <div class="form-group">
+        <label for="level">Level:</label>
+        <input type="number" formControlName="level">
+      </div>
+      <div class="form-group">
+        <label for="ability">Ability:</label>
+        <input type="text" formControlName="ability">
+      </div>
+      <div class="form-group">
+        <label for="nature">Nature:</label>
+        <select formControlName="nature">
+          <option *ngFor="let option of natureOptions" [value]="option">{{ option }}</option>
+        </select>
+      </div>
     </div>
-    <div class="form-group">
-      <label for="ability">Ability:</label>
-      <input type="text" id="ability" [(ngModel)]="ability">
-    </div>
-    <div class="form-group">
-      <label for="nature">Nature:</label>
-      <select id="nature" [(ngModel)]="nature">
-        <option *ngFor="let option of natureOptions" [value]="option">{{ option }}</option>
-      </select>
-    </div>
-  </div>
-  <div class="evs-ivs">
-    <div class="form-group">
-      <label for="evs">EVs:</label>
-      <div class="stat-inputs">
-        <div *ngFor="let stat of stats" class="stat-input">
-          <label>{{ stat }}:</label>
-          <input type="number" [ngModel]="getValueByStat(stat)" (ngModelChange)="updateValueByStat(stat, $event)" min="0">
+    <div class="evs-ivs">
+      <div class="form-group">
+        <label for="evs">EVs:</label>
+        <div class="stat-inputs" formGroupName="evs">
+          <div *ngFor="let stat of stats" class="stat-input">
+            <label>{{ stat }}:</label>
+            <input type="number" [formControlName]="stat" min="0">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="ivs">IVs:</label>
+        <div class="stat-inputs" formGroupName="ivs">
+          <div *ngFor="let stat of stats" class="stat-input">
+            <label>{{ stat }}:</label>
+            <input type="number" [formControlName]="stat" min="0">
+          </div>
         </div>
       </div>
     </div>
-    <div class="form-group">
-      <label for="ivs">IVs:</label>
-      <div class="stat-inputs">
-        <div *ngFor="let stat of stats" class="stat-input">
-          <label>{{ stat }}:</label>
-          <input type="number" [ngModel]="getValueByStat(stat)" (ngModelChange)="updateValueByStat(stat, $event)" min="0">
-        </div>
-      </div>
+    <div class="button-group">
+      <button type="submit">Aceptar</button>
+      <button type="button" (click)="onCancel()">Cancelar</button>
     </div>
-  </div>
-  <div class="button-group">
-    <button (click)="onSave()">Aceptar</button>
-    <button (click)="onCancel()">Cancelar</button>
-  </div>
+  </form>
 </div>

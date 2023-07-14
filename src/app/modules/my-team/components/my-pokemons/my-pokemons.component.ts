@@ -110,6 +110,7 @@ export class MyPokemonsComponent implements OnInit {
     console.log('Datos del Pokémon:', pokemonData);
     //pokemonData['pokemon'] = pk;
     this.boxService.savePokemon(pkName, pokemonData).subscribe((data) => {
+      console.log('Llegó esta box', data)
       this.box = data;
     });
   }    

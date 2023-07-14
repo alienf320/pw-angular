@@ -1,5 +1,6 @@
 import { OverlayRef } from '@angular/cdk/overlay';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { myPokemon } from 'src/app/models/myPokemon.models';
 
 @Component({
@@ -11,6 +12,7 @@ export class EditStatsOverlayComponent {
   @Input() overlayRef!: OverlayRef;
   @Input() pokemonName!: string;
 
+  form!: FormGroup;
   level: number = 1;
   ability: string = '';
   nature: string = '';
@@ -24,38 +26,72 @@ export class EditStatsOverlayComponent {
   @Output() savePokemon: EventEmitter<any> = new EventEmitter<any>();
   @Output() cancel: EventEmitter<void> = new EventEmitter<void>();
 
-  constructor() { }
+  constructor(private formBuilder: FormBuilder) {
+    this.form = this.formBuilder.group({
+      level: [1, Validators.required],
+      ability: ['', Validators.required],
+      nature: ['', Validators.required],
+      evs: this.formBuilder.group({
+        HP: [0, Validators.min(0)],
+        Ataque: [0, Validators.min(0)],
+        Defensa: [0, Validators.min(0)],
+        Velocidad: [0, Validators.min(0)],
+        'Ataque Especial': [0, Validators.min(0)],
+        'Defensa Especial': [0, Validators.min(0)]
+      }),
+      ivs: this.formBuilder.group({
+        HP: [0, Validators.min(0)],
+        Ataque: [0, Validators.min(0)],
+        Defensa: [0, Validators.min(0)],
+        Velocidad: [0, Validators.min(0)],
+        'Ataque Especial': [0, Validators.min(0)],
+        'Defensa Especial': [0, Validators.min(0)]
+      })
+    });
+    console.log('fomr:', this.form)
+  }
 
   ngOnInit() {
-    this.initializeEvs()
+  }
+
+  private initializeForm() {
+    this.form = this.formBuilder.group({
+      level: [1, Validators.required],
+      ability: ['', Validators.required],
+      nature: ['', Validators.required],
+      evs: this.formBuilder.group({
+        HP: [0, Validators.min(0)],
+        Ataque: [0, Validators.min(0)],
+        Defensa: [0, Validators.min(0)],
+        Velocidad: [0, Validators.min(0)],
+        'Ataque Especial': [0, Validators.min(0)],
+        'Defensa Especial': [0, Validators.min(0)]
+      }),
+      ivs: this.formBuilder.group({
+        HP: [0, Validators.min(0)],
+        Ataque: [0, Validators.min(0)],
+        Defensa: [0, Validators.min(0)],
+        Velocidad: [0, Validators.min(0)],
+        'Ataque Especial': [0, Validators.min(0)],
+        'Defensa Especial': [0, Validators.min(0)]
+      })
+    });
   }
 
   onSave() {
-    const evs = {
-      attack: this.evs.find(e => e.stat === 'Ataque')?.value || 0,
-      defend: this.evs.find(e => e.stat === 'Defensa')?.value || 0,
-      speed: this.evs.find(e => e.stat === 'Velocidad')?.value || 0,
-      spattack: this.evs.find(e => e.stat === 'Ataque Especial')?.value || 0,
-      spdefend: this.evs.find(e => e.stat === 'Defensa Especial')?.value || 0
-    };
-  
-    const ivs = {
-      attack: this.ivs.find(i => i.stat === 'Ataque')?.value || 0,
-      defend: this.ivs.find(i => i.stat === 'Defensa')?.value || 0,
-      speed: this.ivs.find(i => i.stat === 'Velocidad')?.value || 0,
-      spattack: this.ivs.find(i => i.stat === 'Ataque Especial')?.value || 0,
-      spdefend: this.ivs.find(i => i.stat === 'Defensa Especial')?.value || 0
-    };
-  
-    const pokemonData: Omit<myPokemon, 'pokemon'> = {
-      level: this.level,
-      nature: this.nature,
-      evs,
-      ivs
-    };
-  
-    this.savePokemon.emit(pokemonData);
-    this.closeOverlay();
+    if (this.form.valid) {
+      const evs = this.form.value.evs;
+      const ivs = this.form.value.ivs;
+      const pokemonData: Omit<myPokemon, 'pokemon'> = {
+        level: this.form.value.level,
+        nature: this.form.value.nature,
+        evs,
+        ivs
+      };
+      console.log('OnSave')
+      this.savePokemon.emit(pokemonData);
+      this.closeOverlay();
+    }
   }
 
   onCancel() {
@@ -66,24 +102,13 @@ export class EditStatsOverlayComponent {
     this.overlayRef.dispose();
   }
 
-  getValueByStat(stat: string): number | undefined {
-    const ev = this.evs.find(e => e.stat === stat);
-    return ev ? ev.value : undefined;
+  getValueByStat(stat: string): number {
+    return this.form.get(`evs.${stat}`)?.value;
   }
+  
 
   updateValueByStat(stat: string, value: number) {
-    const ev = this.evs.find(e => e.stat === stat);
-    if (ev) {
-      ev.value = value;
-      console.log('ev.value:', ev?.value, value)
-    }
-  }
-
-  initializeEvs() {
-    // Initialize the evs array with default values for each stat
-    this.stats.forEach(stat => {
-      this.evs.push({ stat: stat, value: 0 });
-    });
+    this.form.get(`evs.${stat}`)?.setValue(value);
   }
   
 }

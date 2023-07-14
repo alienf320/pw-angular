@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MyPokemonsComponent } from './components/my-pokemons/my-pokemons.component';
 import { RouterModule, Routes } from '@angular/router';
 import { MyTeamComponent } from './components/my-team/my-team.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditStatsOverlayComponent } from './components/edit-stats-overlay/edit-stats-overlay.component';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { PortalModule } from '@angular/cdk/portal';
@@ -26,6 +26,7 @@ const routes: Routes = [
     FormsModule,
     OverlayModule,
     PortalModule,
+    ReactiveFormsModule,
     RouterModule.forChild(routes)
   ]
 })
