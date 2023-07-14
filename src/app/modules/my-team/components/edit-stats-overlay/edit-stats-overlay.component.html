@@ -3,15 +3,18 @@
   <form [formGroup]="form" (ngSubmit)="onSave()">
     <div class="general">
       <div class="form-group">
-        <label for="level">Level:</label>
+        <label for="level">Level</label>
         <input type="number" formControlName="level">
       </div>
       <div class="form-group">
-        <label for="ability">Ability:</label>
-        <input type="text" formControlName="ability">
+        <label for="ability">Ability</label>
+        <select formControlName="ability">
+          <option *ngFor="let option of pokemonName.abilities" [value]="option">{{option | titlecase}}</option>
+          <option [value]="pokemonName.hiddenAbility">{{pokemonName.hiddenAbility | titlecase}}</option>
+        </select>
       </div>
       <div class="form-group">
-        <label for="nature">Nature:</label>
+        <label for="nature">Nature</label>
         <select formControlName="nature">
           <option *ngFor="let option of natureOptions" [value]="option">{{ option }}</option>
         </select>
@@ -19,19 +22,19 @@
     </div>
     <div class="evs-ivs">
       <div class="form-group">
-        <label for="evs">EVs:</label>
+        <label for="evs">EVs</label>
         <div class="stat-inputs" formGroupName="evs">
           <div *ngFor="let stat of stats" class="stat-input">
-            <label>{{ stat }}:</label>
+            <label>{{ stat | titlecase}}</label>
             <input type="number" [formControlName]="stat" min="0">
           </div>
         </div>
       </div>
       <div class="form-group">
-        <label for="ivs">IVs:</label>
+        <label for="ivs">IVs</label>
         <div class="stat-inputs" formGroupName="ivs">
           <div *ngFor="let stat of stats" class="stat-input">
-            <label>{{ stat }}:</label>
+            <label>{{ stat }}</label>
             <input type="number" [formControlName]="stat" min="0">
           </div>
         </div>

@@ -59,13 +59,11 @@ export class MyPokemonsComponent implements OnInit {
 
   addToBox(event: any) {
     const pokemonName = event.target.innerText;
-    this.openOverlay(pokemonName);
+    const pokemonFull = this.pokemonsFiltered.find(p => p.internalName === pokemonName)
+    this.openOverlay(pokemonFull!);
   }
 
-  openOverlay(pokemonName: string, pokemonStats?: myPokemon) {
-    if(pokemonStats) {
-      console.log('11', pokemonStats)
-    }
+  openOverlay(pokemonFull: Pokemon, pokemonStats?: myPokemon) {
     // Cerrar el overlay si ya está abierto
     this.closeOverlay();
   
@@ -84,7 +82,7 @@ export class MyPokemonsComponent implements OnInit {
     if(pokemonStats) {
       componentRef.instance.myPokemon = pokemonStats
     }
-    componentRef.instance.pokemonName = pokemonName;
+    componentRef.instance.pokemonName = pokemonFull;
     componentRef.instance.overlayRef = this.overlayRef;
   
     // Escuchar el evento de cierre del overlay
@@ -94,7 +92,7 @@ export class MyPokemonsComponent implements OnInit {
 
     componentRef.instance.savePokemon.subscribe((pokemonData: any) => {
       console.log('data:', pokemonData)
-      this.handleSavePokemon(pokemonData, pokemonName);
+      this.handleSavePokemon(pokemonData, pokemonFull.internalName);
     });
   }
   
@@ -106,18 +104,14 @@ export class MyPokemonsComponent implements OnInit {
   }  
 
   handleSavePokemon(pokemonData: any, pkName: string) {
-    const pk = this.pokemonsFiltered.find( p => p.internalName === pkName)
-
     console.log('Datos del Pokémon:', pokemonData);
     //pokemonData['pokemon'] = pk;
     this.boxService.savePokemon(pkName, pokemonData).subscribe((data) => {
-      console.log('Llegó esta box', data)
       this.box = data;
     });
   }    
 
   modifyPokemon(pk: myPokemon) {
-    console.log('Modify Pokemon', pk);
-    this.openOverlay(pk.pokemon.internalName, pk)
+    this.openOverlay(pk.pokemon, pk)
   }
 }

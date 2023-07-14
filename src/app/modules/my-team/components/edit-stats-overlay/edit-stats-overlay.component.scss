@@ -8,7 +8,7 @@
   background-color: #f2f2f2;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 800px;
+  width: 570px;
   max-width: 100%;
 
   h2 {
@@ -21,6 +21,8 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
+    text-align: center;
+    margin-top: 10px;
 
     .stat-inputs {
       display: flex;
@@ -36,14 +38,14 @@
 
         label {
           display: block;
-          margin-bottom: 4px;
+          margin-bottom: 7px;
           font-size: 14px;
           font-weight: bold;
           color: #555;
         }
 
         input[type="number"] {
-          width: 100%;
+          width: 50px;
           padding: 8px;
           border: 1px solid #ccc;
           border-radius: 4px;
@@ -51,6 +53,7 @@
           color: #333;
           background-color: #fff;
           transition: border-color 0.2s ease-in-out;
+          text-align: center;
 
           &:focus {
             outline: none;
@@ -83,17 +86,30 @@
         border-color: #86b7fe;
       }
     }
+
+    input[type="number"] {
+      width: 50px;
+    }
   }
 
   .evs-ivs,
   .general {
     display: flex;
     gap: 30px;
+    justify-content: center;
   }
 
   .evs-ivs {
     input {
       width: 80px !important;
+    }
+    label {
+      background-color: bisque;
+      padding: 4px 7px;
+      width: max-content;
+      margin: 12px auto;
+        margin-bottom: 12px;
+      border-radius: 5px;
     }
   }
 

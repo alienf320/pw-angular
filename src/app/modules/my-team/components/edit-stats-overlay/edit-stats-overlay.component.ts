@@ -2,6 +2,7 @@ import { OverlayRef } from '@angular/cdk/overlay';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { myPokemon } from 'src/app/models/myPokemon.models';
+import { Pokemon } from 'src/app/models/pokemon.models';
 
 @Component({
   selector: 'app-edit-stats-overlay',
@@ -10,7 +11,7 @@ import { myPokemon } from 'src/app/models/myPokemon.models';
 })
 export class EditStatsOverlayComponent {
   @Input() overlayRef!: OverlayRef;
-  @Input() pokemonName!: string;
+  @Input() pokemonName!: Pokemon;
   @Input() myPokemon!: myPokemon;
 
   form!: FormGroup;
@@ -28,11 +29,10 @@ export class EditStatsOverlayComponent {
   @Output() cancel: EventEmitter<void> = new EventEmitter<void>();
 
   constructor(private formBuilder: FormBuilder) {
-    console.log('myPokemon', this.myPokemon)
     this.form = this.formBuilder.group({
-      level: [this.myPokemon?.pokemon.level || 1, Validators.required],
-      ability: [this.myPokemon?.pokemon.abilities || '', Validators.required],
-      nature: [this.myPokemon?.pokemon.nature || '', Validators.required],
+      level: [1, Validators.required],
+      ability: ['', Validators.required],
+      nature: ['', Validators.required],
       evs: this.formBuilder.group({
         HP: [0, Validators.min(0)],
         attack: [0, Validators.min(0)],
@@ -50,7 +50,6 @@ export class EditStatsOverlayComponent {
         spDefense: [0, Validators.min(0)]
       })
     });
-    console.log('fomr:', this.form)
   }
 
   ngAfterContentInit() {
@@ -68,36 +67,7 @@ export class EditStatsOverlayComponent {
         const ivsValue = this.myPokemon.ivs![stat as keyof typeof this.myPokemon.ivs] || 0;
         (this.form.controls['ivs'] as FormGroup).controls[stat].setValue(ivsValue);
       });
-    }
-
-    
-  }
-
-  ngOnInit() {
-  }
-
-  private initializeForm() {
-    this.form = this.formBuilder.group({
-      level: [1, Validators.required],
-      ability: ['', Validators.required],
-      nature: ['', Validators.required],
-      evs: this.formBuilder.group({
-        HP: [0, Validators.min(0)],
-        Ataque: [0, Validators.min(0)],
-        Defensa: [0, Validators.min(0)],
-        Velocidad: [0, Validators.min(0)],
-        'Ataque Especial': [0, Validators.min(0)],
-        'Defensa Especial': [0, Validators.min(0)]
-      }),
-      ivs: this.formBuilder.group({
-        HP: [0, Validators.min(0)],
-        Ataque: [0, Validators.min(0)],
-        Defensa: [0, Validators.min(0)],
-        Velocidad: [0, Validators.min(0)],
-        'Ataque Especial': [0, Validators.min(0)],
-        'Defensa Especial': [0, Validators.min(0)]
-      })
-    });
+    }    
   }
 
   onSave() {
@@ -123,31 +93,5 @@ export class EditStatsOverlayComponent {
   private closeOverlay() {
     this.overlayRef.dispose();
   }
-
-  getValueByStat(stat: string): number {
-    return this.form.get(`evs.${stat}`)?.value;
-  }
-  
-
-  updateValueByStat(stat: string, value: number) {
-    this.form.get(`evs.${stat}`)?.setValue(value);
-  }
-
-  // ngOnChanges(changes: SimpleChanges) {
-  //   if (changes['myPokemon'] && this.form) {
-  //     this.updateForm();
-  //   }
-  // }
-
-  // private updateForm() {
-  //   this.form.patchValue({
-  //     level: this.myPokemon?.pokemon.level || 1,
-  //     ability: this.myPokemon?.pokemon.abilities || '',
-  //     nature: this.myPokemon?.pokemon.nature || '',
-  //     evs: this.myPokemon?.pokemon.evs || {},
-  //     ivs: this.myPokemon?.pokemon.ivs || {}
-  //   });
-  // }
-  
 }
 
