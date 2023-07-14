@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { myPokemon } from 'src/app/models/myPokemon.models';
 
 @Component({
@@ -8,13 +8,17 @@ import { myPokemon } from 'src/app/models/myPokemon.models';
 })
 export class PokemonBoxCardComponent {
   @Input() myPokemon!: myPokemon
-
-  modifyPokemon() {
-
-  }
+  @Output() delete: EventEmitter<any> = new EventEmitter<any>();
+  @Output() modify: EventEmitter<any> = new EventEmitter<any>();
 
   deletePokemon() {
-
+    const confirmDelete = confirm('Are you sure?');
+    if (confirmDelete) {
+      this.delete.emit(this.myPokemon);
+    }
   }
 
+  modifyPokemon() {
+    this.modify.emit(this.myPokemon);
+  }
 }

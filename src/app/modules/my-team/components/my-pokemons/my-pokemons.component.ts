@@ -60,17 +60,15 @@ export class MyPokemonsComponent implements OnInit {
   addToBox(event: any) {
     const pokemonName = event.target.innerText;
     this.openOverlay(pokemonName);
-    // this.boxService.savePokemon(pokemonName).subscribe( data => {
-    //   console.log('data', data)
-    //   this.box = data
-    // })
   }
 
-  openOverlay(pokemonName: string) {
+  openOverlay(pokemonName: string, pokemonStats?: myPokemon) {
+    if(pokemonStats) {
+      console.log('11', pokemonStats)
+    }
     // Cerrar el overlay si ya está abierto
     this.closeOverlay();
   
-    // Crear el overlay
     const positionStrategy = this.overlay.position()
       .global()
       .centerHorizontally()
@@ -83,6 +81,9 @@ export class MyPokemonsComponent implements OnInit {
     const componentRef = this.overlayRef.attach(portal);
   
     // Pasar el nombre del Pokémon al componente del overlay
+    if(pokemonStats) {
+      componentRef.instance.myPokemon = pokemonStats
+    }
     componentRef.instance.pokemonName = pokemonName;
     componentRef.instance.overlayRef = this.overlayRef;
   
@@ -114,4 +115,9 @@ export class MyPokemonsComponent implements OnInit {
       this.box = data;
     });
   }    
+
+  modifyPokemon(pk: myPokemon) {
+    console.log('Modify Pokemon', pk);
+    this.openOverlay(pk.pokemon.internalName, pk)
+  }
 }

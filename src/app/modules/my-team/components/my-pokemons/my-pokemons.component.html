@@ -15,7 +15,7 @@
     <div class="box" *ngIf="box">
       <div class="box-container">
         <div class="pokemon-box" *ngFor="let pk of box">
-          <app-pokemon-box-card [myPokemon]="pk"></app-pokemon-box-card>
+          <app-pokemon-box-card [myPokemon]="pk" (modify)="modifyPokemon($event)"></app-pokemon-box-card>
         </div>
       </div>
     </div>
