@@ -26,6 +26,7 @@ export class EditStatsOverlayComponent {
   stats: string[] = ['HP', 'attack', 'defense', 'speed', 'spAttack', 'spDefense'];
 
   @Output() savePokemon: EventEmitter<any> = new EventEmitter<any>();
+  @Output() updatePokemon: EventEmitter<any> = new EventEmitter<any>();
   @Output() cancel: EventEmitter<void> = new EventEmitter<void>();
 
   constructor(private formBuilder: FormBuilder) {
@@ -57,6 +58,7 @@ export class EditStatsOverlayComponent {
       this.form.controls['ability'].setValue(this.myPokemon?.pokemon.abilities)
       this.form.controls['level'].setValue(this.myPokemon.level)
       this.form.controls['nature'].setValue(this.myPokemon.nature);
+      this.form.controls['ability'].setValue(this.myPokemon.ability);
 
       this.stats.forEach(stat => {
         const evsValue = this.myPokemon.evs![stat as keyof typeof this.myPokemon.evs] || 0;
@@ -74,14 +76,20 @@ export class EditStatsOverlayComponent {
     if (this.form.valid) {
       const evs = this.form.value.evs;
       const ivs = this.form.value.ivs;
-      const pokemonData: Omit<myPokemon, 'pokemon'> = {
+      const pokemonData: any = {
         level: this.form.value.level,
+        ability: this.form.value.ability.length > 1 ? '' : this.form.value.ability,
         nature: this.form.value.nature,
         evs,
-        ivs
+        ivs,
+        _id: this.myPokemon ? this.myPokemon._id : ''
       };
-      console.log('OnSave')
-      this.savePokemon.emit(pokemonData);
+
+      if(this.myPokemon) {
+        this.updatePokemon.emit(pokemonData)
+      } else {
+        this.savePokemon.emit(pokemonData);
+      }
       this.closeOverlay();
     }
   }

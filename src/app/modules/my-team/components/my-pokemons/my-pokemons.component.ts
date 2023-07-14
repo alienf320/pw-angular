@@ -91,8 +91,13 @@ export class MyPokemonsComponent implements OnInit {
     });
 
     componentRef.instance.savePokemon.subscribe((pokemonData: any) => {
-      console.log('data:', pokemonData)
+      console.log('save data:', pokemonData)
       this.handleSavePokemon(pokemonData, pokemonFull.internalName);
+    });
+
+    componentRef.instance.updatePokemon.subscribe((pokemonData: any) => {
+      //console.log('update data:', pokemonData)
+      this.handleUpdatePokemon(pokemonData, pokemonData._id);
     });
   }
   
@@ -104,12 +109,19 @@ export class MyPokemonsComponent implements OnInit {
   }  
 
   handleSavePokemon(pokemonData: any, pkName: string) {
-    console.log('Datos del Pokémon:', pokemonData);
-    //pokemonData['pokemon'] = pk;
+    //console.log('Datos del Pokémon:', pokemonData);
     this.boxService.savePokemon(pkName, pokemonData).subscribe((data) => {
       this.box = data;
     });
   }    
+
+  handleUpdatePokemon(pokemonData: any, pkID: string) {
+    //console.log('Datos del Pokémon:', pokemonData);
+    this.boxService.updatePokemon(pkID, pokemonData).subscribe((data) => {
+      //console.log('respuesta del server: ', data)
+      this.box = data;
+    });
+  }  
 
   modifyPokemon(pk: myPokemon) {
     this.openOverlay(pk.pokemon, pk)

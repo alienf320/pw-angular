@@ -18,5 +18,6 @@ export interface myPokemon {
     speed: number,
     spattack: number,
     spdefend: number
-  }
+  },
+  _id: string
 }
