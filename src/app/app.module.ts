@@ -22,7 +22,7 @@ import { TrainerInfoComponent } from './components/trainer-info/trainer-info.com
     TrainerComponent,
     NavbarComponent,
     TrainerCardComponent,
-    TrainerInfoComponent
+    TrainerInfoComponent,
   ],
   imports: [
     BrowserModule,

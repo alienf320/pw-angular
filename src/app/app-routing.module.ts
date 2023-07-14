@@ -6,7 +6,8 @@ import { TrainerComponent } from './components/trainer/trainer.component';
 const routes: Routes = [
   { path: '', redirectTo: '/pokemon-info', pathMatch: 'full' },
   { path: 'pokemon-info', component: PokemonInfoComponent },
-  { path: 'trainer', component: TrainerComponent }, 
+  { path: 'trainer', component: TrainerComponent },
+  { path: 'user', loadChildren: () => import('./modules/my-team/my-team.module').then(m => m.MyTeamModule) }
 ];
 
 @NgModule({

@@ -40,5 +40,21 @@ export interface Pokemon {
     _id: string;
   }[];
   __v: number;
-  weakness?: Resistances
+  weakness?: Resistances,
+  level?: number,
+  nature?: string,
+  evs?: {
+    attack: number,
+    defend: number,
+    speed: number,
+    spattack: number,
+    spdefend: number
+  },
+  ivs?: {
+    attack: number,
+    defend: number,
+    speed: number,
+    spattack: number,
+    spdefend: number
+  }
 }

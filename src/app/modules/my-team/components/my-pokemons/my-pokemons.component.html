@@ -1,0 +1,29 @@
+<div class="max-container">
+  <div class="left-container">
+    <div class="container">
+      <div class="input-container">
+        <input type="text" [(ngModel)]="pokemonName" placeholder="Nombre del Pokémon" (keyup.enter)="searchPokemon()">
+        <button (click)="searchPokemon()">Buscar</button>
+      </div>
+    </div>
+    <div class="suggestions" *ngIf="pokemons">
+      <div class="suggestion" *ngFor="let pokemon of pokemons" (click)="addToBox($event)">{{ pokemon }}</div>
+    </div>
+  </div>
+  <div class="right-container">
+    <h3>My Box</h3>
+    <div class="box" *ngIf="box">
+      <div class="box-container">
+        <div class="pokemon-box" *ngFor="let pk of box">
+          <div class="pk-name">{{pk.pokemon.name | titlecase}}</div>
+          <div class="types">
+            <div class="pk-type">{{pk.pokemon.type1 | uppercase}}</div>
+            <div class="pk-type" *ngIf="pk.pokemon.type2">{{pk.pokemon.type2 | uppercase}}</div>
+          </div>
+          <div class="pk-attr">{{pk.level}}</div>
+          <div class="pk-attr">{{pk.nature | titlecase}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

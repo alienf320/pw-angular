@@ -1,0 +1,114 @@
+.max-container {
+  display: flex;
+}
+
+.left-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 40vw;
+  .suggestions {
+    background-color: #f2f2f2;
+    margin: 0 40px;
+    border-radius: 10px;
+    width: 314px;
+
+    .suggestion {
+      text-align: center;
+      margin: 3px;
+    }
+    .suggestion:hover {
+      background-color: #c8ebfa;
+    }
+  }
+}
+
+.right-container {
+  width: 100%;
+  padding: 20px;
+  .box {
+    border: 1px solid gray;
+    border-radius: 20px;
+    width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+
+    .box-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 240px);
+      gap: 10px;
+      justify-content: center;
+      justify-self: center;
+    }
+
+    .pokemon-box {
+      background-color: lightblue;
+      border-radius: 5px;
+      width: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px;
+
+      .pk-name {
+        font-size: 1.3rem;
+        padding-bottom: 5px;
+        font-weight: 500;
+      }
+
+      .types {
+        display: flex;
+        gap: 10px;
+        margin: 10px;
+
+        .pk-type {
+          border: 1px solid #9c9c9c;
+          border-radius: 5px;
+          padding: 5px;
+          width: 80px;
+          text-align: center;
+          font-weight: 500;
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px 30px 0;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #f2f2f2;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+input[type="text"] {
+  padding: 8px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+button {
+  padding: 8px 16px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
