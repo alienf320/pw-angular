@@ -4,6 +4,7 @@ export interface myPokemon {
   pokemon: Pokemon,
   level?: number,
   nature?: string,
+  ability?: string,
   evs?: {
     attack: number,
     defend: number,
