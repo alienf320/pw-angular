@@ -1,0 +1,42 @@
+<div class="overlay-container">
+  <div class="overlay-content">
+    <h2 class="pokemon-name">{{ myPokemon.pokemon.name }}</h2>
+    <div class="pokemon-info">
+      <div class="pokemon-detail">
+        <p class="pokemon-label">Nivel:</p>
+        <div class="pokemon-value">{{ myPokemon.level }}</div>
+      </div>
+      <div class="pokemon-detail">
+        <p class="pokemon-label">Habilidad:</p>
+        <div class="pokemon-value">{{ myPokemon.ability }}</div>
+      </div>
+      <div class="pokemon-detail">
+        <p class="pokemon-label">Naturaleza:</p>
+        <div class="pokemon-value">{{ myPokemon.nature }}</div>
+      </div>
+    </div>
+    <table class="stats-table">
+      <thead>
+        <tr>
+          <th>HP</th>
+          <th>Attack</th>
+          <th>Defend</th>
+          <th>SpAttack</th>
+          <th>SpDefend</th>
+          <th>Speed</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ stats.hp }}</td>
+          <td>{{ stats.attack }}</td>
+          <td>{{ stats.defense }}</td>
+          <td>{{ stats.spAttack }}</td>
+          <td>{{ stats.spDefense }}</td>
+          <td>{{ stats.speed }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="close-button" (click)="onExit()">Cerrar</button>
+  </div>
+</div>

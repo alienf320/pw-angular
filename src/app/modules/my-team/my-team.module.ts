@@ -8,6 +8,7 @@ import { EditStatsOverlayComponent } from './components/edit-stats-overlay/edit-
 import { OverlayModule } from '@angular/cdk/overlay';
 import { PortalModule } from '@angular/cdk/portal';
 import { PokemonBoxCardComponent } from './components/pokemon-box-card/pokemon-box-card.component';
+import { PokemonBoxDetailsComponent } from './components/pokemon-box-details/pokemon-box-details.component';
 
 const routes: Routes = [
   {
@@ -21,7 +22,8 @@ const routes: Routes = [
     MyPokemonsComponent,
     MyTeamComponent,
     EditStatsOverlayComponent,
-    PokemonBoxCardComponent
+    PokemonBoxCardComponent,
+    PokemonBoxDetailsComponent
   ],
   imports: [
     CommonModule,

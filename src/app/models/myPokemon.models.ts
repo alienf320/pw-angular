@@ -6,18 +6,20 @@ export interface myPokemon {
   nature?: string,
   ability?: string,
   evs?: {
+    HP: number,
     attack: number,
-    defend: number,
+    defense: number,
     speed: number,
-    spattack: number,
-    spdefend: number
+    spAttack: number,
+    spDefense: number
   },
   ivs?: {
+    HP: number,
     attack: number,
-    defend: number,
+    defense: number,
     speed: number,
-    spattack: number,
-    spdefend: number
+    spAttack: number,
+    spDefense: number
   },
   _id: string
 }

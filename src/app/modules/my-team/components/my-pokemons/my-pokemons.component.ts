@@ -7,6 +7,7 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { EditStatsOverlayComponent } from '../edit-stats-overlay/edit-stats-overlay.component';
 import { Pokemon } from 'src/app/models/pokemon.models';
+import { PokemonBoxDetailsComponent } from '../pokemon-box-details/pokemon-box-details.component';
 
 
 @Component({
@@ -136,5 +137,38 @@ export class MyPokemonsComponent implements OnInit {
 
   modifyPokemon(pk: myPokemon) {
     this.openOverlay(pk.pokemon, pk)
+  }
+
+  openDetails(event: myPokemon) {
+    console.log('target', event)
+
+    this.openOverlayDetails(event)
+  
+  }
+
+  openOverlayDetails(myPokemon: myPokemon) {
+    // Cerrar el overlay si ya está abierto
+    this.closeOverlay();
+  
+    const positionStrategy = this.overlay.position()
+      .global()
+      .centerHorizontally()
+      .centerVertically();
+  
+    this.overlayRef = this.overlay.create({ positionStrategy });
+  
+    // Adjuntar el componente del formulario al overlay
+    const portal = new ComponentPortal(PokemonBoxDetailsComponent);
+    const componentRef = this.overlayRef.attach(portal);
+  
+    // Pasar el nombre del Pokémon al componente del overlay
+
+    componentRef.instance.myPokemon = myPokemon
+    componentRef.instance.overlayRef = this.overlayRef;
+  
+    // Escuchar el evento de cierre del overlay
+    this.overlayRef.backdropClick().subscribe(() => {
+      this.closeOverlay();
+    });
   }
 }

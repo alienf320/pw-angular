@@ -10,6 +10,7 @@ export class PokemonBoxCardComponent {
   @Input() myPokemon!: myPokemon
   @Output() delete: EventEmitter<any> = new EventEmitter<any>();
   @Output() modify: EventEmitter<any> = new EventEmitter<any>();
+  @Output() details: EventEmitter<myPokemon> = new EventEmitter<myPokemon>();
 
   deletePokemon() {
     const confirmDelete = confirm('Are you sure?');
@@ -20,5 +21,9 @@ export class PokemonBoxCardComponent {
 
   modifyPokemon() {
     this.modify.emit(this.myPokemon);
+  }
+  
+  openDetails() {
+    this.details.emit(this.myPokemon);
   }
 }

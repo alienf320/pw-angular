@@ -2,12 +2,23 @@
   <div class="left-container">
     <div class="container">
       <div class="input-container">
-        <input type="text" [(ngModel)]="pokemonName" placeholder="Nombre del Pokémon" (keyup.enter)="searchPokemon()">
+        <input
+          type="text"
+          [(ngModel)]="pokemonName"
+          placeholder="Nombre del Pokémon"
+          (keyup.enter)="searchPokemon()"
+        />
         <button (click)="searchPokemon()">Buscar</button>
       </div>
     </div>
     <div class="suggestions" *ngIf="pokemons">
-      <div class="suggestion" *ngFor="let pokemon of pokemons" (click)="addToBox($event)">{{ pokemon }}</div>
+      <div
+        class="suggestion"
+        *ngFor="let pokemon of pokemons"
+        (click)="addToBox($event)"
+      >
+        {{ pokemon }}
+      </div>
     </div>
   </div>
   <div class="right-container">
@@ -15,7 +26,12 @@
     <div class="box" *ngIf="box">
       <div class="box-container">
         <div class="pokemon-box" *ngFor="let pk of box">
-          <app-pokemon-box-card [myPokemon]="pk" (modify)="modifyPokemon($event)" (delete)="deletePokemon($event)"></app-pokemon-box-card>
+          <app-pokemon-box-card
+            [myPokemon]="pk"
+            (modify)="modifyPokemon($event)"
+            (delete)="deletePokemon($event)"
+            (details)="openDetails($event)"
+          ></app-pokemon-box-card>
         </div>
       </div>
     </div>
