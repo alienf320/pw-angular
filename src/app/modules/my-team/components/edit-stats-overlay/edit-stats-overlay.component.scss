@@ -13,7 +13,7 @@
 
   .section {
     display: flex;
-    gap: 20px;
+    justify-content: space-around;
   }
 
   .general {
@@ -166,6 +166,19 @@
 }
 
 .move-set {
+
+  .moves{
+    margin: 10px 0;
+    background-color: white;
+    padding: 10px;
+
+    .move {
+      display: flex;
+      justify-content: space-between;
+      margin: 5px;
+      gap: 10px;
+    }
+  }
   
   .suggestion-panel {
     position: absolute;

@@ -25,9 +25,15 @@
         <input #move1 type="text" formControlName="move1" (input)="showSuggestions($event)">
         <ng-template #suggestionsTemplate >
           <div class="suggestions-container">
-            <div *ngFor="let suggestion of suggestions">{{ suggestion }}</div>
+            <div *ngFor="let suggestion of suggestions" (click)="addMove($event)">{{ suggestion }}</div>
           </div>
         </ng-template>
+        <div class="moves" *ngIf="moves">
+          <div class="move" *ngFor="let move of moves">
+            <div class="move-name">{{move}}</div>
+            <button class="action-button delete-button" (click)="deleteMove(move)"><i class="ri-delete-bin-line"></i></button>
+          </div>
+        </div>
       </div>
     </div>
 

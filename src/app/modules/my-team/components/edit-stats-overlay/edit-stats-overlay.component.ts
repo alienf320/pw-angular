@@ -15,8 +15,10 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, debounceTime } from 'rxjs';
+import { Move } from 'src/app/models/move.models';
 import { myPokemon } from 'src/app/models/myPokemon.models';
 import { Pokemon } from 'src/app/models/pokemon.models';
+import { MoveService } from 'src/app/services/move.service';
 import { Constants } from 'src/app/utils/constants';
 
 @Component({
@@ -37,9 +39,11 @@ export class EditStatsOverlayComponent {
   level: number = 1;
   ability: string = '';
   nature: string = '';
+  moves: string[] = [];
   evs: { stat: string; value: number }[] = [];
   ivs: { stat: string; value: number }[] = [];
-  suggestions!: string[]
+  suggestions!: string[];
+  movesFull: Move[] = []
 
 
   natureOptions: string[] = [
@@ -82,7 +86,7 @@ export class EditStatsOverlayComponent {
   @Output() savePokemon: EventEmitter<any> = new EventEmitter<any>();
   @Output() updatePokemon: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private formBuilder: FormBuilder, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {
+  constructor(private formBuilder: FormBuilder, private overlay: Overlay, private viewContainerRef: ViewContainerRef, private moveService: MoveService) {
     this.form = this.formBuilder.group({
       level: [1, Validators.required],
       ability: ['', Validators.required],
@@ -149,26 +153,33 @@ export class EditStatsOverlayComponent {
     this.inputValueSubject.next(inputValue);
   }
 
-  showOverlay(suggestions: string[]) {
+showOverlay(suggestions: string[]) {
+  this.hideSuggestions();
+
+  const origin = new CdkOverlayOrigin(this.move1);
+
+  const overlayConfig = {
+    positionStrategy: this.overlay.position().flexibleConnectedTo(origin.elementRef).withPositions([{
+      originX: 'start',
+      originY: 'bottom',
+      overlayX: 'start',
+      overlayY: 'top',
+      offsetY: 1
+    }]),
+    scrollStrategy: this.overlay.scrollStrategies.reposition(),
+    hasBackdrop: true, // Habilita el backdrop
+    backdropClick: true, // Habilita el manejo del clic en el backdrop
+  };
+
+  this.suggestionPanel = this.overlay.create(overlayConfig);
+  const overlayPortal = new TemplatePortal(this.suggestionsTemplate, this.viewContainerRef);
+  this.suggestionPanel.attach(overlayPortal);
+
+  this.suggestionPanel.backdropClick().subscribe(() => {
     this.hideSuggestions();
+  });
+}
 
-    const origin = new CdkOverlayOrigin(this.move1);
-
-    const overlayConfig = {
-      positionStrategy: this.overlay.position().flexibleConnectedTo(origin.elementRef).withPositions([{
-        originX: 'start',
-        originY: 'bottom',
-        overlayX: 'start',
-        overlayY: 'top',
-        offsetY: 8
-      }]),
-      scrollStrategy: this.overlay.scrollStrategies.reposition(),
-    };
-
-    this.suggestionPanel = this.overlay.create(overlayConfig);
-    const overlayPortal = new TemplatePortal(this.suggestionsTemplate, this.viewContainerRef);
-    this.suggestionPanel.attach(overlayPortal);
-  }
 
   hideSuggestions() {
     if (this.suggestionPanel && this.suggestionPanel.hasAttached()) {
@@ -176,25 +187,47 @@ export class EditStatsOverlayComponent {
     }
   }
 
-  onSave() {
+  addMove(event: any) {
+    const move = event.target.innerText;
+    if(this.moves.length < 4) {
+      this.moves.push(move)
+    }  }
+  
+  deleteMove(moveName: string) {
+    this.moves = this.moves.filter(m => m !== moveName)
+  }
+  
+  async getMovesFull(): Promise<void> {
+    for (const move of this.moves) {
+      console.log('getMovesFull');
+      const data = await this.moveService.getMoveByName(move).toPromise();
+      console.log(data);
+      this.movesFull.push(...data);
+    }
+  }
+  
+  async onSave(): Promise<void> {
     if (this.form.valid) {
+      await this.getMovesFull();
       const evs = this.form.value.evs;
       const ivs = this.form.value.ivs;
+  
       const pokemonData: any = {
         level: this.form.value.level,
         ability: this.form.value.ability,
         nature: this.form.value.nature,
         evs,
         ivs,
+        moves: this.movesFull,
         _id: this.myPokemon ? this.myPokemon._id : '',
       };
-
+  
       if (this.myPokemon) {
         this.updatePokemon.emit(pokemonData);
       } else {
         this.savePokemon.emit(pokemonData);
       }
-
+  
       this.closeOverlay();
     }
   }
