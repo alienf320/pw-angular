@@ -1,28 +1,39 @@
 <div class="edit-stats-overlay">
   <h2>Edit Pokémon Stats</h2>
   <form [formGroup]="form" (ngSubmit)="onSave()">
-    <div class="general">
-      <div class="form-group">
-        <label for="level">Level</label>
-        <input type="number" formControlName="level">
+    <div class="section">
+      <div class="general">
+        <div class="form-group">
+          <label for="level">Level</label>
+          <input type="number" formControlName="level">
+        </div>
+        <div class="form-group">
+          <label for="ability">Ability</label>
+          <select formControlName="ability">
+            <option *ngFor="let option of pokemonName.abilities" [value]="option">{{option | titlecase}}</option>
+            <option [value]="pokemonName.hiddenAbility">{{pokemonName.hiddenAbility | titlecase}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="nature">Nature</label>
+          <select formControlName="nature">
+            <option *ngFor="let option of natureOptions" [value]="option">{{ option }}</option>
+          </select>
+        </div>
       </div>
-      <div class="form-group">
-        <label for="ability">Ability</label>
-        <select formControlName="ability">
-          <option *ngFor="let option of pokemonName.abilities" [value]="option">{{option | titlecase}}</option>
-          <option [value]="pokemonName.hiddenAbility">{{pokemonName.hiddenAbility | titlecase}}</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="nature">Nature</label>
-        <select formControlName="nature">
-          <option *ngFor="let option of natureOptions" [value]="option">{{ option }}</option>
-        </select>
+      <div class="move-set" formGroupName="moveSet">
+        <input #move1 type="text" formControlName="move1" (input)="showSuggestions($event)">
+        <ng-template #suggestionsTemplate >
+          <div class="suggestions-container">
+            <div *ngFor="let suggestion of suggestions">{{ suggestion }}</div>
+          </div>
+        </ng-template>
       </div>
     </div>
+
     <div class="evs-ivs">
       <div class="form-group">
-        <label for="evs">EVs</label>
+        <label for="evs" class="title">EVs</label>
         <div class="stat-inputs" formGroupName="evs">
           <div *ngFor="let stat of stats" class="stat-input">
             <label>{{ stat | titlecase}}</label>
@@ -31,7 +42,7 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="ivs">IVs</label>
+        <label for="ivs" class="title">IVs</label>
         <div class="stat-inputs" formGroupName="ivs">
           <div *ngFor="let stat of stats" class="stat-input">
             <label>{{ stat }}</label>
@@ -40,12 +51,7 @@
         </div>
       </div>
     </div>
-    <div class="move-set" formGroupName="moveSet">
-      <input type="text" formControlName="move1" (input)="showSuggestions($event)">
-      <input type="text" formControlName="move2">
-      <input type="text" formControlName="move3">
-      <input type="text" formControlName="move4">
-    </div>
+
     <div class="button-group">
       <button type="submit">Aceptar</button>
       <button type="button" (click)="onCancel()">Cancelar</button>

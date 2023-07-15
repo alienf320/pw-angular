@@ -11,6 +11,18 @@
   width: 570px;
   max-width: 100%;
 
+  .section {
+    display: flex;
+    gap: 20px;
+  }
+
+  .general {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+
   h2 {
     margin-bottom: 20px;
     font-size: 20px;
@@ -19,9 +31,9 @@
 
   .form-group {
     display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
     text-align: center;
+    align-items: center;
+    gap: 5px;
     margin-top: 10px;
 
     .stat-inputs {
@@ -92,14 +104,24 @@
     }
   }
 
-  .evs-ivs,
-  .general {
+  .evs-ivs {
     display: flex;
     gap: 30px;
     justify-content: center;
-  }
 
-  .evs-ivs {
+    .form-group {
+      flex-direction: column;
+      margin: 15px 0;
+      
+      .title {
+        width: 100%;
+      }
+
+      label {
+        margin: 0 0 10px;
+      }
+    }
+
     input {
       width: 52px !important;
     }
@@ -168,4 +190,23 @@
     background-color: #f0f0f0;
   } 
   
+}
+
+.suggestions-container {
+  background-color: white;
+  border: 1px solid gray;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 8px;
+  height: 103px;
+  overflow-y: auto;
+}
+
+.suggestions-container div {
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.suggestions-container div:hover {
+  background-color: #f2f2f2;
 }

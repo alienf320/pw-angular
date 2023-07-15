@@ -1,14 +1,20 @@
-import { OverlayRef } from '@angular/cdk/overlay';
+import { CdkOverlayOrigin, Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { TemplatePortal } from '@angular/cdk/portal';
 import {
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   OnChanges,
   OnInit,
   Output,
   SimpleChanges,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subject, debounceTime } from 'rxjs';
 import { myPokemon } from 'src/app/models/myPokemon.models';
 import { Pokemon } from 'src/app/models/pokemon.models';
 import { Constants } from 'src/app/utils/constants';
@@ -22,14 +28,18 @@ export class EditStatsOverlayComponent {
   @Input() overlayRef!: OverlayRef;
   @Input() pokemonName!: Pokemon;
   @Input() myPokemon!: myPokemon;
+  @ViewChild('move1') move1!: ElementRef<HTMLInputElement>;
+  @ViewChild('suggestionsTemplate') suggestionsTemplate!: TemplateRef<any>;
 
+  private suggestionPanel!: OverlayRef;
+  private inputValueSubject = new Subject<any>();
   form!: FormGroup;
   level: number = 1;
   ability: string = '';
   nature: string = '';
   evs: { stat: string; value: number }[] = [];
   ivs: { stat: string; value: number }[] = [];
-  currentSuggestionPanel: HTMLDivElement | null = null;
+  suggestions!: string[]
 
 
   natureOptions: string[] = [
@@ -72,7 +82,7 @@ export class EditStatsOverlayComponent {
   @Output() savePokemon: EventEmitter<any> = new EventEmitter<any>();
   @Output() updatePokemon: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private overlay: Overlay, private viewContainerRef: ViewContainerRef) {
     this.form = this.formBuilder.group({
       level: [1, Validators.required],
       ability: ['', Validators.required],
@@ -95,10 +105,16 @@ export class EditStatsOverlayComponent {
       }),
       moveSet: formBuilder.group({
         move1: [''],
-        move2: [''],
-        move3: [''],
-        move4: [''],
       })
+    });
+  }
+
+  ngOnInit() {
+    this.inputValueSubject
+    .pipe(debounceTime(500)) // Espera 500ms antes de continuar
+    .subscribe((inputValue: any) => {
+      this.suggestions = Constants.movesNames.filter(el => el.match(inputValue.target.value));
+      this.showOverlay(this.suggestions);
     });
   }
 
@@ -128,56 +144,37 @@ export class EditStatsOverlayComponent {
   }
 
   showSuggestions(inputValue: any) {
-    const suggestions = Constants.movesNames.filter( el => el.match(inputValue.target.value))
+    this.suggestions = Constants.movesNames.filter( el => el.match(inputValue.target.value))
     //console.log(suggestions)
-    this.showOverlay(suggestions);
+    this.inputValueSubject.next(inputValue);
   }
 
   showOverlay(suggestions: string[]) {
-    this.hideSuggestions(); // Elimina el panel de sugerencias existente si hay alguno
+    this.hideSuggestions();
 
-    // Obtén la posición y dimensiones del input actual
-    const activeInput = document.activeElement as HTMLInputElement;
-    const inputRect = activeInput.getBoundingClientRect();
-    const inputTop = inputRect.top + window.pageYOffset;
-    const inputLeft = inputRect.left + window.pageXOffset;
-    const inputWidth = inputRect.width;
-  
-    // Crea el panel de sugerencias
-    const suggestionPanel = document.createElement('div');
-    suggestionPanel.className = 'suggestion-panel';
-  
-    // Establece la posición del panel de sugerencias debajo del input
-    suggestionPanel.style.top = `${inputTop + activeInput.offsetHeight}px`;
-    suggestionPanel.style.left = `${inputLeft}px`;
-    suggestionPanel.style.width = `${inputWidth}px`;
-    // Agrega las sugerencias al panel
-    suggestions.forEach(suggestion => {
-      const suggestionItem = document.createElement('div');
-      suggestionItem.className = 'suggestion-item';
-      suggestionItem.innerText = suggestion;
-  
-      suggestionItem.addEventListener('click', () => {
-        // Asigna el valor de la sugerencia al input cuando se hace clic
-        activeInput.value = suggestion;
-        suggestionPanel.remove();
-      });
-  
-      suggestionPanel.appendChild(suggestionItem);
-    });
-    this.currentSuggestionPanel = suggestionPanel;
-  
-    // Inserta el panel de sugerencias debajo del input
-    activeInput.parentNode?.appendChild(suggestionPanel);
+    const origin = new CdkOverlayOrigin(this.move1);
+
+    const overlayConfig = {
+      positionStrategy: this.overlay.position().flexibleConnectedTo(origin.elementRef).withPositions([{
+        originX: 'start',
+        originY: 'bottom',
+        overlayX: 'start',
+        overlayY: 'top',
+        offsetY: 8
+      }]),
+      scrollStrategy: this.overlay.scrollStrategies.reposition(),
+    };
+
+    this.suggestionPanel = this.overlay.create(overlayConfig);
+    const overlayPortal = new TemplatePortal(this.suggestionsTemplate, this.viewContainerRef);
+    this.suggestionPanel.attach(overlayPortal);
   }
-  
+
   hideSuggestions() {
-    if (this.currentSuggestionPanel) {
-      this.currentSuggestionPanel.remove();
-      this.currentSuggestionPanel = null;
+    if (this.suggestionPanel && this.suggestionPanel.hasAttached()) {
+      this.suggestionPanel.detach();
     }
   }
-  
 
   onSave() {
     if (this.form.valid) {
