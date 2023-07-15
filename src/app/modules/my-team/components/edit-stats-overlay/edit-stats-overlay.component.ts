@@ -90,6 +90,12 @@ export class EditStatsOverlayComponent {
         spAttack: [0, Validators.min(0)],
         spDefense: [0, Validators.min(0)],
       }),
+      moveSet: formBuilder.group({
+        move1: [''],
+        move2: [''],
+        move3: [''],
+        move4: [''],
+      })
     });
   }
 
