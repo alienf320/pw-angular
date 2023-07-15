@@ -1,3 +1,16 @@
+.myBox {
+  display: flex;
+  align-items: center;
+
+  select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+  }
+}
+
 .container {
   display: flex;
   justify-content: space-around;

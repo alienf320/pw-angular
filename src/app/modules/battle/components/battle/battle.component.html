@@ -1,3 +1,9 @@
+<div class="myBox" *ngIf="box">
+  <select name="myPokemon" (change)="pokemonSelected($event)">
+    <option *ngFor="let pokemon of box" [value]="pokemon.pokemon.name">{{pokemon.pokemon.name}}</option>
+  </select>
+</div>
+
 <div class="container">
   <app-pokemon-battle [pokemon]="myPokemon"></app-pokemon-battle>
   <app-pokemon-battle [pokemon]="yourPokemon"></app-pokemon-battle>

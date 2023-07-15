@@ -13,6 +13,10 @@ h3 {
   margin: 10px 0;
 }
 
+h2 {
+  margin: 0;
+}
+
 .form-group {
   display: flex;
   align-items: center;
@@ -42,6 +46,10 @@ input[type="number"] {
   display: flex;
   align-items: center;
   gap: 10px;
+
+  label {
+    width: 50px;
+  }
 }
 
 .stat-input-group {

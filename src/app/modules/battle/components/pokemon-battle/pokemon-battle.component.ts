@@ -67,6 +67,57 @@ export class PokemonBattleComponent implements OnInit {
       attacks: attacksFormGroup, // Agrega el FormGroup de ataques
     });
   }
+
+  ngOnChanges(): void {
+    if (this.pokemon && this.pokemonForm) {
+      this.populateForm();
+    }
+  }
+
+  populateForm(): void {
+    this.stats = this.statsService.calculateStats(this.pokemon);
+    console.log('pokemon-battle  pokemon:', this.pokemon)
+    console.log("Encontró nature?", this.natures.find(el => el === this.pokemon.nature))
+  
+    this.pokemonForm.patchValue({
+      level: this.pokemon.level,
+      nature: this.pokemon.nature,
+      stats: {
+        hp: this.stats.hp,
+        ivHP: this.pokemon!.ivs!.HP,
+        evHP: this.pokemon!.evs!.HP,
+        attack: this.stats.attack,
+        ivAttack: this.pokemon!.ivs!.attack,
+        evAttack: this.pokemon!.evs!.attack,
+        defense: this.stats.defense,
+        ivDefense: this.pokemon!.ivs!.defense,
+        evDefense: this.pokemon!.evs!.defense,
+        specialAttack: this.stats.spAttack,
+        ivSpAttack: this.pokemon!.ivs!.spAttack,
+        evSpAttack: this.pokemon!.evs!.spAttack,
+        specialDefense: this.stats.spDefense,
+        ivSpDefense: this.pokemon!.ivs!.spDefense,
+        evSpDefense: this.pokemon!.evs!.spDefense,
+        speed: this.stats.speed,
+        ivSpeed: this.pokemon!.ivs!.speed,
+        evSpeed: this.pokemon!.evs!.speed
+      }
+    });
+  
+    const attacksFormGroup = this.pokemonForm.get('attacks') as FormGroup;
+    for (const attackKey in this.pokemon.moves) {
+      if (this.pokemon.moves.hasOwnProperty(attackKey)) {
+        const attackGroup = attacksFormGroup.get(attackKey) as FormGroup;
+        attackGroup.patchValue({
+          attack: this.pokemon.moves[attackKey].power
+        });
+      }
+    }
+
+    console.log('Form completo values:', this.pokemonForm.value)
+  }
+  
+  
   
 }
 
