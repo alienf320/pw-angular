@@ -17,6 +17,7 @@ export class PokemonCardComponent {
   constructor(private weaknessService: WeaknessService) {}
 
   ngOnInit() {
+    console.log('Pokemon-card', this.pokemon)
     if(this.typesWR) {
       this.weaknessService.getWeaknesses(this.pokemon.type1, this.pokemon.type2).subscribe( data => {
         this.typesWR = data;

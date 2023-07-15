@@ -1,0 +1,133 @@
+<div class="pokemon-form" [formGroup]="pokemonForm">
+  <div class="form-group">
+    <label for="level">Nivel:</label>
+    <input type="number" id="level" formControlName="level" />
+  </div>
+
+  <div class="form-group">
+    <label for="nature">Nature:</label>
+    <select id="nature" formControlName="nature">
+      <option value="nature" *ngFor="let nature of natures">
+        {{ nature }}
+      </option>
+    </select>
+  </div>
+
+  <div class="stats-container" *ngIf="stats" formGroupName="stats">
+    <h3>Stats</h3>
+    <div class="stat-group">
+      <label for="hp">HP:</label>
+      <input type="range" id="hp" min="0" max="255" formControlName="hp" />
+      <div class="stat-input-group">
+        <input type="number" formControlName="ivHP" />
+        <input type="number" formControlName="evHP" />
+      </div>
+    </div>
+
+    <div class="stat-group">
+      <label for="attack">Atk:</label>
+      <input
+        type="range"
+        id="attack"
+        min="0"
+        max="255"
+        formControlName="attack"
+      />
+      <input type="number" formControlName="ivAttack" />
+      <input type="number" formControlName="evAttack" />
+    </div>
+
+    <div class="stat-group">
+      <label for="defense">Def:</label>
+      <input
+        type="range"
+        id="defense"
+        min="0"
+        max="255"
+        formControlName="defense"
+      />
+      <input type="number" formControlName="ivDefense" />
+      <input type="number" formControlName="evDefense" />
+    </div>
+
+    <div class="stat-group">
+      <label for="spAtk">SpAtk:</label>
+      <input
+        type="range"
+        id="spAtk"
+        min="0"
+        max="255"
+        formControlName="specialAttack"
+      />
+      <input type="number" formControlName="ivSpAttack" />
+      <input type="number" formControlName="evSpAttack" />
+    </div>
+
+    <div class="stat-group">
+      <label for="spDef">SpDef:</label>
+      <input
+        type="range"
+        id="spDef"
+        min="0"
+        max="255"
+        formControlName="specialDefense"
+      />
+      <input type="number" formControlName="ivSpDefense" />
+      <input type="number" formControlName="evSpDefense" />
+    </div>
+
+    <div class="stat-group">
+      <label for="speed">Speed:</label>
+      <input
+        type="range"
+        id="speed"
+        min="0"
+        max="255"
+        formControlName="speed"
+      />
+      <input type="number" formControlName="ivSpeed" />
+      <input type="number" formControlName="evSpeed" />
+    </div>
+  </div>
+
+  <div class="attacks-container">
+    <h3>Ataques</h3>
+    <div formGroupName="attacks">
+      <div class="form-group">
+        <select id="attack1" formControlName="attack1">
+          <option value="">Selecciona un ataque</option>
+          <option *ngFor="let move of pokemon.moves" [value]="move">
+            {{ move }}
+          </option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <select id="attack2" formControlName="attack2">
+          <option value="">Selecciona un ataque</option>
+          <option *ngFor="let move of pokemon.moves" [value]="move">
+            {{ move }}
+          </option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <select id="attack3" formControlName="attack3">
+          <option value="">Selecciona un ataque</option>
+          <option *ngFor="let move of pokemon.moves" [value]="move">
+            {{ move }}
+          </option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <select id="attack4" formControlName="attack4">
+          <option value="">Selecciona un ataque</option>
+          <option *ngFor="let move of pokemon.moves" [value]="move">
+            {{ move }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>

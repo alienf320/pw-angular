@@ -49,7 +49,7 @@
           </tr>
           <tr *ngFor="let move of pokemon.moves">
             <td>{{ move.level }}</td>
-            <td>{{ move.move.displayName | titlecase }}</td>
+            <td>{{ move.move.name | titlecase }}</td>
           </tr>
         </table>
       </div>

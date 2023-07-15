@@ -1,3 +1,4 @@
+import { Move } from "./move.models";
 import { Pokemon } from "./pokemon.models";
 
 export interface myPokemon {
@@ -5,6 +6,7 @@ export interface myPokemon {
   level?: number,
   nature?: string,
   ability?: string,
+  moves: Move[]
   evs?: {
     HP: number,
     attack: number,
