@@ -40,19 +40,11 @@
         </div>
       </div>
     </div>
-    <div class="move-set" [formGroupName]="moveSet">
-      <select formControlName="move1">
-        <option *ngFor="let move of pokemonMoves" [value]="move">{{ move }}</option>
-      </select>
-      <select formControlName="move2">
-        <option *ngFor="let move of pokemonMoves" [value]="move">{{ move }}</option>
-      </select>
-      <select formControlName="move3">
-        <option *ngFor="let move of pokemonMoves" [value]="move">{{ move }}</option>
-      </select>
-      <select formControlName="move4">
-        <option *ngFor="let move of pokemonMoves" [value]="move">{{ move }}</option>
-      </select>
+    <div class="move-set" formGroupName="moveSet">
+      <input type="text" formControlName="move1" (input)="showSuggestions($event)">
+      <input type="text" formControlName="move2">
+      <input type="text" formControlName="move3">
+      <input type="text" formControlName="move4">
     </div>
     <div class="button-group">
       <button type="submit">Aceptar</button>

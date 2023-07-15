@@ -11,6 +11,7 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { myPokemon } from 'src/app/models/myPokemon.models';
 import { Pokemon } from 'src/app/models/pokemon.models';
+import { Constants } from 'src/app/utils/constants';
 
 @Component({
   selector: 'app-edit-stats-overlay',
@@ -28,6 +29,8 @@ export class EditStatsOverlayComponent {
   nature: string = '';
   evs: { stat: string; value: number }[] = [];
   ivs: { stat: string; value: number }[] = [];
+  currentSuggestionPanel: HTMLDivElement | null = null;
+
 
   natureOptions: string[] = [
     'Adamant',
@@ -123,6 +126,58 @@ export class EditStatsOverlayComponent {
       });
     }
   }
+
+  showSuggestions(inputValue: any) {
+    const suggestions = Constants.movesNames.filter( el => el.match(inputValue.target.value))
+    //console.log(suggestions)
+    this.showOverlay(suggestions);
+  }
+
+  showOverlay(suggestions: string[]) {
+    this.hideSuggestions(); // Elimina el panel de sugerencias existente si hay alguno
+
+    // Obtén la posición y dimensiones del input actual
+    const activeInput = document.activeElement as HTMLInputElement;
+    const inputRect = activeInput.getBoundingClientRect();
+    const inputTop = inputRect.top + window.pageYOffset;
+    const inputLeft = inputRect.left + window.pageXOffset;
+    const inputWidth = inputRect.width;
+  
+    // Crea el panel de sugerencias
+    const suggestionPanel = document.createElement('div');
+    suggestionPanel.className = 'suggestion-panel';
+  
+    // Establece la posición del panel de sugerencias debajo del input
+    suggestionPanel.style.top = `${inputTop + activeInput.offsetHeight}px`;
+    suggestionPanel.style.left = `${inputLeft}px`;
+    suggestionPanel.style.width = `${inputWidth}px`;
+    // Agrega las sugerencias al panel
+    suggestions.forEach(suggestion => {
+      const suggestionItem = document.createElement('div');
+      suggestionItem.className = 'suggestion-item';
+      suggestionItem.innerText = suggestion;
+  
+      suggestionItem.addEventListener('click', () => {
+        // Asigna el valor de la sugerencia al input cuando se hace clic
+        activeInput.value = suggestion;
+        suggestionPanel.remove();
+      });
+  
+      suggestionPanel.appendChild(suggestionItem);
+    });
+    this.currentSuggestionPanel = suggestionPanel;
+  
+    // Inserta el panel de sugerencias debajo del input
+    activeInput.parentNode?.appendChild(suggestionPanel);
+  }
+  
+  hideSuggestions() {
+    if (this.currentSuggestionPanel) {
+      this.currentSuggestionPanel.remove();
+      this.currentSuggestionPanel = null;
+    }
+  }
+  
 
   onSave() {
     if (this.form.valid) {
