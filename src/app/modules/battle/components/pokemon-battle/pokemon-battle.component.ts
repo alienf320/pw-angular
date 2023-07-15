@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { myPokemon } from 'src/app/models/myPokemon.models';
 import { Stats } from 'src/app/models/stats.models';
 import { BoxService } from 'src/app/services/box.service';
@@ -35,7 +35,7 @@ export class PokemonBattleComponent implements OnInit {
     for (const attackKey in this.pokemon.moves) {
       if (this.pokemon.moves.hasOwnProperty(attackKey)) {
         attacksFormGroup.addControl(attackKey, this.formBuilder.group({
-          attack: [this.pokemon.moves[attackKey].power],
+          attack: [this.pokemon.moves[attackKey].name],
         }));
       }
     }
@@ -103,14 +103,16 @@ export class PokemonBattleComponent implements OnInit {
         evSpeed: this.pokemon!.evs!.speed
       }
     });
+    console.log('Form completo antes:', this.pokemonForm.value)
   
     const attacksFormGroup = this.pokemonForm.get('attacks') as FormGroup;
     for (const attackKey in this.pokemon.moves) {
+      const key = 'attack' + (Number(attackKey) + 1)
       if (this.pokemon.moves.hasOwnProperty(attackKey)) {
-        const attackGroup = attacksFormGroup.get(attackKey) as FormGroup;
-        attackGroup.patchValue({
-          attack: this.pokemon.moves[attackKey].power
-        });
+        console.log('dentro del if', this.pokemon.moves[attackKey].name)
+        const attackGroup = attacksFormGroup.get(key) as FormControl;
+        console.log('dentro del if 2', attackGroup)
+        attackGroup.patchValue( this.pokemon.moves[attackKey].name);
       }
     }
 

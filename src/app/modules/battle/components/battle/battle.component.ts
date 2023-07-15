@@ -27,7 +27,7 @@ export class BattleComponent implements OnInit {
     const pk = this.box.find( pk => pk.pokemon.internalName === pokemonName)!
 
     //console.log(pk)
-    console.log('Ahí te lo envío')
+    console.log('Ahí te lo envío', pk)
     this.myPokemon = pk
   }
 

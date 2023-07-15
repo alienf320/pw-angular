@@ -144,6 +144,12 @@ export class EditStatsOverlayComponent {
           ivsValue
         );
       });
+
+      if(this.myPokemon.moves) {
+        console.log('1', this.myPokemon.moves)
+        this.moves = this.myPokemon.moves.map( move => move.name)
+      }
+
     }
   }
 
@@ -167,8 +173,8 @@ showOverlay(suggestions: string[]) {
       offsetY: 1
     }]),
     scrollStrategy: this.overlay.scrollStrategies.reposition(),
-    hasBackdrop: true, // Habilita el backdrop
-    backdropClick: true, // Habilita el manejo del clic en el backdrop
+    hasBackdrop: true, 
+    backdropClick: true,
   };
 
   this.suggestionPanel = this.overlay.create(overlayConfig);
@@ -199,9 +205,7 @@ showOverlay(suggestions: string[]) {
   
   async getMovesFull(): Promise<void> {
     for (const move of this.moves) {
-      console.log('getMovesFull');
       const data = await this.moveService.getMoveByName(move).toPromise();
-      console.log(data);
       this.movesFull.push(...data);
     }
   }
