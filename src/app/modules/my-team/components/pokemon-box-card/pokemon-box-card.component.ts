@@ -14,7 +14,7 @@ export class PokemonBoxCardComponent {
   deletePokemon() {
     const confirmDelete = confirm('Are you sure?');
     if (confirmDelete) {
-      this.delete.emit(this.myPokemon);
+      this.delete.emit(this.myPokemon._id);
     }
   }
 

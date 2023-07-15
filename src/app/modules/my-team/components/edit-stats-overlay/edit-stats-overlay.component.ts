@@ -27,7 +27,7 @@ export class EditStatsOverlayComponent {
 
   @Output() savePokemon: EventEmitter<any> = new EventEmitter<any>();
   @Output() updatePokemon: EventEmitter<any> = new EventEmitter<any>();
-  @Output() cancel: EventEmitter<void> = new EventEmitter<void>();
+  
 
   constructor(private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
