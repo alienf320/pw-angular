@@ -1,28 +1,35 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Move } from 'src/app/models/move.models';
 import { myPokemon } from 'src/app/models/myPokemon.models';
 import { Stats } from 'src/app/models/stats.models';
-import { BoxService } from 'src/app/services/box.service';
 import { StatsService } from 'src/app/services/stats.service';
 import { Constants } from 'src/app/utils/constants';
 
 @Component({
   selector: 'app-pokemon-battle',
   templateUrl: './pokemon-battle.component.html',
-  styleUrls: ['./pokemon-battle.component.scss']
+  styleUrls: ['./pokemon-battle.component.scss'],
 })
-export class PokemonBattleComponent implements OnInit {
+export class PokemonBattleComponent implements OnInit, OnChanges {
   @Input() pokemon!: myPokemon;
+  @Input() pokemonRival!: myPokemon;
   pokemonForm!: FormGroup;
   natures = Constants.natureOptions;
   stats!: Stats;
+  statsRival!: Stats;
+  formValueChangesEnabled = true;
+  damage: string[] = []
 
-  constructor(private formBuilder: FormBuilder, private statsService: StatsService) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private statsService: StatsService
+  ) {}
 
   ngOnInit(): void {
     this.stats = this.statsService.calculateStats(this.pokemon);
-    console.log('stats en pokemon-battle', this.stats);
-  
+    //console.log('stats en pokemon-battle', this.stats);
+
     // Crea el FormGroup para los ataques
     const attacksFormGroup = this.formBuilder.group({
       attack1: [''], // Selector de Ataque 1
@@ -30,16 +37,19 @@ export class PokemonBattleComponent implements OnInit {
       attack3: [''], // Selector de Ataque 3
       attack4: [''], // Selector de Ataque 4
     });
-  
+
     // Agrega los controles de ataques dinámicamente al FormGroup
     for (const attackKey in this.pokemon.moves) {
       if (this.pokemon.moves.hasOwnProperty(attackKey)) {
-        attacksFormGroup.addControl(attackKey, this.formBuilder.group({
-          attack: [this.pokemon.moves[attackKey].name],
-        }));
+        attacksFormGroup.addControl(
+          attackKey,
+          this.formBuilder.group({
+            attack: [this.pokemon.moves[attackKey].name],
+          })
+        );
       }
     }
-  
+
     // Crea el formulario principal (pokemonForm)
     this.pokemonForm = this.formBuilder.group({
       level: [this.pokemon.level],
@@ -66,19 +76,67 @@ export class PokemonBattleComponent implements OnInit {
       }),
       attacks: attacksFormGroup, // Agrega el FormGroup de ataques
     });
+
+    this.pokemonForm.valueChanges.subscribe((value) => {
+      if(this.formValueChangesEnabled) {
+        console.log('valueChanges: ', value)
+        this.updatePokemon();
+        this.formValueChangesEnabled = false
+        this.populateForm();
+        this.recalculate();
+        //this.calculateDamage(this.pokemon.moves[0]);
+      }
+    });
   }
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('ngOnChanges', changes)
     if (this.pokemon && this.pokemonForm) {
       this.populateForm();
+      this.calculateDamage(this.pokemon.moves[0]);
     }
   }
 
+  recalculate() {
+    this.damage = []
+    this.pokemon.moves.forEach( move => {
+      console.log('recalculate', move)
+      this.damage.push(this.calculateDamage(move).join(' - '))
+    })
+  }
+
+  updatePokemon(): void {
+    this.pokemon = {
+      ...this.pokemon,
+      level: this.pokemonForm.value.level,
+      nature: this.pokemonForm.value.nature,
+      ivs: {
+        HP: this.pokemonForm.value.stats.ivHP,
+        attack: this.pokemonForm.value.stats.ivAttack,
+        defense: this.pokemonForm.value.stats.ivDefense,
+        spAttack: this.pokemonForm.value.stats.ivSpAttack,
+        spDefense: this.pokemonForm.value.stats.ivSpDefense,
+        speed: this.pokemonForm.value.stats.ivSpeed,
+      },
+      evs: {
+        HP: this.pokemonForm.value.stats.evHP,
+        attack: this.pokemonForm.value.stats.evAttack,
+        defense: this.pokemonForm.value.stats.evDefense,
+        spAttack: this.pokemonForm.value.stats.evSpAttack,
+        spDefense: this.pokemonForm.value.stats.evSpDefense,
+        speed: this.pokemonForm.value.stats.evSpeed,
+      },
+    };
+    console.log('updated?', this.pokemon)
+    //this.populateForm()
+  }  
+
   populateForm(): void {
     this.stats = this.statsService.calculateStats(this.pokemon);
-    console.log('pokemon-battle  pokemon:', this.pokemon)
-    console.log("Encontró nature?", this.natures.find(el => el === this.pokemon.nature))
-  
+    this.statsRival = this.statsService.calculateStats(this.pokemonRival);
+    //console.log('pokemon-battle  pokemon:', this.pokemon)
+    //console.log("Encontró nature?", this.natures.find(el => el === this.pokemon.nature))
+
     this.pokemonForm.patchValue({
       level: this.pokemon.level,
       nature: this.pokemon.nature,
@@ -100,26 +158,87 @@ export class PokemonBattleComponent implements OnInit {
         evSpDefense: this.pokemon!.evs!.spDefense,
         speed: this.stats.speed,
         ivSpeed: this.pokemon!.ivs!.speed,
-        evSpeed: this.pokemon!.evs!.speed
-      }
+        evSpeed: this.pokemon!.evs!.speed,
+      },
     });
-    console.log('Form completo antes:', this.pokemonForm.value)
-  
+    //console.log('Form completo antes:', this.pokemonForm.value)
+
     const attacksFormGroup = this.pokemonForm.get('attacks') as FormGroup;
     for (const attackKey in this.pokemon.moves) {
-      const key = 'attack' + (Number(attackKey) + 1)
+      const key = 'attack' + (Number(attackKey) + 1);
       if (this.pokemon.moves.hasOwnProperty(attackKey)) {
-        console.log('dentro del if', this.pokemon.moves[attackKey].name)
         const attackGroup = attacksFormGroup.get(key) as FormControl;
-        console.log('dentro del if 2', attackGroup)
-        attackGroup.patchValue( this.pokemon.moves[attackKey].name);
+        attackGroup.patchValue(this.pokemon.moves[attackKey].name);
       }
     }
 
-    console.log('Form completo values:', this.pokemonForm.value)
+    this.formValueChangesEnabled = true;
+    //console.log('Form completo values:', this.pokemonForm.value)
   }
-  
-  
-  
-}
 
+  calculateDamage(move: Move): number[] {
+    this.stats = this.statsService.calculateStats(this.pokemon);
+    this.statsRival = this.statsService.calculateStats(this.pokemonRival);
+
+    let attackStat, defenseStat;
+    if (move.category === 'special') {
+      attackStat = this.stats.spAttack;
+      defenseStat = this.statsRival.spDefense;
+    } else if (move.category === 'physical') {
+      attackStat = this.stats.attack;
+      defenseStat = this.statsRival.defense;
+    } else {
+      return [0,0]
+    }
+
+    const damage = this.calculateBaseDamage(move, attackStat, defenseStat);
+    // Hacer algo con el daño calculado, como mostrarlo en la interfaz de usuario
+    console.log(`El daño causado por ${move.displayName} es: ${damage}`);
+    return damage
+  }
+
+  private calculateBaseDamage(
+    move: Move,
+    attackStat: number,
+    defenseStat: number
+  ): number[] {
+    const level = this.pokemonForm.value.level || 50; // Nivel predeterminado si no se proporciona uno
+    const power = move.power || 0; // Poder del movimiento o 0 si no se proporciona
+    const randomMultiplier = this.getRandomMultiplier(); // Obtener un multiplicador aleatorio entre 0.85 y 1.00
+    const typeMultiplier = this.getTypeMultiplier(move, this.pokemonRival); // Obtener el multiplicador de tipo para el movimiento
+    //console.log('calculateBaseDamage: ', level, power, randomMultiplier, typeMultiplier, attackStat, defenseStat)
+    const minDamageMultiplier = (0.85) + 0.85;
+    const maxDamageMultiplier = 1.85;
+    const damage = Math.floor(
+      Math.floor(Math.floor((2 * level) / 5 + 2) * attackStat * power) /
+        defenseStat /
+        50 +
+        2
+    );
+    return [Math.floor(damage * randomMultiplier * minDamageMultiplier), Math.floor(damage * randomMultiplier * maxDamageMultiplier)]
+  }
+
+  // Otros métodos auxiliares necesarios...
+
+  private getBaseStat(value: number): number {
+    return value || 0; // Si no se proporciona un valor, retornar 0
+  }
+
+  private getNatureMultiplier(nature: string, stat: string): number {
+    // Lógica para determinar el multiplicador de naturaleza
+    // Dependiendo de la naturaleza y el stat, puede ser 1, 1.1 o 0.9
+    // Implementa la lógica según las reglas del juego o sistema que estés utilizando
+    return 1; // Valor predeterminado si no se implementa la lógica
+  }
+
+  private getRandomMultiplier(): number {
+    return Math.random() * (1.0 - 0.85) + 0.85; // Generar un número aleatorio entre 0.85 y 1.00
+  }
+
+  private getTypeMultiplier(move: Move, pokemonRival: myPokemon): number {
+    // Lógica para determinar el multiplicador de tipo del movimiento
+    // Dependiendo de los tipos del movimiento y el Pokémon rival, puede ser 0, 0.5, 1 o 2
+    // Implementa la lógica según las reglas del juego o sistema que estés utilizando
+    return 1; // Valor predeterminado si no se implementa la lógica
+  }
+}

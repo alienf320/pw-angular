@@ -10,6 +10,7 @@ export class StatsService {
   constructor() { }
 
   calculateStats(pokemon: myPokemon): Stats {
+    //console.log('calculeStats', pokemon)
     const pk = pokemon.pokemon;
     const level = pokemon.level;
     const ivs = pokemon.ivs;
@@ -68,13 +69,10 @@ export class StatsService {
     const decreaseStat = natureModifiers[nature].decrease;
   
     if (stat === increaseStat) {
-      console.log(stat, 'incrementa')
       return 1.1;
     } else if (stat === decreaseStat) {
-      console.log(stat, 'decrementa')
       return 0.9;
     } else {
-      console.log(stat, 'se mantiene')
       return 1.0;
     }
   }

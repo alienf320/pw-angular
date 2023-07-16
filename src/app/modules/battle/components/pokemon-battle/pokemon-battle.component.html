@@ -3,13 +3,13 @@
   <h2>{{pokemon.pokemon.name}}</h2>
   <div class="form-group">
     <label for="level">Nivel:</label>
-    <input type="number" id="level" formControlName="level" />
+    <input type="number" id="level" formControlName="level"/>
   </div>
 
   <div class="form-group">
     <label for="nature">Nature:</label>
     <select id="nature" formControlName="nature">
-      <option value="nature" *ngFor="let nature of natures" [selected]="nature === pokemonForm.get('nature')!.value">
+      <option *ngFor="let nature of natures" [value]="nature" [selected]="nature === pokemonForm.get('nature')!.value">
         {{ nature }}
       </option>
     </select>
@@ -102,33 +102,37 @@
             {{ move.name }}
           </option>
         </select>
+        <div class="damage">Damage: {{damage[0]}}</div>
       </div>
   
-      <div class="form-group">
+      <div class="form-group" *ngIf="pokemon.moves.length > 1">
         <select id="attack2" formControlName="attack2">
           <option value="">Selecciona un ataque</option>
           <option *ngFor="let move of pokemon.moves" [value]="move.name">
             {{ move.name }}
           </option>
         </select>
+        <div class="damage" *ngIf="damage.length > 1">Damage: {{damage[1]}}</div>
       </div>
   
-      <div class="form-group">
+      <div class="form-group" *ngIf="pokemon.moves.length > 2">
         <select id="attack3" formControlName="attack3">
           <option value="">Selecciona un ataque</option>
           <option *ngFor="let move of pokemon.moves" [value]="move.name">
             {{ move.name }}
           </option>
         </select>
+        <div class="damage" *ngIf="damage.length > 2">Damage: {{damage[2]}}</div>
       </div>
   
-      <div class="form-group">
+      <div class="form-group" *ngIf="pokemon.moves.length > 3">
         <select id="attack4" formControlName="attack4">
           <option value="">Selecciona un ataque</option>
           <option *ngFor="let move of pokemon.moves" [value]="move.name">
             {{ move.name }}
           </option>
         </select>
+        <div class="damage" *ngIf="damage.length > 3">Damage: {{damage[3]}}</div>
       </div>
     </div>
   </div>

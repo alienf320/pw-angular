@@ -22,6 +22,14 @@ h2 {
   align-items: center;
 }
 
+.damage {
+  margin-left: 20px;
+  border: 1px solid blueviolet;
+  background-color: lavender;
+  padding: 4px;
+  border-radius: 5px;
+}
+
 .label {
   width: 100px;
   font-weight: bold;
@@ -37,7 +45,8 @@ input[type="number"] {
   width: 50px;
 }
 
-.stats-container, .attacks-container {
+.stats-container,
+.attacks-container {
   border: 1px solid #ccc;
   padding: 10px;
 }
