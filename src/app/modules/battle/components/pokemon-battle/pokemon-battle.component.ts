@@ -1,10 +1,12 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { Move } from 'src/app/models/move.models';
 import { myPokemon } from 'src/app/models/myPokemon.models';
 import { Stats } from 'src/app/models/stats.models';
 import { PokemonBattleService } from 'src/app/services/pokemon-battle.service';
 import { StatsService } from 'src/app/services/stats.service';
+import { WRTABLE } from 'src/app/utils/WRTable';
 import { Constants } from 'src/app/utils/constants';
 
 @Component({
@@ -22,6 +24,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   statsRival!: Stats;
   formValueChangesEnabled = true;
   damage: string[] = []
+  subscriptions: Subscription[] = []
 
   constructor(
     private formBuilder: FormBuilder,
@@ -30,7 +33,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
-    this.battleService.getMyPokemon().subscribe((pokemon) => {
+    const subs1 = this.battleService.getMyPokemon().subscribe((pokemon) => {
       console.log("Type", this.type)
       if(this.type === 'Mine') {
         this.pokemon = pokemon;
@@ -42,7 +45,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
       this.check()
     });
 
-    this.battleService.getRivalPokemon().subscribe((pokemon) => {
+    const subs2 = this.battleService.getRivalPokemon().subscribe((pokemon) => {
       if(this.type === 'Mine') {
         this.rivalPokemon = pokemon;
       } else {
@@ -53,9 +56,12 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
       this.check()
     });
 
+    this.subscriptions.push(subs1, subs2)
+
     //console.log('stats en pokemon-battle', this.stats);
 
     // Crea el FormGroup para los ataques
+    //console.log("Ahora el FORM")
     const attacksFormGroup = this.formBuilder.group({
       attack1: [this.pokemon.moves[0].name], // Selector de Ataque 1
       attack2: [this.pokemon.moves[1].name], // Selector de Ataque 2
@@ -102,9 +108,11 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
       attacks: attacksFormGroup, // Agrega el FormGroup de ataques
     });
 
+    this.recalculate()
+
     this.pokemonForm.valueChanges.subscribe((value) => {
       if(this.formValueChangesEnabled) {
-        //console.log('valueChanges: ', value)
+        console.log('valueChanges: ')
         this.updatePokemon();
         this.formValueChangesEnabled = false
         this.populateForm();
@@ -125,6 +133,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
       //console.log('entro al else: ', this.pokemon)
       if(this.pokemon) {
         this.stats = this.statsService.calculateStats(this.pokemon);
+        //this.recalculate()
       }
       //this.recalculate();
     }
@@ -226,7 +235,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
     this.stats = this.statsService.calculateStats(this.pokemon);
     this.statsRival = this.statsService.calculateStats(this.rivalPokemon);
 
-    //console.log('calculateDamage:', this.stats)
+    console.log('calculateDamage:', this.stats)
 
     let attackStat, defenseStat;
     if (move.category === 'special') {
@@ -266,27 +275,25 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
     return [Math.floor(damage * randomMultiplier * minDamageMultiplier), Math.floor(damage * randomMultiplier * maxDamageMultiplier)]
   }
 
-  // Otros métodos auxiliares necesarios...
-
-  private getBaseStat(value: number): number {
-    return value || 0; // Si no se proporciona un valor, retornar 0
-  }
-
-  private getNatureMultiplier(nature: string, stat: string): number {
-    // Lógica para determinar el multiplicador de naturaleza
-    // Dependiendo de la naturaleza y el stat, puede ser 1, 1.1 o 0.9
-    // Implementa la lógica según las reglas del juego o sistema que estés utilizando
-    return 1; // Valor predeterminado si no se implementa la lógica
-  }
-
   private getRandomMultiplier(): number {
     return Math.random() * (1.0 - 0.85) + 0.85; // Generar un número aleatorio entre 0.85 y 1.00
   }
 
   private getTypeMultiplier(move: Move, rivalPokemon: myPokemon): number {
-    // Lógica para determinar el multiplicador de tipo del movimiento
-    // Dependiendo de los tipos del movimiento y el Pokémon rival, puede ser 0, 0.5, 1 o 2
-    // Implementa la lógica según las reglas del juego o sistema que estés utilizando
-    return 1; // Valor predeterminado si no se implementa la lógica
+    const type1 = rivalPokemon.pokemon.type1?.toLowerCase();
+    const type2 = rivalPokemon.pokemon.type2?.toLowerCase();
+    
+    const m1: number = type1 ? WRTABLE[type1][move.type] : 1;
+    const m2: number = type2 ? WRTABLE[type2][move.type] : 1;
+  
+    //console.log('el multiplicador de: ', move.name, ' es ', m1*m2)
+    return m1 * m2;
+  }
+
+  ngOnDestroy(): void {
+    // Desuscribirse de todas las suscripciones activas
+    this.subscriptions.forEach((subscription) => {
+      subscription.unsubscribe();
+    });
   }
 }
