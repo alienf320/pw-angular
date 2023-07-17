@@ -17,7 +17,8 @@ export class BattleComponent {
   yourPokemon: myPokemon = myPokemon2;
   box!: myPokemon[];
   pokemonName!: string;
-  allBoxes: myPokemon[][] = []
+  allBoxes: {pokemons: myPokemon[]}[] = []
+  rivalPokemons!: {pokemons: myPokemon[]}
 
   constructor(private boxService: BoxService, private battleService: PokemonBattleService, private router: Router) { }
 
@@ -47,6 +48,12 @@ export class BattleComponent {
     //console.log(pk)
     console.log('Ahí te lo envío', pk)
     this.battleService.updateMyPokemon(pk)
+  }
+
+  rivalBoxSelected(event: any) {
+    //console.log("IMPORTANT", this.allBoxes[event.target.selectedIndex])
+    this.rivalPokemons = this.allBoxes[event.target.selectedIndex]
+    //console.log("RivalBoxSelected", this.rivalPokemons)
   }
 
 }
