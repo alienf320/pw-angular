@@ -33,8 +33,12 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
+    this.reinitialize()
+  }
+
+  reinitialize() {
     const subs1 = this.battleService.getMyPokemon().subscribe((pokemon) => {
-      console.log("Type", this.type)
+      //console.log("Type", this.type)
       if(this.type === 'Mine') {
         this.pokemon = pokemon;
       } else {
@@ -59,14 +63,15 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
     this.subscriptions.push(subs1, subs2)
 
     //console.log('stats en pokemon-battle', this.stats);
+    console.log("ngOnInit - this.pokemon: ", this.pokemon.moves)
 
     // Crea el FormGroup para los ataques
     //console.log("Ahora el FORM")
     const attacksFormGroup = this.formBuilder.group({
-      attack1: [this.pokemon.moves[0].name], // Selector de Ataque 1
-      attack2: [this.pokemon.moves[1].name], // Selector de Ataque 2
-      attack3: [this.pokemon.moves[2].name], // Selector de Ataque 3
-      attack4: [this.pokemon.moves[3].name], // Selector de Ataque 4
+      attack1: [this.pokemon.moves[0]?.name], // Selector de Ataque 1
+      attack2: [this.pokemon.moves[1]?.name], // Selector de Ataque 2
+      attack3: [this.pokemon.moves[2]?.name], // Selector de Ataque 3
+      attack4: [this.pokemon.moves[3]?.name], // Selector de Ataque 4
     });
 
     // Agrega los controles de ataques dinámicamente al FormGroup
@@ -140,9 +145,12 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log('ngOnChanges', changes)
     if(this.formValueChangesEnabled && this.pokemonForm) {
-      console.log('ngOnChanges', changes)
       this.check()
+    }
+    if(!this.pokemonForm) {
+      this.reinitialize()
     }
   }
 
@@ -235,7 +243,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
     this.stats = this.statsService.calculateStats(this.pokemon);
     this.statsRival = this.statsService.calculateStats(this.rivalPokemon);
 
-    console.log('calculateDamage:', this.stats)
+    //console.log('calculateDamage:', this.stats)
 
     let attackStat, defenseStat;
     if (move.category === 'special') {
