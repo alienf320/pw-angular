@@ -1,10 +1,13 @@
 <div class="myBox" *ngIf="box">
+  <label for="myPokemon">My box</label>
   <select name="myPokemon" (change)="pokemonSelected($event)">
     <option *ngFor="let pokemon of box" [value]="pokemon.pokemon.name">{{pokemon.pokemon.name}}</option>
   </select>
+  <label for="search-pokemon"></label>
+  <input type="text" name="search-pokemon" [(ngModel)]="pokemonName">
 </div>
 
 <div class="container">
-  <app-pokemon-battle [pokemon]="myPokemon" [pokemonRival]="yourPokemon"></app-pokemon-battle>
-  <app-pokemon-battle [pokemon]="yourPokemon" [pokemonRival]="yourPokemon"></app-pokemon-battle>
+  <app-pokemon-battle [type]="'Mine'"></app-pokemon-battle>
+  <app-pokemon-battle [type]="'Rival'"></app-pokemon-battle>
 </div>

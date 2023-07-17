@@ -1,6 +1,11 @@
 .myBox {
   display: flex;
   align-items: center;
+  margin: 20px;
+
+  label {
+    margin-right: 10px;
+  }
 
   select {
     padding: 10px;

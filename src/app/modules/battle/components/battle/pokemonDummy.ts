@@ -210,7 +210,3 @@ export const myPokemon2: myPokemon = {
   },
   _id: '2',
 };
-
-// Prueba los objetos creados
-console.log(myPokemon1);
-console.log(myPokemon2);

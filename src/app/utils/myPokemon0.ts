@@ -1,0 +1,141 @@
+export const PIKACHU = {
+  pokemon: {
+    _id: '1',
+    name: 'Pikachu',
+    internalName: 'pikachu',
+    type1: 'Electric',
+    type2: '',
+    baseStats: [35, 55, 40, 50, 50, 90],
+    genderRate: 'Male: 50%, Female: 50%',
+    growthRate: 'Medium Fast',
+    baseExp: 112,
+    effortPoints: [0, 0, 0, 0, 0, 2],
+    rareness: 190,
+    happiness: 70,
+    abilities: ['Static', 'Lightning Rod'],
+    hiddenAbility: 'Lightning Rod',
+    moves: [
+      {
+        level: 1,
+        move:     {
+          id: 1,
+          name: 'Thundershock',
+          displayName: 'Thundershock',
+          power: 40,
+          accuracy: 100,
+          type: 'Electric',
+          category: 'special',
+          pp: 30,
+          target: 1,
+          effectChance: 0,
+          description: 'Fires an electric charge at the target.',
+        },
+        _id: '1',
+      },
+      // ... Agrega más movimientos si es necesario
+    ],
+    eggMoves: ['Charm', 'Encore', 'Wish'],
+    compatibility: ['Field', 'Fairy'],
+    stepsToHatch: 2560,
+    height: 0.4,
+    weight: 6,
+    color: 'Yellow',
+    habitat: 'Forest',
+    kind: 'Mouse',
+    pokedex:
+      'Pikachu is an Electric-type Pokémon. It is known as the Mouse Pokémon.',
+    battlerPlayerY: 0,
+    battlerEnemyY: 0,
+    battlerAltitude: 0,
+    evolutions: [
+      {
+        to: 'Raichu',
+        method: 'Use Thunder Stone',
+        parameter: '',
+        _id: '1',
+      },
+      // ... Agrega más evoluciones si es necesario
+    ],
+    __v: 0,
+    weakness: {
+      weak: [],
+      superResistance: [],
+      resistance: [],
+      superWeak: [],
+      immunities: [],
+    },
+  },
+  moves: [
+    {
+      id: 1,
+      name: "Tackle",
+      displayName: "Tackle",
+      power: 40,
+      accuracy: 100,
+      type: "Normal",
+      category: "physical",
+      pp: 35,
+      target: 1,
+      effectChance: 0,
+      description: "A physical attack in which the user charges and slams into the target with its whole body."
+    },
+    {
+      id: 2,
+      name: "Ember",
+      displayName: "Ember",
+      power: 40,
+      accuracy: 100,
+      type: "Fire",
+      category: "special",
+      pp: 25,
+      target: 1,
+      effectChance: 10,
+      description: "The target is attacked with small flames. This may also leave the target with a burn."
+    },
+    {
+      id: 3,
+      name: "Water Gun",
+      displayName: "Water Gun",
+      power: 40,
+      accuracy: 100,
+      type: "Water",
+      category: "special",
+      pp: 25,
+      target: 1,
+      effectChance: 0,
+      description: "The target is blasted with a forceful shot of water."
+    },
+    {
+      id: 4,
+      name: "Thunderbolt",
+      displayName: "Thunderbolt",
+      power: 90,
+      accuracy: 100,
+      type: "Electric",
+      category: "special",
+      pp: 15,
+      target: 1,
+      effectChance: 10,
+      description: "A strong electric blast is loosed at the target. This may also leave the target with paralysis."
+    }
+  ],
+  nature: 'Adamant',
+  level: 50,
+  evs: {
+    HP: 0,
+    attack: 0,
+    defense: 0,
+    speed: 0,
+    spAttack: 0,
+    spDefense: 0
+  },
+  ivs: {
+    HP: 0,
+    attack: 0,
+    defense: 0,
+    speed: 0,
+    spAttack: 0,
+    spDefense: 0
+  },
+  _id: ''
+}
