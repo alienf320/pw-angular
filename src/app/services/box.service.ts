@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Pokemon } from '../models/pokemon.models';
@@ -10,6 +10,7 @@ import { myPokemon } from '../models/myPokemon.models';
 export class BoxService {
   
   private baseUrl = 'http://localhost:3000/box';
+  private rivalUrl = 'http://localhost:3000/box/rival';
 
   constructor(private http: HttpClient) { }
 
@@ -30,6 +31,16 @@ export class BoxService {
   deletePokemon(pkID: string): Observable<any> {
     const url = `${this.baseUrl}/${pkID}`;
     return this.http.delete(url);
+  }
+
+  saveRivalBox(pokemons: myPokemon[]): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+
+    return this.http.post(this.rivalUrl, pokemons, httpOptions);
   }
 }
 

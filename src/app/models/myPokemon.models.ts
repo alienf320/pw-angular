@@ -23,5 +23,5 @@ export interface myPokemon {
     spAttack: number,
     spDefense: number
   },
-  _id: string
+  _id?: string
 }

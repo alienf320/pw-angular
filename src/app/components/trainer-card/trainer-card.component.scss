@@ -13,3 +13,13 @@
   justify-content: center;
   gap: 16px;
 }
+
+.buttons {
+  position: absolute;
+
+  button {
+    position: relative;
+    top: -40px;
+    left: 210px;
+  }
+}

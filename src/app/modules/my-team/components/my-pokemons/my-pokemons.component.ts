@@ -106,7 +106,7 @@ export class MyPokemonsComponent implements OnInit {
     const pokemon = this.box.find( pk => pk._id === pkID)
     console.log('Esto es un ID?', pokemon?._id)
     if(pokemon) {
-      this.boxService.deletePokemon(pokemon._id).subscribe( data => {
+      this.boxService.deletePokemon(pokemon._id!).subscribe( data => {
         console.log("delete data", data);
         this.box = data
       })  

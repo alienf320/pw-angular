@@ -1,5 +1,8 @@
-<div class="card" (click)="onCardClicked()">
-  <h3>{{ trainer.name }}</h3>
+<div class="card" >
+  <h3 >{{ trainer.name }}</h3>
+  <div class="buttons">
+    <button (click)="addToRivalBox()">Add to box</button>
+  </div>
   <p>Tipo: {{ trainer.type }}</p>
   <p>Equipo de Pokémon:</p>
   <ul>

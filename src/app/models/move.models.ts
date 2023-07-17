@@ -1,4 +1,5 @@
 export interface Move {
+  _id?: string;
   id: number;
   name: string;
   displayName: string;
