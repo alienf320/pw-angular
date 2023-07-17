@@ -17,25 +17,26 @@ export class BattleComponent {
   yourPokemon: myPokemon = myPokemon2;
   box!: myPokemon[];
   pokemonName!: string;
+  allBoxes: myPokemon[][] = []
 
   constructor(private boxService: BoxService, private battleService: PokemonBattleService, private router: Router) { }
 
-  ngOnInit(): void {
-    
-    this.update();
+  ngOnInit(): void {    
+    //this.update();
     
     const currentRoute = this.router.url
-    console.log("ursl: ", currentRoute)
     if (currentRoute === '/battle') {
       this.update();
     }
   }
 
-
-
   update() {
     this.boxService.getBox().subscribe( data => {
       this.box = data;
+    })
+    this.boxService.getAllBox().subscribe( data => {
+      console.log("allBoxes:", data)
+      this.allBoxes = data;
     })
   }
 

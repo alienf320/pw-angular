@@ -10,12 +10,17 @@ import { myPokemon } from '../models/myPokemon.models';
 export class BoxService {
   
   private baseUrl = 'http://localhost:3000/box';
+  private allBoxesUrl = 'http://localhost:3000/box/all';
   private rivalUrl = 'http://localhost:3000/box/rival';
 
   constructor(private http: HttpClient) { }
 
   getBox(): Observable<any> {
     return this.http.get(this.baseUrl);
+  }
+
+  getAllBox(): Observable<any> {
+    return this.http.get(this.allBoxesUrl);
   }
 
   savePokemon(pokemon: string, pokemonData?: any): Observable<any> {
