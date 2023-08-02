@@ -63,7 +63,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
     this.subscriptions.push(subs1, subs2)
 
     //console.log('stats en pokemon-battle', this.stats);
-    console.log("ngOnInit - this.pokemon: ", this.pokemon.moves)
+    //console.log("ngOnInit - this.pokemon: ", this.pokemon.moves)
 
     // Crea el FormGroup para los ataques
     //console.log("Ahora el FORM")
@@ -117,7 +117,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
 
     this.pokemonForm.valueChanges.subscribe((value) => {
       if(this.formValueChangesEnabled) {
-        console.log('valueChanges: ')
+        //console.log('valueChanges: ')
         this.updatePokemon();
         this.formValueChangesEnabled = false
         this.populateForm();
@@ -145,7 +145,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('ngOnChanges', changes)
+    //console.log('ngOnChanges', changes)
     if(this.formValueChangesEnabled && this.pokemonForm) {
       this.check()
     }
@@ -155,13 +155,17 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   }
 
   recalculate() {
-    this.damage = []
-    this.pokemon.moves.forEach( move => {
-      //console.log('recalculate', move)
-      this.damage.push(this.calculateDamage(move).join(' - '))
-      //console.log('recalculate', this.damage)
-
-    })
+    this.stats = this.statsService.calculateStats(this.pokemon);
+    this.statsRival = this.statsService.calculateStats(this.rivalPokemon);
+    if(this.stats) {
+      this.damage = []
+      this.pokemon.moves.forEach( move => {
+        //console.log('recalculate', move)
+        this.damage.push(this.calculateDamage(move).join(' - '))
+        //console.log('recalculate', this.damage)
+  
+      })
+    }
   }
 
   updatePokemon(): void {

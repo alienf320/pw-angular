@@ -39,13 +39,15 @@ export class BoxService {
   }
 
   saveRivalBox(pokemons: myPokemon[]): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
+    // const httpOptions = {
+    //   headers: new HttpHeaders({
+    //     'Content-Type': 'application/json'
+    //   })
+    // };
 
-    return this.http.post(this.rivalUrl, pokemons, httpOptions);
+    console.log("Eso es lo que enviamos a backend:", JSON.stringify(pokemons))
+
+    return this.http.post(this.rivalUrl, pokemons);
   }
 }
 

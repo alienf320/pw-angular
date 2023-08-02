@@ -29,6 +29,8 @@ export class TrainerCardComponent  {
       let pokemonFull: myPokemon;
       let moves: Move[] = [];
       const movePromises: Promise<Move>[] = [];
+
+      console.log("NIVEEEL: ", pk.level)
   
       for (const move of pk.moves) {
         movePromises.push(this.moveService.getMoveByName(move).toPromise());
@@ -51,7 +53,8 @@ export class TrainerCardComponent  {
     }
   
     console.log('Enviamos rival Box: ', box);
-    this.boxService.saveRivalBox(box).subscribe(data => console.log('data', data));
+    await this.boxService.saveRivalBox(box).toPromise();
+    console.log('Rival Box guardado correctamente');
   }
   
   

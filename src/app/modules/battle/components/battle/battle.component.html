@@ -9,10 +9,12 @@
 </div>
 <div class="rival-box" (change)="rivalBoxSelected($event)">
   <select name="boxes">
+    <option value=""></option>
     <option *ngFor="let box of allBoxes; index as i" value="box">{{i}}</option>
   </select>
-  <select name="rivalPokemons" *ngIf="rivalPokemons">
-    <option *ngFor="let pk of rivalPokemons.pokemons" value="pk.pokemon.name">{{pk.pokemon.name}}</option>
+  <select name="rivalPokemons" *ngIf="rivalPokemons" (change)="pokemonRivalSelected($event)">
+    <option value=""></option>
+    <option *ngFor="let pk of rivalPokemons.pokemons" [value]="pk.pokemon.internalName">{{pk.pokemon.name}}</option>
   </select>
 </div>
 

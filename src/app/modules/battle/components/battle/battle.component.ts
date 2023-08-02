@@ -51,9 +51,20 @@ export class BattleComponent {
   }
 
   rivalBoxSelected(event: any) {
-    //console.log("IMPORTANT", this.allBoxes[event.target.selectedIndex])
-    this.rivalPokemons = this.allBoxes[event.target.selectedIndex]
-    //console.log("RivalBoxSelected", this.rivalPokemons)
+    //console.log("1111111111", event.target.selectedIndex - 1)
+    this.rivalPokemons = this.allBoxes[event.target.selectedIndex - 1]
+    //console.log("RivalBoxSelected", this.rivalPokemons.pokemons)
+  }
+
+  pokemonRivalSelected(event: any) {
+    const pokemonName = event.target.value;
+    const pk = this.rivalPokemons.pokemons.find( pk => {
+      console.log("cada poke", pk.pokemon.internalName, pokemonName)
+      return pk.pokemon.internalName === pokemonName})!
+
+    //console.log(pk)
+    console.log('Ahí te envío rival', pk)
+    this.battleService.updateRivalPokemon(pk)
   }
 
 }
