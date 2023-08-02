@@ -1,15 +1,18 @@
-
 <div class="pokemon-form" [formGroup]="pokemonForm">
-  <h2>{{pokemon.pokemon.name}}</h2>
+  <h2>{{ pokemon.pokemon.name }}</h2>
   <div class="form-group">
     <label for="level">Nivel:</label>
-    <input type="number" id="level" formControlName="level"/>
+    <input type="number" id="level" formControlName="level" />
   </div>
 
   <div class="form-group">
     <label for="nature">Nature:</label>
     <select id="nature" formControlName="nature">
-      <option *ngFor="let nature of natures" [value]="nature" [selected]="nature === pokemonForm.get('nature')!.value">
+      <option
+        *ngFor="let nature of natures"
+        [value]="nature"
+        [selected]="nature === pokemonForm.get('nature')!.value"
+      >
         {{ nature }}
       </option>
     </select>
@@ -95,44 +98,22 @@
   <div class="attacks-container">
     <h3>Ataques</h3>
     <div formGroupName="attacks">
-      <div class="form-group">
-        <select id="attack1" formControlName="attack1">
+      <div class="form-group" *ngFor="let index of [0, 1, 2, 3]; let i = index">
+        <select [id]="'attack' + (i + 1)" formControlName="attack{{ i + 1 }}">
           <option value="">Selecciona un ataque</option>
           <option *ngFor="let move of pokemon.moves" [value]="move.name">
             {{ move.name }}
           </option>
         </select>
-        <div class="damage">Damage: {{damage[0]}}</div>
-      </div>
-  
-      <div class="form-group" *ngIf="pokemon.moves.length > 1">
-        <select id="attack2" formControlName="attack2">
-          <option value="">Selecciona un ataque</option>
-          <option *ngFor="let move of pokemon.moves" [value]="move.name">
-            {{ move.name }}
-          </option>
-        </select>
-        <div class="damage" *ngIf="damage.length > 1">Damage: {{damage[1]}}</div>
-      </div>
-  
-      <div class="form-group" *ngIf="pokemon.moves.length > 2">
-        <select id="attack3" formControlName="attack3">
-          <option value="">Selecciona un ataque</option>
-          <option *ngFor="let move of pokemon.moves" [value]="move.name">
-            {{ move.name }}
-          </option>
-        </select>
-        <div class="damage" *ngIf="damage.length > 2">Damage: {{damage[2]}}</div>
-      </div>
-  
-      <div class="form-group" *ngIf="pokemon.moves.length > 3">
-        <select id="attack4" formControlName="attack4">
-          <option value="">Selecciona un ataque</option>
-          <option *ngFor="let move of pokemon.moves" [value]="move.name">
-            {{ move.name }}
-          </option>
-        </select>
-        <div class="damage" *ngIf="damage.length > 3">Damage: {{damage[3]}}</div>
+        <div
+          class="damage"
+          *ngIf="damage.length > i"
+          [ngStyle]="{
+            'background-color': getBackgroundColor(damage[i].effectiveness)
+          }"
+        >
+          Damage: {{ damage[i].min }} - {{ damage[i].max }}
+        </div>
       </div>
     </div>
   </div>

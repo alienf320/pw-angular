@@ -1,6 +1,13 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { Damage } from 'src/app/models/damage.models';
 import { Move } from 'src/app/models/move.models';
 import { myPokemon } from 'src/app/models/myPokemon.models';
 import { Stats } from 'src/app/models/stats.models';
@@ -23,44 +30,44 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   stats!: Stats;
   statsRival!: Stats;
   formValueChangesEnabled = true;
-  damage: string[] = []
-  subscriptions: Subscription[] = []
+  damage: Damage[] = [];
+  subscriptions: Subscription[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private statsService: StatsService,
-    private battleService: PokemonBattleService,
+    private battleService: PokemonBattleService
   ) {}
 
   ngOnInit(): void {
-    this.reinitialize()
+    this.reinitialize();
   }
 
   reinitialize() {
     const subs1 = this.battleService.getMyPokemon().subscribe((pokemon) => {
       //console.log("Type", this.type)
-      if(this.type === 'Mine') {
+      if (this.type === 'Mine') {
         this.pokemon = pokemon;
       } else {
         //console.log('Debería entra acá')
         this.rivalPokemon = pokemon;
       }
 
-      this.check()
+      this.check();
     });
 
     const subs2 = this.battleService.getRivalPokemon().subscribe((pokemon) => {
-      if(this.type === 'Mine') {
+      if (this.type === 'Mine') {
         this.rivalPokemon = pokemon;
       } else {
         //console.log('Debería entra acá')
         this.pokemon = pokemon;
       }
 
-      this.check()
+      this.check();
     });
 
-    this.subscriptions.push(subs1, subs2)
+    this.subscriptions.push(subs1, subs2);
 
     //console.log('stats en pokemon-battle', this.stats);
     //console.log("ngOnInit - this.pokemon: ", this.pokemon.moves)
@@ -113,13 +120,13 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
       attacks: attacksFormGroup, // Agrega el FormGroup de ataques
     });
 
-    this.recalculate()
+    this.recalculate();
 
     this.pokemonForm.valueChanges.subscribe((value) => {
-      if(this.formValueChangesEnabled) {
+      if (this.formValueChangesEnabled) {
         //console.log('valueChanges: ')
         this.updatePokemon();
-        this.formValueChangesEnabled = false
+        this.formValueChangesEnabled = false;
         this.populateForm();
         this.recalculate();
         //this.calculateDamage(this.pokemon.moves[0]);
@@ -128,15 +135,15 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   }
 
   check() {
-    if(this.formValueChangesEnabled && this.pokemonForm) {
+    if (this.formValueChangesEnabled && this.pokemonForm) {
       //console.log('entro al if: ', this.pokemon)
       //this.updatePokemon();
-      this.formValueChangesEnabled = false
+      this.formValueChangesEnabled = false;
       this.populateForm();
       this.recalculate();
     } else {
       //console.log('entro al else: ', this.pokemon)
-      if(this.pokemon) {
+      if (this.pokemon) {
         this.stats = this.statsService.calculateStats(this.pokemon);
         //this.recalculate()
       }
@@ -146,25 +153,24 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     //console.log('ngOnChanges', changes)
-    if(this.formValueChangesEnabled && this.pokemonForm) {
-      this.check()
+    if (this.formValueChangesEnabled && this.pokemonForm) {
+      this.check();
     }
-    if(!this.pokemonForm) {
-      this.reinitialize()
+    if (!this.pokemonForm) {
+      this.reinitialize();
     }
   }
 
   recalculate() {
     this.stats = this.statsService.calculateStats(this.pokemon);
     this.statsRival = this.statsService.calculateStats(this.rivalPokemon);
-    if(this.stats) {
-      this.damage = []
-      this.pokemon.moves.forEach( move => {
+    if (this.stats) {
+      this.damage = [];
+      this.pokemon.moves.forEach((move) => {
         //console.log('recalculate', move)
-        this.damage.push(this.calculateDamage(move).join(' - '))
+        this.damage.push(this.calculateDamage(move));
         //console.log('recalculate', this.damage)
-  
-      })
+      });
     }
   }
 
@@ -191,12 +197,12 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
       },
     };
     //console.log('updated?', this.pokemon)
-    if(this.type === 'Mine') {
-      this.battleService.updateMyPokemon(this.pokemon)
+    if (this.type === 'Mine') {
+      this.battleService.updateMyPokemon(this.pokemon);
     } else {
-      this.battleService.updateRivalPokemon(this.pokemon)
+      this.battleService.updateRivalPokemon(this.pokemon);
     }
-  }  
+  }
 
   populateForm(): void {
     this.stats = this.statsService.calculateStats(this.pokemon);
@@ -243,7 +249,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
     //console.log('Form completo values:', this.pokemonForm.value)
   }
 
-  calculateDamage(move: Move): number[] {
+  calculateDamage(move: Move): Damage {
     this.stats = this.statsService.calculateStats(this.pokemon);
     this.statsRival = this.statsService.calculateStats(this.rivalPokemon);
 
@@ -257,26 +263,24 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
       attackStat = this.stats.attack;
       defenseStat = this.statsRival.defense;
     } else {
-      return [0,0]
+      return {min: 0, max: 0, effectiveness: 1};
     }
 
     const damage = this.calculateBaseDamage(move, attackStat, defenseStat);
-    // Hacer algo con el daño calculado, como mostrarlo en la interfaz de usuario
-    //console.log(`El daño causado por ${move.displayName} es: ${damage}`);
-    return damage
+    return damage;
   }
 
   private calculateBaseDamage(
     move: Move,
     attackStat: number,
     defenseStat: number
-  ): number[] {
+  ): Damage {
     const level = this.pokemonForm.value.level || 50; // Nivel predeterminado si no se proporciona uno
     const power = move.power || 0; // Poder del movimiento o 0 si no se proporciona
     const randomMultiplier = this.getRandomMultiplier(); // Obtener un multiplicador aleatorio entre 0.85 y 1.00
     const typeMultiplier = this.getTypeMultiplier(move, this.rivalPokemon); // Obtener el multiplicador de tipo para el movimiento
     //console.log('calculateBaseDamage: ', level, power, randomMultiplier, typeMultiplier, attackStat, defenseStat)
-    const minDamageMultiplier = (0.85) + 0.85;
+    const minDamageMultiplier = 0.85 + 0.85;
     const maxDamageMultiplier = 1.85;
     const damage = Math.floor(
       Math.floor(Math.floor((2 * level) / 5 + 2) * attackStat * power) /
@@ -284,7 +288,16 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
         50 +
         2
     );
-    return [Math.floor(damage * randomMultiplier * minDamageMultiplier), Math.floor(damage * randomMultiplier * maxDamageMultiplier)]
+    // return [
+    //   Math.floor(damage * randomMultiplier * minDamageMultiplier * typeMultiplier),
+    //   Math.floor(damage * randomMultiplier * maxDamageMultiplier * typeMultiplier),
+    //   typeMultiplier
+    // ];
+    return {
+      min: Math.floor(damage * randomMultiplier * minDamageMultiplier * typeMultiplier),
+      max: Math.floor(damage * randomMultiplier * maxDamageMultiplier * typeMultiplier),
+      effectiveness: typeMultiplier 
+    }
   }
 
   private getRandomMultiplier(): number {
@@ -294,12 +307,29 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   private getTypeMultiplier(move: Move, rivalPokemon: myPokemon): number {
     const type1 = rivalPokemon.pokemon.type1?.toLowerCase();
     const type2 = rivalPokemon.pokemon.type2?.toLowerCase();
-    
+
     const m1: number = type1 ? WRTABLE[type1][move.type] : 1;
     const m2: number = type2 ? WRTABLE[type2][move.type] : 1;
-  
+
     //console.log('el multiplicador de: ', move.name, ' es ', m1*m2)
     return m1 * m2;
+  }
+
+  getBackgroundColor(effectiveness: number): string {
+    switch (effectiveness) {
+      case 0.25:
+        return 'mediumslateblue'; // Puedes cambiar el color a lo que necesites
+      case 0.5:
+        return 'lightblue'; // Puedes cambiar el color a lo que necesites
+      case 1:
+        return 'lightgrey'; // Puedes cambiar el color a lo que necesites
+      case 2:
+        return 'orange'; // Puedes cambiar el color a lo que necesites
+      case 4:
+        return 'red'; // Puedes cambiar el color a lo que necesites
+      default:
+        return 'lightgrey'; // Puedes cambiar el color a lo que necesites
+    }
   }
 
   ngOnDestroy(): void {
