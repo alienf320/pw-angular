@@ -1,10 +1,20 @@
-.myBox {
+.my-box-menu, .rival-menu {
   display: flex;
+  flex-direction: row;
+  gap: 20px;
   align-items: center;
   margin: 20px;
+  width: 30vw;
 
   label {
-    margin-right: 10px;
+    margin-bottom: 7px;
+    margin-top: 7px;
+    text-align: center;
+  }
+
+  .rival-box, .my-box {
+    display: flex;
+    flex-direction: column;
   }
 
   select {
@@ -13,7 +23,13 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     outline: none;
+    width: 150px;
+    text-align: center;
   }
+}
+
+.rival-menu {
+
 }
 
 .container {

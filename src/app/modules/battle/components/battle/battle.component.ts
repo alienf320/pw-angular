@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { myPokemon } from 'src/app/models/myPokemon.models';
 import { myPokemon1, myPokemon2 } from './pokemonDummy';
-import { BoxService } from 'src/app/services/box.service';
+import { Box, BoxService } from 'src/app/services/box.service';
 import { POKEMON_INTERNAL_NAMES } from 'src/app/utils/pokemonNames';
 import { PokemonBattleService } from 'src/app/services/pokemon-battle.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,7 +16,7 @@ export class BattleComponent {
   yourPokemon: myPokemon = myPokemon2;
   box!: myPokemon[];
   pokemonName!: string;
-  allBoxes: { pokemons: myPokemon[] }[] = [];
+  allBoxes: Box[] = [];
   rivalPokemons!: { pokemons: myPokemon[] };
 
   constructor(
@@ -56,9 +56,6 @@ export class BattleComponent {
   }
 
   rivalBoxSelected(event: any) {
-    console.log('rivalBoxSelected - Event Target:', event.target);
-    console.log('rivalBoxSelected - Event Target Value:', event.target.value);
-    console.log('rivalBoxSelected - Event Target Selected Index:', event.target.selectedIndex - 1);
     if (event.target.selectedIndex !== 1) {
       this.rivalPokemons = this.allBoxes[event.target.selectedIndex - 1];
     }
@@ -66,8 +63,6 @@ export class BattleComponent {
   }
 
   pokemonRivalSelected(event: any) {
-    console.log("pokemonRivalSelected - Event Target:", event.target);
-    console.log("pokemonRivalSelected - Event Target Value:", event.target.value);
     const pokemonName = event.target.value;
     const pk = this.rivalPokemons.pokemons.find((pk) => {
       //console.log("cada poke", pk.pokemon.internalName, pokemonName)
