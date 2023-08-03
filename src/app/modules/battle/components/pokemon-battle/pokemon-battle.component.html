@@ -26,6 +26,9 @@
       <div class="stat-input-group">
         <input type="number" formControlName="ivHP" />
         <input type="number" formControlName="evHP" />
+        <select formControlName="statChangeHP" (change)="onStatModifierChange($event)">
+          <option *ngFor="let change of statChanges" [value]="change">{{ change }}</option>
+        </select>
       </div>
     </div>
 
@@ -40,6 +43,9 @@
       />
       <input type="number" formControlName="ivAttack" />
       <input type="number" formControlName="evAttack" />
+      <select formControlName="statChangeAttack" (change)="onStatModifierChange($event)">
+        <option *ngFor="let change of statChanges" [value]="change">{{ change }}</option>
+      </select>
     </div>
 
     <div class="stat-group">
@@ -53,6 +59,9 @@
       />
       <input type="number" formControlName="ivDefense" />
       <input type="number" formControlName="evDefense" />
+      <select formControlName="statChangeDefense" (change)="onStatModifierChange($event)">
+        <option *ngFor="let change of statChanges" [value]="change">{{ change }}</option>
+      </select>
     </div>
 
     <div class="stat-group">
@@ -66,6 +75,9 @@
       />
       <input type="number" formControlName="ivSpAttack" />
       <input type="number" formControlName="evSpAttack" />
+      <select formControlName="statChangeSpAttack" (change)="onStatModifierChange($event)">
+        <option *ngFor="let change of statChanges" [value]="change">{{ change }}</option>
+      </select>
     </div>
 
     <div class="stat-group">
@@ -79,6 +91,9 @@
       />
       <input type="number" formControlName="ivSpDefense" />
       <input type="number" formControlName="evSpDefense" />
+      <select formControlName="statChangeSpDefense" (change)="onStatModifierChange($event)">
+        <option *ngFor="let change of statChanges" [value]="change">{{ change }}</option>
+      </select>
     </div>
 
     <div class="stat-group">
@@ -92,6 +107,9 @@
       />
       <input type="number" formControlName="ivSpeed" />
       <input type="number" formControlName="evSpeed" />
+      <select formControlName="statChangeSpeed" (change)="onStatModifierChange($event)">
+        <option *ngFor="let change of statChanges" [value]="change">{{ change }}</option>
+      </select>
     </div>
   </div>
 

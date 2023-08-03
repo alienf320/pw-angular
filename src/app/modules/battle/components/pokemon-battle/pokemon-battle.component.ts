@@ -12,6 +12,7 @@ import { Move } from 'src/app/models/move.models';
 import { myPokemon } from 'src/app/models/myPokemon.models';
 import { Stats } from 'src/app/models/stats.models';
 import { PokemonBattleService } from 'src/app/services/pokemon-battle.service';
+import { StatModifierService, StatsModifier } from 'src/app/services/stat-modifier.service';
 import { StatsService } from 'src/app/services/stats.service';
 import { WRTABLE } from 'src/app/utils/WRTable';
 import { Constants } from 'src/app/utils/constants';
@@ -32,11 +33,13 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   formValueChangesEnabled = true;
   damage: Damage[] = [];
   subscriptions: Subscription[] = [];
+  statChanges: number[] = [-6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6];
 
   constructor(
     private formBuilder: FormBuilder,
     private statsService: StatsService,
-    private battleService: PokemonBattleService
+    private battleService: PokemonBattleService,
+    private statsModifiersService: StatModifierService
   ) {}
 
   ngOnInit(): void {
@@ -61,8 +64,26 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
       }
       this.check();
     });
+
+    const subs3 = this.statsModifiersService.myPokemonStatModifier$.subscribe( stats => {
+      if (this.formValueChangesEnabled && this.pokemonForm) {
+        this.updatePokemon();
+        this.formValueChangesEnabled = false;
+        this.populateForm();
+        this.recalculate();
+      }
+    })
+
+    const subs4 = this.statsModifiersService.rivalPokemonStatModifier$.subscribe( stats => {
+      if (this.formValueChangesEnabled && this.pokemonForm) {
+        this.updatePokemon();
+        this.formValueChangesEnabled = false;
+        this.populateForm();
+        this.recalculate();
+      }
+    })
   
-    this.subscriptions.push(subs1, subs2);
+    this.subscriptions.push(subs1, subs2, subs3, subs4);
   
     const attacksFormGroup = this.formBuilder.group({
       attack1: [this.pokemon.moves[0]?.displayName], // Selector de Ataque 1
@@ -78,21 +99,27 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
         hp: [this.stats.hp],
         ivHP: [0],
         evHP: [0],
+        statChangeHP: [0],
         attack: [this.stats.attack],
         ivAttack: [0],
         evAttack: [0],
+        statChangeAttack: [0],
         defense: [this.stats.defense],
         ivDefense: [0],
         evDefense: [0],
+        statChangeDefense: [0],
         specialAttack: [this.stats.spAttack],
         ivSpAttack: [0],
         evSpAttack: [0],
+        statChangeSpAttack: [0],
         specialDefense: [this.stats.spDefense],
         ivSpDefense: [0],
         evSpDefense: [0],
+        statChangeSpDefense: [0],
         speed: [this.stats.speed],
         ivSpeed: [0],
         evSpeed: [0],
+        statChangeSpeed: [0],
       }),
       attacks: attacksFormGroup, // Agrega el FormGroup de ataques
     });
@@ -119,7 +146,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
     } else {
       //console.log('entro al else: ', this.pokemon)
       if (this.pokemon) {
-        this.stats = this.statsService.calculateStats(this.pokemon);
+        this.stats = this.statsService.calculateStats(this.pokemon, this.type);
         //this.recalculate()
       }
       //this.recalculate();
@@ -137,8 +164,8 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   }
 
   recalculate() {
-    this.stats = this.statsService.calculateStats(this.pokemon);
-    this.statsRival = this.statsService.calculateStats(this.rivalPokemon);
+    this.stats = this.statsService.calculateStats(this.pokemon, this.type);
+    this.statsRival = this.statsService.calculateStats(this.rivalPokemon, this.type);
     if (this.stats) {
       this.damage = [];
       this.pokemon.moves.forEach((move) => {
@@ -180,8 +207,16 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   }
 
   populateForm(): void {
-    this.stats = this.statsService.calculateStats(this.pokemon);
-    this.statsRival = this.statsService.calculateStats(this.rivalPokemon);
+    const statsModifiers = {
+      HPM: this.pokemonForm.value.stats.statChangeHP,
+      attackM: this.pokemonForm.value.stats.statChangeAttack,
+      defenseM: this.pokemonForm.value.stats.statChangeDefense,
+      spAttackM: this.pokemonForm.value.stats.statChangeSpAttack,
+      spDefenseM: this.pokemonForm.value.stats.statChangeSpDefense,
+      speedM: this.pokemonForm.value.stats.statChangeSpeed,
+    }
+    this.stats = this.statsService.calculateStats(this.pokemon, this.type);
+    this.statsRival = this.statsService.calculateStats(this.rivalPokemon, this.type);
     //console.log('pokemon-battle  pokemon:', this.pokemon)
     //console.log("Encontró nature?", this.natures.find(el => el === this.pokemon.nature))
 
@@ -225,8 +260,8 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   }
 
   calculateDamage(move: Move): Damage {
-    this.stats = this.statsService.calculateStats(this.pokemon);
-    this.statsRival = this.statsService.calculateStats(this.rivalPokemon);
+    this.stats = this.statsService.calculateStats(this.pokemon, this.type);
+    this.statsRival = this.statsService.calculateStats(this.rivalPokemon, this.type);
 
     //console.log('calculateDamage:', this.stats)
 
@@ -272,10 +307,6 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
     }
   }
 
-  private getRandomMultiplier(): number {
-    return Math.random() * (1.0 - 0.85) + 0.85; // Generar un número aleatorio entre 0.85 y 1.00
-  }
-
   private getTypeMultiplier(move: Move, rivalPokemon: myPokemon): number {
     const type1 = rivalPokemon.pokemon.type1?.toLowerCase();
     const type2 = rivalPokemon.pokemon.type2?.toLowerCase();
@@ -285,6 +316,35 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
 
     //console.log('el multiplicador de: ', move.name, ' es ', m1*m2)
     return m1 * m2;
+  }
+
+  
+  onStatModifierChange(event: any) {
+    const value = event.target.value;
+    const statKey = event.target.attributes.formControlName.nodeValue;
+    
+    // Get the form control to update the value
+    // const statModifierFormControl = this.pokemonForm.get(['stats', statKey]);
+
+    // if (statModifierFormControl) {
+    //   statModifierFormControl.setValue(Number(value));
+    // }
+
+    const currentModifiers: StatsModifier = {
+      HP: +this.pokemonForm.value.stats.statChangeHP,
+      attack: +this.pokemonForm.value.stats.statChangeAttack,
+      defense: +this.pokemonForm.value.stats.statChangeDefense,
+      spAttack: +this.pokemonForm.value.stats.statChangeSpAttack,
+      spDefense: +this.pokemonForm.value.stats.statChangeSpDefense,
+      speed: +this.pokemonForm.value.stats.statChangeSpeed
+    };
+
+    // Update the service with the new stat modifier value
+    if (this.type === 'Mine') {
+      this.statsModifiersService.updateMyPokemonStatModifier(currentModifiers);
+    } else {
+      this.statsModifiersService.updateRivalPokemonStatModifier(currentModifiers);
+    }
   }
 
   getBackgroundColor(effectiveness: number): string {

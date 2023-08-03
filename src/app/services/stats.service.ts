@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { myPokemon } from '../models/myPokemon.models';
 import { Stats } from '../models/stats.models';
+import { StatModifierService, StatsModifier } from './stat-modifier.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StatsService {
 
-  constructor() { }
+  constructor(private statModifierService: StatModifierService) { }
 
-  calculateStats(pokemon: myPokemon): Stats {
+  calculateStats(pokemon: myPokemon, type: string): Stats {
     //console.log('calculeStats', pokemon);
     const pk = pokemon.pokemon;
     const level = pokemon.level ?? 1;
@@ -38,13 +39,28 @@ export class StatsService {
     const nature = pokemon.nature;
   
     //console.log("todos las variables de STATS: ", ivs, evs, pk.baseStats, level);
+
+    // Get the stat modifiers from the service
+    let statModifiers: StatsModifier = this.statModifierService.getMyPokemonStatModifiers();
+    if (type === 'Rival') {
+      statModifiers = this.statModifierService.getRivalPokemonStatModifiers();
+    }
+    //console.log('statModifiers', statModifiers)
+
+    // Apply the stat modifiers to the respective stats
+    const hpM = this.applyStatModifier(pk.baseStats[0], statModifiers.HP);
+    const attackM = this.applyStatModifier(pk.baseStats[1], statModifiers.attack);
+    const defenseM = this.applyStatModifier(pk.baseStats[2], statModifiers.defense);
+    const spAttackM = this.applyStatModifier(pk.baseStats[4], statModifiers.spAttack);
+    const spDefenseM = this.applyStatModifier(pk.baseStats[5], statModifiers.spDefense);
+    const speedM = this.applyStatModifier(pk.baseStats[3], statModifiers.speed);
   
-    const hp = Math.floor((((ivs?.HP ?? 0) + 2 * pk.baseStats[0] + (evs?.HP ?? 0) / 4) / 100) * level + 10 + level);
-    const attack = Math.floor((((ivs?.attack ?? 0) + 2 * pk.baseStats[1] + (evs?.attack ?? 0) / 4) / 100) * level + 5);
-    const defense = Math.floor((((ivs?.defense ?? 0) + 2 * pk.baseStats[2] + (evs?.defense ?? 0) / 4) / 100) * level + 5);
-    const spAttack = Math.floor((((ivs?.spAttack ?? 0) + 2 * pk.baseStats[4] + (evs?.spAttack ?? 0) / 4) / 100) * level + 5);
-    const spDefense = Math.floor((((ivs?.spDefense ?? 0) + 2 * pk.baseStats[5] + (evs?.spDefense ?? 0) / 4) / 100) * level + 5);
-    const speed = Math.floor((((ivs?.speed ?? 0) + 2 * pk.baseStats[3] + (evs?.speed ?? 0) / 4) / 100) * level + 5);
+    const hp = Math.floor((((ivs?.HP ?? 0) + 2 * hpM + (evs?.HP ?? 0) / 4) / 100) * level + 10 + level);
+    const attack = Math.floor((((ivs?.attack ?? 0) + 2 * attackM + (evs?.attack ?? 0) / 4) / 100) * level + 5);
+    const defense = Math.floor((((ivs?.defense ?? 0) + 2 * defenseM + (evs?.defense ?? 0) / 4) / 100) * level + 5);
+    const spAttack = Math.floor((((ivs?.spAttack ?? 0) + 2 * spAttackM + (evs?.spAttack ?? 0) / 4) / 100) * level + 5);
+    const spDefense = Math.floor((((ivs?.spDefense ?? 0) + 2 * spDefenseM + (evs?.spDefense ?? 0) / 4) / 100) * level + 5);
+    const speed = Math.floor((((ivs?.speed ?? 0) + 2 * speedM + (evs?.speed ?? 0) / 4) / 100) * level + 5);
   
     const stats: Stats = {
       hp: Math.floor(hp * this.getNatureModifier('HP', nature!)),
@@ -54,8 +70,7 @@ export class StatsService {
       spDefense: Math.floor(spDefense * this.getNatureModifier('Special Defense', nature!)),
       speed: Math.floor(speed * this.getNatureModifier('Speed', nature!))
     };
-  
-    //console.log("stats in service: ", stats);
+
     return stats;
   }
   
@@ -103,5 +118,28 @@ export class StatsService {
     } else {
       return 1.0;
     }
+  }
+
+    private applyStatModifier(baseStat: number, modifier: number): number {
+    const stageMultiplier: { [key: string]: number } = {
+      '-6': 2 / 8,
+      '-5': 2 / 7,
+      '-4': 2 / 6,
+      '-3': 2 / 5,
+      '-2': 2 / 4,
+      '-1': 2 / 3,
+      '0': 2 / 2,
+      '1': 3 / 2,
+      '2': 4 / 2,
+      '3': 5 / 2,
+      '4': 6 / 2,
+      '5': 7 / 2,
+      '6': 8 / 2,
+    };
+
+    const stageKey = modifier.toString();
+    const stageValue = stageMultiplier[stageKey];
+
+    return Math.floor(baseStat * stageValue);
   }
 }
