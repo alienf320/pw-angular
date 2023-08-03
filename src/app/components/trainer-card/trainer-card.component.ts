@@ -4,7 +4,7 @@ import { Move } from 'src/app/models/move.models';
 import { myPokemon } from 'src/app/models/myPokemon.models';
 import { Pokemon } from 'src/app/models/pokemon.models';
 import { Trainer } from 'src/app/models/trainer.models';
-import { BoxService } from 'src/app/services/box.service';
+import { Box, BoxService } from 'src/app/services/box.service';
 import { MoveService } from 'src/app/services/move.service';
 import { PokemonService } from 'src/app/services/pokemon-service.service';
 
@@ -51,9 +51,13 @@ export class TrainerCardComponent  {
         box.push(pokemonFull);
       }
     }
-  
-    console.log('Enviamos rival Box: ', box);
-    await this.boxService.saveRivalBox(box).toPromise();
+    const boxFilled: Box = {
+      trainerName: this.trainer.name,
+      pokemons: box
+    }
+    
+    console.log('Enviamos rival Box: ', boxFilled);
+    await this.boxService.saveRivalBox(boxFilled).toPromise();
     console.log('Rival Box guardado correctamente');
   }
   

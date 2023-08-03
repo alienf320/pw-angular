@@ -38,16 +38,20 @@ export class BoxService {
     return this.http.delete(url);
   }
 
-  saveRivalBox(pokemons: myPokemon[]): Observable<any> {
+  saveRivalBox(box: Box): Observable<any> {
     // const httpOptions = {
     //   headers: new HttpHeaders({
     //     'Content-Type': 'application/json'
     //   })
     // };
 
-    console.log("Eso es lo que enviamos a backend:", JSON.stringify(pokemons))
+    console.log("Eso es lo que enviamos a backend:", JSON.stringify(box))
 
-    return this.http.post(this.rivalUrl, pokemons);
+    return this.http.post(this.rivalUrl, box);
   }
 }
 
+export interface Box {
+  trainerName: string,
+  pokemons: myPokemon[]
+}
