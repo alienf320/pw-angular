@@ -16,7 +16,7 @@
       <label for="boxes">Trainer</label>
       <select name="boxes" (change)="rivalBoxSelected($event)">
         <option value=""></option>
-        <option *ngFor="let box of allBoxes; index as i" value="box">{{box.trainerName ?? i | titlecase}}</option>
+        <option *ngFor="let box of allBoxes; index as i" value="box">{{box.trainerName ?? (i+'') | titlecase}}</option>
       </select>
     </div>
     

@@ -92,9 +92,11 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
       attack4: [this.pokemon.moves[3]?.displayName], // Selector de Ataque 4
     });
   
+    console.log('ability', this.pokemon.ability)
     this.pokemonForm = this.formBuilder.group({
       level: [this.pokemon.level],
       nature: [this.pokemon.nature],
+      ability: [this.pokemon.ability],
       stats: this.formBuilder.group({
         hp: [this.stats.hp],
         ivHP: [0],
@@ -165,7 +167,9 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
 
   recalculate() {
     this.stats = this.statsService.calculateStats(this.pokemon, this.type);
-    this.statsRival = this.statsService.calculateStats(this.rivalPokemon, this.type);
+    this.statsRival = this.statsService.calculateStats(this.rivalPokemon, this.type === 'Mine' ? 'Rival' : 'Mine');
+    // console.log("Ahora voy a recalcular el daño de: ", this.pokemon.pokemon.internalName)
+    // console.log("Los stats de mi rival son: ", this.statsRival)
     if (this.stats) {
       this.damage = [];
       this.pokemon.moves.forEach((move) => {
@@ -216,13 +220,14 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
       speedM: this.pokemonForm.value.stats.statChangeSpeed,
     }
     this.stats = this.statsService.calculateStats(this.pokemon, this.type);
-    this.statsRival = this.statsService.calculateStats(this.rivalPokemon, this.type);
+    this.statsRival = this.statsService.calculateStats(this.rivalPokemon, this.type === 'Mine' ? 'Rival' : 'Mine');
     //console.log('pokemon-battle  pokemon:', this.pokemon)
     //console.log("Encontró nature?", this.natures.find(el => el === this.pokemon.nature))
 
     this.pokemonForm.patchValue({
       level: this.pokemon.level,
       nature: this.pokemon.nature,
+      ability: this.pokemon.ability,
       stats: {
         hp: this.stats.hp,
         ivHP: this.pokemon!.ivs!.HP,
@@ -261,7 +266,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
 
   calculateDamage(move: Move): Damage {
     this.stats = this.statsService.calculateStats(this.pokemon, this.type);
-    this.statsRival = this.statsService.calculateStats(this.rivalPokemon, this.type);
+    this.statsRival = this.statsService.calculateStats(this.rivalPokemon, this.type === 'Mine' ? 'Rival' : 'Mine');
 
     //console.log('calculateDamage:', this.stats)
 

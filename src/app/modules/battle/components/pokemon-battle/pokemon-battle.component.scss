@@ -38,6 +38,12 @@ h2 {
   font-weight: bold;
 }
 
+input {
+  width: fit-content;
+text-align: center;
+margin-left: 15px;
+}
+
 input[type="number"],
 select {
   margin-left: 10px;
