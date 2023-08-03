@@ -13,6 +13,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { TrainerCardComponent } from './components/trainer-card/trainer-card.component';
 import { TrainerInfoComponent } from './components/trainer-info/trainer-info.component';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { TooltipDirective } from './utils/directives/tooltip.directive';
+import { TooltipComponent } from './utils/components/tooltip/tooltip.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,8 @@ import { OverlayModule } from '@angular/cdk/overlay';
     NavbarComponent,
     TrainerCardComponent,
     TrainerInfoComponent,
+    TooltipDirective,
+    TooltipComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,6 +37,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
     HttpClientModule
   ],
   providers: [],
+  entryComponents: [TooltipComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

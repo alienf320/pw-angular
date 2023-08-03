@@ -1,5 +1,5 @@
 <div class="pokemon-form" [formGroup]="pokemonForm">
-  <h2>{{ pokemon.pokemon.name }}</h2>
+  <h2>{{ pokemon.pokemon.name | titlecase }}</h2>
   <div class="form-group">
     <label for="level">Nivel:</label>
     <input type="number" id="level" formControlName="level" />
@@ -97,24 +97,18 @@
 
   <div class="attacks-container">
     <h3>Ataques</h3>
-    <div formGroupName="attacks">
-      <div class="form-group" *ngFor="let index of [0, 1, 2, 3]; let i = index">
-        <select [id]="'attack' + (i + 1)" formControlName="attack{{ i + 1 }}">
-          <option value="">Selecciona un ataque</option>
-          <option *ngFor="let move of pokemon.moves" [value]="move.name">
-            {{ move.name }}
-          </option>
-        </select>
-        <div
-          class="damage"
-          *ngIf="damage.length > i"
-          [ngStyle]="{
-            'background-color': getBackgroundColor(damage[i].effectiveness)
-          }"
-        >
-          Damage: {{ damage[i].min }} - {{ damage[i].max }}
-        </div>
+    <div class="form-group" *ngFor="let move of pokemon.moves; let i = index">
+      <input type="text" [id]="'attack' + (i + 1)" [formControl]="getAttackFormControl(i)" [value]="move.displayName" readonly />
+      <div
+        class="damage"
+        *ngIf="damage.length > i"
+        [ngStyle]="{
+          'background-color': getBackgroundColor(damage[i].effectiveness)
+        }"
+      >
+        Damage: {{ damage[i].min }} - {{ damage[i].max }}
       </div>
     </div>
+     
   </div>
 </div>

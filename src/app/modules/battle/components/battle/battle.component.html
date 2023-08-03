@@ -2,7 +2,7 @@
   <label for="myPokemon">My box</label>
   <select name="myPokemon" (change)="pokemonSelected($event)">
     <option value=""></option>
-    <option *ngFor="let pokemon of box" [value]="pokemon.pokemon.name">{{pokemon.pokemon.name}}</option>
+    <option *ngFor="let pokemon of box" [value]="pokemon.pokemon.name">{{pokemon.pokemon.name | titlecase}}</option>
   </select>
   <label for="search-pokemon"></label>
   <input type="text" name="search-pokemon" [(ngModel)]="pokemonName">

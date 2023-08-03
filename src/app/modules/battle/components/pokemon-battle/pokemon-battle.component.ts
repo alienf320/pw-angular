@@ -45,55 +45,32 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
 
   reinitialize() {
     const subs1 = this.battleService.getMyPokemon().subscribe((pokemon) => {
-      //console.log("Type", this.type)
       if (this.type === 'Mine') {
         this.pokemon = pokemon;
       } else {
-        //console.log('Debería entra acá')
         this.rivalPokemon = pokemon;
       }
-
       this.check();
     });
-
+  
     const subs2 = this.battleService.getRivalPokemon().subscribe((pokemon) => {
       if (this.type === 'Mine') {
         this.rivalPokemon = pokemon;
       } else {
-        //console.log('Debería entra acá')
         this.pokemon = pokemon;
       }
-
       this.check();
     });
-
+  
     this.subscriptions.push(subs1, subs2);
-
-    //console.log('stats en pokemon-battle', this.stats);
-    //console.log("ngOnInit - this.pokemon: ", this.pokemon.moves)
-
-    // Crea el FormGroup para los ataques
-    //console.log("Ahora el FORM")
+  
     const attacksFormGroup = this.formBuilder.group({
-      attack1: [this.pokemon.moves[0]?.name], // Selector de Ataque 1
-      attack2: [this.pokemon.moves[1]?.name], // Selector de Ataque 2
-      attack3: [this.pokemon.moves[2]?.name], // Selector de Ataque 3
-      attack4: [this.pokemon.moves[3]?.name], // Selector de Ataque 4
+      attack1: [this.pokemon.moves[0]?.displayName], // Selector de Ataque 1
+      attack2: [this.pokemon.moves[1]?.displayName], // Selector de Ataque 2
+      attack3: [this.pokemon.moves[2]?.displayName], // Selector de Ataque 3
+      attack4: [this.pokemon.moves[3]?.displayName], // Selector de Ataque 4
     });
-
-    // Agrega los controles de ataques dinámicamente al FormGroup
-    for (const attackKey in this.pokemon.moves) {
-      if (this.pokemon.moves.hasOwnProperty(attackKey)) {
-        attacksFormGroup.addControl(
-          attackKey,
-          this.formBuilder.group({
-            attack: [this.pokemon.moves[attackKey].name],
-          })
-        );
-      }
-    }
-
-    // Crea el formulario principal (pokemonForm)
+  
     this.pokemonForm = this.formBuilder.group({
       level: [this.pokemon.level],
       nature: [this.pokemon.nature],
@@ -119,17 +96,15 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
       }),
       attacks: attacksFormGroup, // Agrega el FormGroup de ataques
     });
-
+  
     this.recalculate();
-
+  
     this.pokemonForm.valueChanges.subscribe((value) => {
       if (this.formValueChangesEnabled) {
-        //console.log('valueChanges: ')
         this.updatePokemon();
         this.formValueChangesEnabled = false;
         this.populateForm();
         this.recalculate();
-        //this.calculateDamage(this.pokemon.moves[0]);
       }
     });
   }
@@ -241,7 +216,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
       const key = 'attack' + (Number(attackKey) + 1);
       if (this.pokemon.moves.hasOwnProperty(attackKey)) {
         const attackGroup = attacksFormGroup.get(key) as FormControl;
-        attackGroup.patchValue(this.pokemon.moves[attackKey].name);
+        attackGroup.patchValue(this.pokemon.moves[attackKey].displayName);
       }
     }
 
@@ -327,6 +302,16 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
       default:
         return 'lightgrey'; // Puedes cambiar el color a lo que necesites
     }
+  }
+
+  getMoveDisplayName(index: number): string {
+    const selectedMove = this.pokemon.moves[index];
+    return selectedMove ? selectedMove.displayName : '';
+  }
+
+  getAttackFormControl(index: number): FormControl {
+    const controlName = 'attack' + (index + 1);
+    return this.pokemonForm.get(['attacks', controlName]) as FormControl;
   }
 
   ngOnDestroy(): void {
