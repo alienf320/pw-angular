@@ -24,10 +24,13 @@ h2 {
 
 .damage {
   margin-left: 20px;
-  border: 1px solid blueviolet;
-  background-color: lavender;
+  border: 1px solid #ababab;
+  background-color: white;
   padding: 4px;
   border-radius: 5px;
+  font-size: 0.8rem;
+  width: 120px;
+  text-align: center;
 }
 
 .label {

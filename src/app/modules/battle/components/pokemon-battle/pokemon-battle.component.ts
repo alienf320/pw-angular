@@ -294,13 +294,13 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
       case 0.5:
         return 'lightblue'; // Puedes cambiar el color a lo que necesites
       case 1:
-        return 'lightgrey'; // Puedes cambiar el color a lo que necesites
+        return 'white'; // Puedes cambiar el color a lo que necesites
       case 2:
         return 'orange'; // Puedes cambiar el color a lo que necesites
       case 4:
         return 'red'; // Puedes cambiar el color a lo que necesites
       default:
-        return 'lightgrey'; // Puedes cambiar el color a lo que necesites
+        return 'white'; // Puedes cambiar el color a lo que necesites
     }
   }
 

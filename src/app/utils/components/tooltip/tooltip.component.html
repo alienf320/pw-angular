@@ -1,1 +1,28 @@
-<div>{{ text }}</div>
+<!-- tooltip.component.html -->
+<div class="tooltip-card">
+  <div class="tooltip-header">
+    <span>{{ move.description }}</span>
+  </div>
+  <table class="tooltip-table">
+    <tr>
+      <td>Category:</td>
+      <td>{{ move.category }}</td>
+    </tr>
+    <tr>
+      <td>Power:</td>
+      <td>{{ move.power }}</td>
+    </tr>
+    <tr>
+      <td>Type:</td>
+      <td>{{ move.type }}</td>
+    </tr>
+    <tr>
+      <td>Accuracy:</td>
+      <td>{{ move.accuracy }}</td>
+    </tr>
+    <tr>
+      <td>Chance:</td>
+      <td>{{ move.effectChance }}</td>
+    </tr>
+  </table>
+</div>

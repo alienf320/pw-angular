@@ -2,13 +2,21 @@ import { Overlay, OverlayPositionBuilder, OverlayRef } from '@angular/cdk/overla
 import { ComponentPortal } from '@angular/cdk/portal';
 import { ComponentRef, Directive, ElementRef, HostListener, Input, OnInit } from '@angular/core';
 import { TooltipComponent } from '../components/tooltip/tooltip.component';
+import { Move } from 'src/app/models/moves.models';
+
+
+export interface TooltipData {
+  power: string;
+  description: string;
+  imageUrl: string;
+}
 
 @Directive({
   selector: '[tooltip]',
 })
 export class TooltipDirective implements OnInit {
   private overlayRef!: OverlayRef;
-  @Input('tooltip') text = '';
+  @Input('tooltip') move!: Move;
 
   constructor(
     private overlayPositionBuilder: OverlayPositionBuilder,
@@ -34,7 +42,6 @@ export class TooltipDirective implements OnInit {
 
   @HostListener('mouseenter')
   show() {
-    console.log('Entro el tooltip')
     // Create tooltip portal
     const tooltipPortal = new ComponentPortal(TooltipComponent);
 
@@ -43,7 +50,7 @@ export class TooltipDirective implements OnInit {
       this.overlayRef.attach(tooltipPortal);
 
     // Pass content to tooltip component instance
-    tooltipRef.instance.text = this.text;
+    tooltipRef.instance.move = this.move;
   }
 
   @HostListener('mouseout')
