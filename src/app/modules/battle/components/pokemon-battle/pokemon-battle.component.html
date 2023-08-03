@@ -97,8 +97,8 @@
 
   <div class="attacks-container">
     <h3>Ataques</h3>
-    <div class="form-group" *ngFor="let move of pokemon.moves; let i = index">
-      <input type="text" [id]="'attack' + (i + 1)" [formControl]="getAttackFormControl(i)" [value]="move.displayName" readonly />
+    <div class="form-group" *ngFor="let move of pokemon.moves; let i = index" >
+      <input type="text" [id]="'attack' + (i + 1)" [formControl]="getAttackFormControl(i)" [value]="move.displayName" readonly [tooltip]="move.description"/>
       <div
         class="damage"
         *ngIf="damage.length > i"

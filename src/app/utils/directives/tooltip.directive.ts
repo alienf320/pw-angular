@@ -1,12 +1,12 @@
 import { Overlay, OverlayPositionBuilder, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { ComponentRef, Directive, ElementRef, HostListener, Input } from '@angular/core';
+import { ComponentRef, Directive, ElementRef, HostListener, Input, OnInit } from '@angular/core';
 import { TooltipComponent } from '../components/tooltip/tooltip.component';
 
 @Directive({
-  selector: '[appTooltip]',
+  selector: '[tooltip]',
 })
-export class TooltipDirective {
+export class TooltipDirective implements OnInit {
   private overlayRef!: OverlayRef;
   @Input('tooltip') text = '';
 
@@ -34,6 +34,7 @@ export class TooltipDirective {
 
   @HostListener('mouseenter')
   show() {
+    console.log('Entro el tooltip')
     // Create tooltip portal
     const tooltipPortal = new ComponentPortal(TooltipComponent);
 

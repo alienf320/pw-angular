@@ -26,8 +26,7 @@ import { TooltipComponent } from './utils/components/tooltip/tooltip.component';
     NavbarComponent,
     TrainerCardComponent,
     TrainerInfoComponent,
-    TooltipDirective,
-    TooltipComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -37,7 +36,7 @@ import { TooltipComponent } from './utils/components/tooltip/tooltip.component';
     HttpClientModule
   ],
   providers: [],
-  entryComponents: [TooltipComponent],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }

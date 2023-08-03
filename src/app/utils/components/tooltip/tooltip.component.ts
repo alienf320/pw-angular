@@ -1,9 +1,11 @@
+import { style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-tooltip',
-  template: `{{ text }}`,
-  styleUrls: ['./tooltip.component.scss']
+  selector: 'tooltip',
+  styleUrls: ['./tooltip.component.scss'],
+  templateUrl: './tooltip.component.html',
+
 })
 export class TooltipComponent implements OnInit {
 
