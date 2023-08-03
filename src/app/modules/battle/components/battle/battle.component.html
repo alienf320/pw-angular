@@ -7,16 +7,21 @@
   <label for="search-pokemon"></label>
   <input type="text" name="search-pokemon" [(ngModel)]="pokemonName">
 </div>
-<div class="rival-box" (change)="rivalBoxSelected($event)">
-  <select name="boxes">
+
+<div class="rival-box">
+  <select name="boxes" (change)="rivalBoxSelected($event)">
     <option value=""></option>
     <option *ngFor="let box of allBoxes; index as i" value="box">{{i}}</option>
   </select>
+</div>
+
+<div class="rival-box">
   <select name="rivalPokemons" *ngIf="rivalPokemons" (change)="pokemonRivalSelected($event)">
     <option value=""></option>
     <option *ngFor="let pk of rivalPokemons.pokemons" [value]="pk.pokemon.internalName">{{pk.pokemon.name}}</option>
   </select>
 </div>
+
 
 <div class="container">
   <app-pokemon-battle [type]="'Mine'"></app-pokemon-battle>

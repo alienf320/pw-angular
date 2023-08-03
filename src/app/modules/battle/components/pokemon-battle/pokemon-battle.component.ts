@@ -277,25 +277,22 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   ): Damage {
     const level = this.pokemonForm.value.level || 50; // Nivel predeterminado si no se proporciona uno
     const power = move.power || 0; // Poder del movimiento o 0 si no se proporciona
-    const randomMultiplier = this.getRandomMultiplier(); // Obtener un multiplicador aleatorio entre 0.85 y 1.00
     const typeMultiplier = this.getTypeMultiplier(move, this.rivalPokemon); // Obtener el multiplicador de tipo para el movimiento
     //console.log('calculateBaseDamage: ', level, power, randomMultiplier, typeMultiplier, attackStat, defenseStat)
-    const minDamageMultiplier = 0.85 + 0.85;
-    const maxDamageMultiplier = 1.85;
+    const minDamageMultiplier = 0.85;
+    const maxDamageMultiplier = 1;
+    const hasSTAB = this.pokemon.pokemon.type1 === move.type || this.pokemon.pokemon.type2 === move.type;
+    const stabMultiplier = hasSTAB ? 1.5 : 1.0;
     const damage = Math.floor(
       Math.floor(Math.floor((2 * level) / 5 + 2) * attackStat * power) /
         defenseStat /
         50 +
         2
     );
-    // return [
-    //   Math.floor(damage * randomMultiplier * minDamageMultiplier * typeMultiplier),
-    //   Math.floor(damage * randomMultiplier * maxDamageMultiplier * typeMultiplier),
-    //   typeMultiplier
-    // ];
+
     return {
-      min: Math.floor(damage * randomMultiplier * minDamageMultiplier * typeMultiplier),
-      max: Math.floor(damage * randomMultiplier * maxDamageMultiplier * typeMultiplier),
+      min: Math.floor(damage * minDamageMultiplier * typeMultiplier * stabMultiplier),
+      max: Math.floor(damage * maxDamageMultiplier * typeMultiplier * stabMultiplier),
       effectiveness: typeMultiplier 
     }
   }

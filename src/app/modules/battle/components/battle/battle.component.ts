@@ -9,62 +9,73 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-battle',
   templateUrl: './battle.component.html',
-  styleUrls: ['./battle.component.scss']
+  styleUrls: ['./battle.component.scss'],
 })
 export class BattleComponent {
-
   myPokemon: myPokemon = myPokemon1;
   yourPokemon: myPokemon = myPokemon2;
   box!: myPokemon[];
   pokemonName!: string;
-  allBoxes: {pokemons: myPokemon[]}[] = []
-  rivalPokemons!: {pokemons: myPokemon[]}
+  allBoxes: { pokemons: myPokemon[] }[] = [];
+  rivalPokemons!: { pokemons: myPokemon[] };
 
-  constructor(private boxService: BoxService, private battleService: PokemonBattleService, private router: Router) { }
+  constructor(
+    private boxService: BoxService,
+    private battleService: PokemonBattleService,
+    private router: Router
+  ) {}
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     //this.update();
-    
-    const currentRoute = this.router.url
+    console.log('ngOnInit');
+
+    const currentRoute = this.router.url;
     if (currentRoute === '/battle') {
       this.update();
     }
   }
 
   update() {
-    this.boxService.getBox().subscribe( data => {
+    console.log('update');
+    this.boxService.getBox().subscribe((data) => {
       this.box = data;
-    })
-    this.boxService.getAllBox().subscribe( data => {
-      console.log("allBoxes:", data)
+    });
+    this.boxService.getAllBox().subscribe((data) => {
+      console.log('allBoxes:', data);
       this.allBoxes = data;
-    })
+    });
   }
 
   pokemonSelected(event: any) {
     const pokemonName = event.target.value;
-    const pk = this.box.find( pk => pk.pokemon.internalName === pokemonName)!
+    const pk = this.box.find((pk) => pk.pokemon.internalName === pokemonName)!;
 
     //console.log(pk)
-    console.log('Ahí te lo envío', pk)
-    this.battleService.updateMyPokemon(pk)
+    console.log('Ahí te lo envío', pk);
+    this.battleService.updateMyPokemon(pk);
   }
 
   rivalBoxSelected(event: any) {
-    //console.log("1111111111", event.target.selectedIndex - 1)
-    this.rivalPokemons = this.allBoxes[event.target.selectedIndex - 1]
+    console.log('rivalBoxSelected - Event Target:', event.target);
+    console.log('rivalBoxSelected - Event Target Value:', event.target.value);
+    console.log('rivalBoxSelected - Event Target Selected Index:', event.target.selectedIndex - 1);
+    if (event.target.selectedIndex !== 1) {
+      this.rivalPokemons = this.allBoxes[event.target.selectedIndex - 1];
+    }
     //console.log("RivalBoxSelected", this.rivalPokemons.pokemons)
   }
 
   pokemonRivalSelected(event: any) {
+    console.log("pokemonRivalSelected - Event Target:", event.target);
+    console.log("pokemonRivalSelected - Event Target Value:", event.target.value);
     const pokemonName = event.target.value;
-    const pk = this.rivalPokemons.pokemons.find( pk => {
-      console.log("cada poke", pk.pokemon.internalName, pokemonName)
-      return pk.pokemon.internalName === pokemonName})!
+    const pk = this.rivalPokemons.pokemons.find((pk) => {
+      //console.log("cada poke", pk.pokemon.internalName, pokemonName)
+      return pk.pokemon.internalName === pokemonName;
+    })!;
 
     //console.log(pk)
-    console.log('Ahí te envío rival', pk)
-    this.battleService.updateRivalPokemon(pk)
+    //console.log('Ahí te envío rival', pk)
+    this.battleService.updateRivalPokemon(pk);
   }
-
 }

@@ -42,7 +42,10 @@ select {
 }
 
 input[type="number"] {
-  width: 50px;
+  width: 33px;
+  height: 9px;
+  text-align: center;
+  -moz-appearance: textfield;
 }
 
 .stats-container,
