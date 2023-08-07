@@ -1,3 +1,14 @@
+.pokemon-info-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.add-column {
+  position: absolute;
+  right: 30px;
+  top: 70px;
+}
+
 .container {
   display: flex;
   justify-content: center;

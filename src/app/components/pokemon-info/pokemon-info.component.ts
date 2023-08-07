@@ -9,8 +9,9 @@ import { WeaknessService } from 'src/app/services/weakness-service.service';
   styleUrls: ['./pokemon-info.component.scss'],
 })
 export class PokemonInfoComponent implements OnInit {
-  pokemonName: string = "aron";
-  pokemons!: Pokemon[];
+  pokemonNames: string[] = ["", "", ""]; // Array to store the three input values
+  pokemons: Pokemon[][] = [[], [], []]; // Array to store the results of the three requests
+  columns = 1;
 
   constructor(
     private pokemonService: PokemonService,
@@ -18,20 +19,26 @@ export class PokemonInfoComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.searchPokemon()
+    this.searchPokemon(1)
   }
 
-  searchPokemon() {
-    if (this.pokemonName) {
-      this.pokemonService.getPokemonByName(this.pokemonName).subscribe(
+  searchPokemon(column: number) {
+    if (this.pokemonNames[column]) {
+      this.pokemonService.getPokemonByName(this.pokemonNames[column]).subscribe(
         (pokemon) => {
-          console.log(pokemon)
-          this.pokemons = pokemon;
+          console.log(pokemon);
+          this.pokemons[column] = pokemon; // Store the result in the corresponding array
         },
         (error) => {
           console.error(error);
         }
       );
+    } else {
+      this.pokemons[column] = []; // If input is empty, clear the corresponding array
     }
+  }
+
+  addColumn() {
+    this.columns++;
   }
 }

@@ -1,12 +1,49 @@
-<div class="container">
-  <div class="input-container">
-    <input type="text" [(ngModel)]="pokemonName" placeholder="Nombre del Pokémon" (keyup.enter)="searchPokemon()">
-    <button (click)="searchPokemon()">Buscar</button>
+<div class="pokemon-info-container">
+  <div class="add-column">
+    <button (click)="addColumn()"> + </button>
   </div>
-</div>
-
-<div class="pokemon-cards">
-  <div *ngFor="let pok of pokemons">
-    <app-pokemon-card [pokemon]="pok"></app-pokemon-card>
+  <div class="column">
+    <div class="container">
+      <div class="input-container">
+        <input type="text" [(ngModel)]="pokemonNames[0]" placeholder="Nombre del Pokémon" (keyup.enter)="searchPokemon(0)">
+        <button (click)="searchPokemon(0)">Buscar</button>
+      </div>
+    </div>
+    
+    <div class="pokemon-cards">
+      <div *ngFor="let pok of pokemons[0]">
+        <app-pokemon-card [pokemon]="pok"></app-pokemon-card>
+      </div>
+    </div>
+  </div>
+  
+  <div class="column" *ngIf="columns > 1">
+    <div class="container">
+      <div class="input-container">
+        <input type="text" [(ngModel)]="pokemonNames[1]" placeholder="Nombre del Pokémon" (keyup.enter)="searchPokemon(1)">
+        <button (click)="searchPokemon(1)">Buscar</button>
+      </div>
+    </div>
+    
+    <div class="pokemon-cards">
+      <div *ngFor="let pok of pokemons[1]">
+        <app-pokemon-card [pokemon]="pok"></app-pokemon-card>
+      </div>
+    </div>
+  </div>
+  
+  <div class="column" *ngIf="columns > 2">
+    <div class="container">
+      <div class="input-container">
+        <input type="text" [(ngModel)]="pokemonNames[2]" placeholder="Nombre del Pokémon" (keyup.enter)="searchPokemon(2)">
+        <button (click)="searchPokemon(2)">Buscar</button>
+      </div>
+    </div>
+    
+    <div class="pokemon-cards">
+      <div *ngFor="let pok of pokemons[2]">
+        <app-pokemon-card [pokemon]="pok"></app-pokemon-card>
+      </div>
+    </div>
   </div>
 </div>
