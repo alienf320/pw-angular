@@ -4,6 +4,7 @@
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
 .card h2 {
@@ -11,7 +12,14 @@
   margin-bottom: 10px;
 }
 
-.card .info {
+.expand-button {
+  position: absolute;
+  top: 10px; /* Adjust the top value to set the desired vertical position */
+  right: 10px; /* Adjust the right value to set the desired horizontal position */
+  z-index: 1;
+}
+  
+  .card .info {
   margin-top: 10px;
 }
 
@@ -38,10 +46,6 @@
   .left, .right {
     width: 50%;
   }
-}
-
-.section-2 {
-
 }
 
 .moves-table {

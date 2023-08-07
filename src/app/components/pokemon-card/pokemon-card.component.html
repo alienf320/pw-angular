@@ -1,5 +1,8 @@
-<div class="card" *ngIf="pokemon" (click)="extend()">
+<div class="card" *ngIf="pokemon">
   <h2>{{ pokemon.name | titlecase }}</h2>
+
+    <button class="expand-button" (click)="extend()"> + </button>
+
   <div class="section-1">
     <div class="left">
       <div class="info">
