@@ -1,10 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { myPokemon } from 'src/app/models/myPokemon.models';
 import { myPokemon1, myPokemon2 } from './pokemonDummy';
 import { Box, BoxService } from 'src/app/services/box.service';
-import { POKEMON_INTERNAL_NAMES } from 'src/app/utils/pokemonNames';
 import { PokemonBattleService } from 'src/app/services/pokemon-battle.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { Trainer } from 'src/app/models/trainer.models';
+import { PokemonService } from 'src/app/services/pokemon-service.service';
+import { forkJoin, map } from 'rxjs';
+import { Move } from 'src/app/models/moves.models';
+import { MoveService } from 'src/app/services/move.service';
+import { Pokemon } from 'src/app/models/pokemon.models';
 
 @Component({
   selector: 'app-battle',
@@ -22,13 +27,12 @@ export class BattleComponent {
   constructor(
     private boxService: BoxService,
     private battleService: PokemonBattleService,
+    private pokemonService: PokemonService,
+    private moveService: MoveService,
     private router: Router
   ) {}
-
+  
   ngOnInit(): void {
-    //this.update();
-    console.log('ngOnInit');
-
     const currentRoute = this.router.url;
     if (currentRoute === '/battle') {
       this.update();
@@ -73,4 +77,42 @@ export class BattleComponent {
     //console.log('Ahí te envío rival', pk)
     this.battleService.updateRivalPokemon(pk);
   }
+
+  async loadTrainer(event: any) {
+    const team = (event as Trainer).team;
+    console.log(team)
+    let box: myPokemon[] = [];
+  
+    for (const pk of team) {
+      let pokemonFull: myPokemon;
+      let moves: Move[] = [];
+      const movePromises: Promise<Move[]>[] = [];
+  
+      for (const move of pk.moves) {
+        movePromises.push(this.moveService.getMoveByName(move).toPromise());
+      }
+  
+      const movesData = await Promise.all(movePromises);
+      moves = movesData.map(moveArray => {
+        const move = moveArray[0]; // Extract the first element from the array
+        return move;
+      });
+  
+      const pokemonData = await this.pokemonService.getPokemonByName('', pk.name).toPromise();
+  
+      if (pokemonData && pokemonData.length > 0) {
+        pokemonFull = {
+          pokemon: pokemonData[0] as Pokemon,
+          level: pk.level,
+          moves: moves,
+          _id: `${pk._id}`
+        };
+        //console.log('pokemonFull', pokemonFull);
+        box.push(pokemonFull);
+      }
+    }
+  
+    this.rivalPokemons = { pokemons: box };
+  }
+  
 }

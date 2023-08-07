@@ -9,6 +9,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { PortalModule } from '@angular/cdk/portal';
 import { PokemonBoxCardComponent } from './components/pokemon-box-card/pokemon-box-card.component';
 import { PokemonBoxDetailsComponent } from './components/pokemon-box-details/pokemon-box-details.component';
+import { InputAutocompleteComponent } from 'src/app/utils/components/input-autocomplete/input-autocomplete.component';
 
 const routes: Routes = [
   {

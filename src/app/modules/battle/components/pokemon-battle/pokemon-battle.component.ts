@@ -219,38 +219,36 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
       spDefenseM: this.pokemonForm.value.stats.statChangeSpDefense,
       speedM: this.pokemonForm.value.stats.statChangeSpeed,
     }
+  
     this.stats = this.statsService.calculateStats(this.pokemon, this.type);
     this.statsRival = this.statsService.calculateStats(this.rivalPokemon, this.type === 'Mine' ? 'Rival' : 'Mine');
-    //console.log('pokemon-battle  pokemon:', this.pokemon)
-    //console.log("Encontró nature?", this.natures.find(el => el === this.pokemon.nature))
-
+  
     this.pokemonForm.patchValue({
       level: this.pokemon.level,
       nature: this.pokemon.nature,
       ability: this.pokemon.ability,
       stats: {
         hp: this.stats.hp,
-        ivHP: this.pokemon!.ivs!.HP,
-        evHP: this.pokemon!.evs!.HP,
+        ivHP: this.pokemon.ivs?.HP || 0,
+        evHP: this.pokemon.evs?.HP || 0,
         attack: this.stats.attack,
-        ivAttack: this.pokemon!.ivs!.attack,
-        evAttack: this.pokemon!.evs!.attack,
+        ivAttack: this.pokemon.ivs?.attack || 0,
+        evAttack: this.pokemon.evs?.attack || 0,
         defense: this.stats.defense,
-        ivDefense: this.pokemon!.ivs!.defense,
-        evDefense: this.pokemon!.evs!.defense,
+        ivDefense: this.pokemon.ivs?.defense || 0,
+        evDefense: this.pokemon.evs?.defense || 0,
         specialAttack: this.stats.spAttack,
-        ivSpAttack: this.pokemon!.ivs!.spAttack,
-        evSpAttack: this.pokemon!.evs!.spAttack,
+        ivSpAttack: this.pokemon.ivs?.spAttack || 0,
+        evSpAttack: this.pokemon.evs?.spAttack || 0,
         specialDefense: this.stats.spDefense,
-        ivSpDefense: this.pokemon!.ivs!.spDefense,
-        evSpDefense: this.pokemon!.evs!.spDefense,
+        ivSpDefense: this.pokemon.ivs?.spDefense || 0,
+        evSpDefense: this.pokemon.evs?.spDefense || 0,
         speed: this.stats.speed,
-        ivSpeed: this.pokemon!.ivs!.speed,
-        evSpeed: this.pokemon!.evs!.speed,
+        ivSpeed: this.pokemon.ivs?.speed || 0,
+        evSpeed: this.pokemon.evs?.speed || 0,
       },
     });
-    //console.log('Form completo antes:', this.pokemonForm.value)
-
+  
     const attacksFormGroup = this.pokemonForm.get('attacks') as FormGroup;
     for (const attackKey in this.pokemon.moves) {
       const key = 'attack' + (Number(attackKey) + 1);
@@ -259,10 +257,10 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
         attackGroup.patchValue(this.pokemon.moves[attackKey].displayName);
       }
     }
-
+  
     this.formValueChangesEnabled = true;
-    //console.log('Form completo values:', this.pokemonForm.value)
   }
+  
 
   calculateDamage(move: Move): Damage {
     this.stats = this.statsService.calculateStats(this.pokemon, this.type);

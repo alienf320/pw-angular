@@ -1,0 +1,8 @@
+<mat-form-field *ngIf="loaded">
+  <input type="text" matInput [formControl]="inputControl" [matAutocomplete]="auto">
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let suggestion of filteredSuggestions | async" [value]="suggestion" (click)="onClickItem(suggestion)">
+      {{ suggestion }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

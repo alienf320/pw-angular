@@ -13,8 +13,10 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { TrainerCardComponent } from './components/trainer-card/trainer-card.component';
 import { TrainerInfoComponent } from './components/trainer-info/trainer-info.component';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { TooltipDirective } from './utils/directives/tooltip.directive';
-import { TooltipComponent } from './utils/components/tooltip/tooltip.component';
+import { InputAutocompleteComponent } from './utils/components/input-autocomplete/input-autocomplete.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -26,14 +28,16 @@ import { TooltipComponent } from './utils/components/tooltip/tooltip.component';
     NavbarComponent,
     TrainerCardComponent,
     TrainerInfoComponent,
+    
 
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
     OverlayModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [],
 

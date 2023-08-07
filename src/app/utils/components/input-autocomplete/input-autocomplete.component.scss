@@ -1,0 +1,24 @@
+/* Estilo para el contenedor principal */
+.mat-form-field {
+  position: relative; /* Permite posicionar el panel de sugerencias con respecto al input */
+}
+
+/* Estilo para el input */
+input {
+  font-size: 18px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  padding: 8px 0;
+  width: min-content;
+}
+
+
+/* Estilo para cada sugerencia en el panel */
+.mat-option {
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.mat-option:hover {
+  background-color: #e0e0e0;
+}
