@@ -23,9 +23,20 @@
   </div>
 
   <div class="form-group">
-    <label for="ability">Ability:</label>
-    <input id="ability" formControlName="ability"/>
+    <ng-container *ngIf="this.pokemon?.ability; else possibleAbilitiesSection">
+      <label for="ability">Ability:</label>
+      <input id="ability" formControlName="ability" />
+    </ng-container>
   </div>
+  
+  <ng-template #possibleAbilitiesSection>
+    <div class="possible-abilities">
+      <label for="possibleAbilities">Possible Abilities:</label>
+      <div *ngFor="let ability of possibleAbilities" class="chip">
+        {{ ability }}
+      </div>
+    </div>
+  </ng-template>
 
   <div class="stats-container" *ngIf="stats" formGroupName="stats">
     <h3>Stats</h3>

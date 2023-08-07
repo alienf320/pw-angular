@@ -33,6 +33,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   statsRival!: Stats;
   formValueChangesEnabled = true;
   damage: Damage[] = [];
+  possibleAbilities: string[] = [];
   subscriptions: Subscription[] = [];
   statChanges: number[] = [-6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6];
 
@@ -51,6 +52,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
     const subs1 = this.battleService.getMyPokemon().subscribe((pokemon) => {
       if (this.type === 'Mine') {
         this.pokemon = pokemon;
+        this.possibleAbilities = [...pokemon.pokemon.abilities, pokemon.pokemon.hiddenAbility]
       } else {
         this.rivalPokemon = pokemon;
       }
@@ -62,6 +64,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
         this.rivalPokemon = pokemon;
       } else {
         this.pokemon = pokemon;
+        this.possibleAbilities = [...pokemon.pokemon.abilities, pokemon.pokemon.hiddenAbility]
       }
       this.check();
     });
