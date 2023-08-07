@@ -15,6 +15,7 @@ import { PokemonBattleService } from 'src/app/services/pokemon-battle.service';
 import { StatModifierService, StatsModifier } from 'src/app/services/stat-modifier.service';
 import { StatsService } from 'src/app/services/stats.service';
 import { WRTABLE } from 'src/app/utils/WRTable';
+import { pokemonTypes } from 'src/app/utils/colors';
 import { Constants } from 'src/app/utils/constants';
 
 @Component({
@@ -375,6 +376,11 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   getAttackFormControl(index: number): FormControl {
     const controlName = 'attack' + (index + 1);
     return this.pokemonForm.get(['attacks', controlName]) as FormControl;
+  }
+
+  getTypeColor(type: string): string {
+    const color = pokemonTypes[type];
+    return color || '#FFFFFF';
   }
 
   ngOnDestroy(): void {

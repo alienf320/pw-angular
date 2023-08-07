@@ -1,5 +1,9 @@
 <div class="pokemon-form" [formGroup]="pokemonForm">
-  <h2>{{ pokemon.pokemon.name | titlecase }}</h2>
+  <div class="row">
+    <h2>{{ pokemon.pokemon.name | titlecase }}</h2>
+    <span [style.backgroundColor]="getTypeColor(pokemon.pokemon.type1)">{{pokemon.pokemon.type1}}</span>
+    <span *ngIf="pokemon.pokemon.type2" [style.backgroundColor]="getTypeColor(pokemon.pokemon.type2)">{{pokemon.pokemon.type2}}</span>
+  </div>
   <div class="form-group">
     <label for="level">Nivel:</label>
     <input type="number" id="level" formControlName="level" />

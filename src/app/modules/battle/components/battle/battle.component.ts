@@ -10,6 +10,7 @@ import { forkJoin, map } from 'rxjs';
 import { Move } from 'src/app/models/moves.models';
 import { MoveService } from 'src/app/services/move.service';
 import { Pokemon } from 'src/app/models/pokemon.models';
+import {pokemonTypes} from '../../../../utils/colors'
 
 @Component({
   selector: 'app-battle',
@@ -74,7 +75,7 @@ export class BattleComponent {
     })!;
 
     //console.log(pk)
-    //console.log('Ahí te envío rival', pk)
+    console.log('Ahí te envío rival', pk)
     this.battleService.updateRivalPokemon(pk);
   }
 
@@ -88,7 +89,7 @@ export class BattleComponent {
       const movePromises: Promise<Move[]>[] = [];
       
       const pokemonData = await this.pokemonService
-      .getPokemonByName('', pk.name)
+      .getPokemonByName('', pk.name, true)
       .toPromise();
 
       if (pk.moves.length === 0) {
@@ -124,19 +125,13 @@ export class BattleComponent {
   }
 
   fillMoves(pokemon: Pokemon, level: number) {
-    // Retrieve all moves that the Pokemon can learn by leveling up
-
     const levelUpMoves = pokemon.moves.filter(
       (moveEntry) => moveEntry.level <= level
     );
 
-    // Sort the moves by level in ascending order
     levelUpMoves.sort((a, b) => a.level - b.level);
 
-    // Get the last four moves (or less if there are fewer than four moves available)
     const lastFourMoves = levelUpMoves.slice(-4);
-
-    // Extract the Move objects from the move entries
     const moves: Move[] = lastFourMoves.map((moveEntry) => moveEntry.move);
 
     return moves;

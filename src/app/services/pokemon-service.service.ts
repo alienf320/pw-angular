@@ -11,7 +11,7 @@ export class PokemonService {
 
   constructor(private http: HttpClient) { }
 
-  getPokemonByName(name?: string, internalName?: string): Observable<Pokemon[]> {
+  getPokemonByName(name?: string, internalName?: string, exact = false): Observable<Pokemon[]> {
     let params = new HttpParams();
 
     if (name) {
@@ -22,7 +22,10 @@ export class PokemonService {
       params = params.append('internalName', internalName);
     }
 
-  
+    if (exact !== undefined) {
+      params = params.append('exact', exact.toString());
+    }
+
     return this.http.get<Pokemon[]>(this.apiUrl, { params });
   }
 }
