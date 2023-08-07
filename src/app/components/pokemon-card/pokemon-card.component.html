@@ -33,13 +33,22 @@
       </div>
     </div>
     <div class="right">
-      <div class="item">
+      <div class="item" *ngIf="pokemon.evolutions[0].to !== ''">
         <span class="label">Evolutions:</span>
-        <div class="evo" *ngFor="let evo of pokemon.evolutions">
-          <span class="value">{{ evo.to }}</span>
-          <span class="value">{{ evo.method }} {{ evo.parameter }}</span>
-        </div>
+        <table class="evo-table">
+          <tr>
+            <th>Evolution Name</th>
+            <th>Method</th>
+            <th>Required Item</th>
+          </tr>
+          <tr *ngFor="let evo of pokemon.evolutions">
+            <td class="value" (click)="lookFor(evo.to)">{{ evo.to }}</td>
+            <td class="value">{{ evo.method }}</td>
+            <td class="value">{{ evo.parameter }}</td>
+          </tr>
+        </table>
       </div>
+      
     </div>
   </div>
   <div class="collapsed" *ngIf="collapsed">

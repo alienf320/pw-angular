@@ -26,19 +26,31 @@ export class PokemonInfoComponent implements OnInit {
     if (this.pokemonNames[column]) {
       this.pokemonService.getPokemonByName(this.pokemonNames[column]).subscribe(
         (pokemon) => {
-          console.log(pokemon);
-          this.pokemons[column] = pokemon; // Store the result in the corresponding array
+          console.log('evos: ', pokemon[0].evolutions)
+          this.pokemons[column] = pokemon;
         },
         (error) => {
           console.error(error);
         }
       );
     } else {
-      this.pokemons[column] = []; // If input is empty, clear the corresponding array
+      this.pokemons[column] = [];
     }
   }
 
   addColumn() {
     this.columns++;
+  }
+
+  openEvo(evo: string) {
+    if(this.columns < 3) {
+      this.addColumn()
+      this.pokemonNames[this.columns -1] = evo;
+      this.searchPokemon(this.columns -1)
+    }
+  }
+
+  getColumnNumbers(): number[] {
+    return Array(this.columns).fill(0).map((_, index) => index);
   }
 }
