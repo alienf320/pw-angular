@@ -15,13 +15,13 @@
     <div class="rival-box">
       <app-input-autocomplete (suggestionSelected)="loadTrainer($event)"></app-input-autocomplete>
     </div>
-    <div class="rival-box">
+    <!-- <div class="rival-box">
       <label for="boxes">Trainer</label>
       <select name="boxes" (change)="rivalBoxSelected($event)">
         <option value=""></option>
         <option *ngFor="let box of allBoxes; index as i" value="box">{{box.trainerName ?? (i+'') | titlecase}}</option>
       </select>
-    </div>
+    </div> -->
     
     <div class="rival-box" *ngIf="rivalPokemons" >
       <label for="rivalPokemons">Pokemon</label>
