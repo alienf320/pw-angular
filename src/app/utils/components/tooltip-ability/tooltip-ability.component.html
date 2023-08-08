@@ -1,8 +1,8 @@
 <!-- pokemon-tooltip.component.html -->
 <div class="tooltip-container">
   <div class="pokemon-info">
-    <h3>{{ ability.displayName }}</h3>
-    <p>{{ ability.description }}</p>
+    <!-- <h3>{{ ability.displayName }}</h3> -->
+    <p>{{ ability.description | sentenceFormat}}</p>
   </div>
   <div class="arrow"></div>
 </div>

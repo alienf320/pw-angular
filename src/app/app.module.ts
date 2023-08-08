@@ -13,11 +13,9 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { TrainerCardComponent } from './components/trainer-card/trainer-card.component';
 import { TrainerInfoComponent } from './components/trainer-info/trainer-info.component';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { InputAutocompleteComponent } from './utils/components/input-autocomplete/input-autocomplete.component';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TooltipAbilityComponent } from './utils/components/tooltip-ability/tooltip-ability.component';
+import { SentenceFormatPipe } from './utils/pipes/sentence-format';
 
 @NgModule({
   declarations: [
@@ -30,8 +28,7 @@ import { TooltipAbilityComponent } from './utils/components/tooltip-ability/tool
     TrainerCardComponent,
     TrainerInfoComponent,
     TooltipAbilityComponent,
-    
-
+    SentenceFormatPipe
   ],
   imports: [
     BrowserModule,

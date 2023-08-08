@@ -25,14 +25,14 @@
   <div class="form-group">
     <ng-container *ngIf="this.pokemon?.ability; else possibleAbilitiesSection">
       <label for="ability">Ability:</label>
-      <input id="ability" formControlName="ability" />
+      <input id="ability" formControlName="ability" [tooltip]="this.pokemon.ability" typeTooltip="ability" />
     </ng-container>
   </div>
   
   <ng-template #possibleAbilitiesSection>
     <div class="possible-abilities">
       <label for="possibleAbilities">Possible Abilities:</label>
-      <div *ngFor="let ability of possibleAbilities" class="chip">
+      <div *ngFor="let ability of possibleAbilities" class="chip" [tooltip]="ability" typeTooltip="ability">
         {{ ability }}
       </div>
     </div>

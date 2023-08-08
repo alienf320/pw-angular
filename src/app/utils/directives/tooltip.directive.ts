@@ -15,6 +15,7 @@ import {
 import { TooltipComponent } from '../components/tooltip/tooltip.component';
 import { Move } from 'src/app/models/moves.models';
 import { TooltipAbilityComponent } from '../components/tooltip-ability/tooltip-ability.component';
+import { ABILITIES } from '../abilities';
 
 export interface TooltipData {
   power: string;
@@ -61,10 +62,11 @@ export class TooltipDirective implements OnInit {
       if (this.typeTooltip === 'ability') {
         tooltipComponent = TooltipAbilityComponent;
         const tooltipPortal = new ComponentPortal(tooltipComponent);
-        const tooltipRef: ComponentRef<any> =
-          this.overlayRef.attach(tooltipPortal);
+        const tooltipRef: ComponentRef<any> = this.overlayRef.attach(tooltipPortal);
 
-        tooltipRef.instance.ability = this.tooltip;
+
+        const abilityFull = ABILITIES.find( ab => ab.name === this.tooltip)
+        tooltipRef.instance.ability = abilityFull;
       } else {
         tooltipComponent = TooltipComponent;
         const tooltipPortal = new ComponentPortal(tooltipComponent);
