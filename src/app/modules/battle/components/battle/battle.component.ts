@@ -41,12 +41,11 @@ export class BattleComponent {
   }
 
   update() {
-    console.log('update');
     this.boxService.getBox().subscribe((data) => {
       this.box = data;
     });
     this.boxService.getAllBox().subscribe((data) => {
-      console.log('allBoxes:', data);
+      //console.log('allBoxes:', data);
       this.allBoxes = data;
     });
   }
@@ -55,8 +54,6 @@ export class BattleComponent {
     const pokemonName = event.target.value;
     const pk = this.box.find((pk) => pk.pokemon.internalName === pokemonName)!;
 
-    //console.log(pk)
-    console.log('Ahí te lo envío', pk);
     this.battleService.updateMyPokemon(pk);
   }
 
@@ -67,12 +64,17 @@ export class BattleComponent {
     //console.log("RivalBoxSelected", this.rivalPokemons.pokemons)
   }
 
-  pokemonRivalSelected(event: any) {
-    const pokemonName = event.target.value;
-    const pk = this.rivalPokemons.pokemons.find((pk) => {
-      //console.log("cada poke", pk.pokemon.internalName, pokemonName)
-      return pk.pokemon.internalName === pokemonName;
-    })!;
+  pokemonRivalSelected(event?: any, index = 0) {
+    let pk;
+    if(event) {
+      const pokemonName = event.target.value;
+      pk = this.rivalPokemons.pokemons.find((pk) => {
+        //console.log("cada poke", pk.pokemon.internalName, pokemonName)
+        return pk.pokemon.internalName === pokemonName;
+      })!;      
+    } else {
+      pk = this.rivalPokemons.pokemons[index]
+    }
 
     //console.log(pk)
     console.log('Ahí te envío rival', pk)
@@ -95,15 +97,17 @@ export class BattleComponent {
       if (pk.moves.length === 0) {
         //console.log("Estos deberían ser los moves: ", pokemonData![0].moves)
         moves = this.fillMoves(pokemonData![0], pk.level);
-        console.log("Moves completados: ", moves)
+        //console.log("Moves completados: ", moves)
       } else {
         for (const move of pk.moves) {
-          movePromises.push(this.moveService.getMoveByName(move).toPromise());
+          if(move.length > 2) {
+            movePromises.push(this.moveService.getMoveByName(move).toPromise());
+          }
         }
   
         const movesData = await Promise.all(movePromises);
         moves = movesData.map((moveArray) => {
-          const move = moveArray[0]; // Extract the first element from the array
+          const move = moveArray[0];
           return move;
         });
 
@@ -122,6 +126,7 @@ export class BattleComponent {
     }
 
     this.rivalPokemons = { pokemons: box };
+    this.pokemonRivalSelected()
   }
 
   fillMoves(pokemon: Pokemon, level: number) {

@@ -29,29 +29,18 @@ export class InputAutocompleteComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('autocomplete type:', this.inputType)
     if(this.inputType === 'default') {
       this.trainerService.getTrainers().subscribe((data) => {
         this.trainers = data;
         this.suggestions = data.map((trainer) => trainer.name);
         if(data) {
           this.loaded = true
-          console.log('data', this.suggestions)
+          //console.log('data', this.suggestions)
         }
       });
     } else {
-      console.log('Entro al else')
       this.loaded = true;
       this.suggestions = Constants.movesNames;
-
-      // this.moveService.getMoveByName.subscribe((data) => {
-      //   this.trainers = data;
-      //   this.suggestions = data.map((trainer) => trainer.name);
-      //   if(data) {
-      //     this.loaded = true
-      //     console.log('data', this.suggestions)
-      //   }
-      // });
     }
   }
 
