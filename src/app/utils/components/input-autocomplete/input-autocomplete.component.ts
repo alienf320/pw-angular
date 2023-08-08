@@ -1,8 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, startWith, map, tap } from 'rxjs';
 import { Trainer } from 'src/app/models/trainer.models';
+import { MoveService } from 'src/app/services/move.service';
 import { TrainerService } from 'src/app/services/trainer.service';
+import { Constants } from '../../constants';
 
 @Component({
   selector: 'app-input-autocomplete',
@@ -15,26 +17,42 @@ export class InputAutocompleteComponent implements OnInit {
   trainers: Trainer[] = []
   suggestions: string[] = [];
   loaded = false;
+  @Input() inputType: 'default' | 'moves' = 'default';
 
-  @Output() suggestionSelected = new EventEmitter<Trainer>();
+  @Output() suggestionSelected = new EventEmitter<any>();
 
-  constructor(private trainerService: TrainerService) {
+  constructor(private trainerService: TrainerService, private moveService: MoveService) {
     this.filteredSuggestions = this.inputControl.valueChanges.pipe(
-      tap(val => console.log(val)),
       startWith(''),
       map((value) => this.filterSuggestions(value))
     );
   }
 
   ngOnInit(): void {
-    this.trainerService.getTrainers().subscribe((data) => {
-      this.trainers = data;
-      this.suggestions = data.map((trainer) => trainer.name);
-      if(data) {
-        this.loaded = true
-        console.log('data', this.suggestions)
-      }
-    });
+    console.log('autocomplete type:', this.inputType)
+    if(this.inputType === 'default') {
+      this.trainerService.getTrainers().subscribe((data) => {
+        this.trainers = data;
+        this.suggestions = data.map((trainer) => trainer.name);
+        if(data) {
+          this.loaded = true
+          console.log('data', this.suggestions)
+        }
+      });
+    } else {
+      console.log('Entro al else')
+      this.loaded = true;
+      this.suggestions = Constants.movesNames;
+
+      // this.moveService.getMoveByName.subscribe((data) => {
+      //   this.trainers = data;
+      //   this.suggestions = data.map((trainer) => trainer.name);
+      //   if(data) {
+      //     this.loaded = true
+      //     console.log('data', this.suggestions)
+      //   }
+      // });
+    }
   }
 
   filterSuggestions(value: string): string[] {
@@ -45,7 +63,12 @@ export class InputAutocompleteComponent implements OnInit {
   }
 
   onClickItem(suggestion: string) {
-    const trainer = this.trainers.find( t => t.name === suggestion)
-    this.suggestionSelected.emit(trainer)
+    let data;
+    if(this.inputType === 'default') {
+      data = this.trainers.find( t => t.name === suggestion)
+    } else {
+      data = suggestion
+    }
+    this.suggestionSelected.emit(data)
   }
 }

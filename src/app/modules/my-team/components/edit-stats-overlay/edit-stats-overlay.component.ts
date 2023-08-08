@@ -43,8 +43,7 @@ export class EditStatsOverlayComponent {
   evs: { stat: string; value: number }[] = [];
   ivs: { stat: string; value: number }[] = [];
   suggestions!: string[];
-  movesFull: Move[] = []
-
+  movesFull: Move[] = [];
 
   natureOptions: string[] = [
     'Adamant',
@@ -86,7 +85,12 @@ export class EditStatsOverlayComponent {
   @Output() savePokemon: EventEmitter<any> = new EventEmitter<any>();
   @Output() updatePokemon: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private formBuilder: FormBuilder, private overlay: Overlay, private viewContainerRef: ViewContainerRef, private moveService: MoveService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private overlay: Overlay,
+    private viewContainerRef: ViewContainerRef,
+    private moveService: MoveService
+  ) {
     this.form = this.formBuilder.group({
       level: [1, Validators.required],
       ability: ['', Validators.required],
@@ -109,17 +113,19 @@ export class EditStatsOverlayComponent {
       }),
       moveSet: formBuilder.group({
         move1: [''],
-      })
+      }),
     });
   }
 
   ngOnInit() {
     this.inputValueSubject
-    .pipe(debounceTime(500)) // Espera 500ms antes de continuar
-    .subscribe((inputValue: any) => {
-      this.suggestions = Constants.movesNames.filter(el => el.match(inputValue.target.value));
-      this.showOverlay(this.suggestions);
-    });
+      .pipe(debounceTime(500)) // Espera 500ms antes de continuar
+      .subscribe((inputValue: any) => {
+        this.suggestions = Constants.movesNames.filter((el) =>
+          el.match(inputValue.target.value)
+        );
+        this.showOverlay(this.suggestions);
+      });
   }
 
   ngAfterContentInit() {
@@ -145,47 +151,55 @@ export class EditStatsOverlayComponent {
         );
       });
 
-      if(this.myPokemon.moves) {
-        console.log('1', this.myPokemon.moves)
-        this.moves = this.myPokemon.moves.map( move => move.name)
+      if (this.myPokemon.moves) {
+        console.log('1', this.myPokemon.moves);
+        this.moves = this.myPokemon.moves.map((move) => move.name);
       }
-
     }
   }
 
   showSuggestions(inputValue: any) {
-    this.suggestions = Constants.movesNames.filter( el => el.match(inputValue.target.value))
+    this.suggestions = Constants.movesNames.filter((el) =>
+      el.match(inputValue.target.value)
+    );
     //console.log(suggestions)
     this.inputValueSubject.next(inputValue);
   }
 
-showOverlay(suggestions: string[]) {
-  this.hideSuggestions();
-
-  const origin = new CdkOverlayOrigin(this.move1);
-
-  const overlayConfig = {
-    positionStrategy: this.overlay.position().flexibleConnectedTo(origin.elementRef).withPositions([{
-      originX: 'start',
-      originY: 'bottom',
-      overlayX: 'start',
-      overlayY: 'top',
-      offsetY: 1
-    }]),
-    scrollStrategy: this.overlay.scrollStrategies.reposition(),
-    hasBackdrop: true, 
-    backdropClick: true,
-  };
-
-  this.suggestionPanel = this.overlay.create(overlayConfig);
-  const overlayPortal = new TemplatePortal(this.suggestionsTemplate, this.viewContainerRef);
-  this.suggestionPanel.attach(overlayPortal);
-
-  this.suggestionPanel.backdropClick().subscribe(() => {
+  showOverlay(suggestions: string[]) {
     this.hideSuggestions();
-  });
-}
 
+    const origin = new CdkOverlayOrigin(this.move1);
+
+    const overlayConfig = {
+      positionStrategy: this.overlay
+        .position()
+        .flexibleConnectedTo(origin.elementRef)
+        .withPositions([
+          {
+            originX: 'start',
+            originY: 'bottom',
+            overlayX: 'start',
+            overlayY: 'top',
+            offsetY: 1,
+          },
+        ]),
+      scrollStrategy: this.overlay.scrollStrategies.reposition(),
+      hasBackdrop: true,
+      backdropClick: true,
+    };
+
+    this.suggestionPanel = this.overlay.create(overlayConfig);
+    const overlayPortal = new TemplatePortal(
+      this.suggestionsTemplate,
+      this.viewContainerRef
+    );
+    this.suggestionPanel.attach(overlayPortal);
+
+    this.suggestionPanel.backdropClick().subscribe(() => {
+      this.hideSuggestions();
+    });
+  }
 
   hideSuggestions() {
     if (this.suggestionPanel && this.suggestionPanel.hasAttached()) {
@@ -194,28 +208,30 @@ showOverlay(suggestions: string[]) {
   }
 
   addMove(event: any) {
-    const move = event.target.innerText;
-    if(this.moves.length < 4) {
-      this.moves.push(move)
-    }  }
-  
-  deleteMove(moveName: string) {
-    this.moves = this.moves.filter(m => m !== moveName)
+    //const move = event.target.innerText;
+    console.log("MOVES?: ", event)
+    if (this.moves.length < 4) {
+      this.moves.push(event);
+    }
   }
-  
+
+  deleteMove(moveName: string) {
+    this.moves = this.moves.filter((m) => m !== moveName);
+  }
+
   async getMovesFull(): Promise<void> {
     for (const move of this.moves) {
       const data = await this.moveService.getMoveByName(move).toPromise();
       this.movesFull.push(...data);
     }
   }
-  
+
   async onSave(): Promise<void> {
     if (this.form.valid) {
       await this.getMovesFull();
       const evs = this.form.value.evs;
       const ivs = this.form.value.ivs;
-  
+
       const pokemonData: any = {
         level: this.form.value.level,
         ability: this.form.value.ability,
@@ -225,13 +241,13 @@ showOverlay(suggestions: string[]) {
         moves: this.movesFull,
         _id: this.myPokemon ? this.myPokemon._id : '',
       };
-  
+
       if (this.myPokemon) {
         this.updatePokemon.emit(pokemonData);
       } else {
         this.savePokemon.emit(pokemonData);
       }
-  
+
       this.closeOverlay();
     }
   }

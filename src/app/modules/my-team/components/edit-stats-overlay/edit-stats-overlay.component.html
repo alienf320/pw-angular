@@ -22,12 +22,7 @@
         </div>
       </div>
       <div class="move-set" formGroupName="moveSet">
-        <input #move1 type="text" formControlName="move1" (input)="showSuggestions($event)">
-        <ng-template #suggestionsTemplate >
-          <div class="suggestions-container">
-            <div *ngFor="let suggestion of suggestions" (click)="addMove($event)">{{ suggestion }}</div>
-          </div>
-        </ng-template>
+        <app-input-autocomplete inputType="moves" (suggestionSelected)="addMove($event)"></app-input-autocomplete>
         <div class="moves" *ngIf="moves">
           <div class="move" *ngFor="let move of moves">
             <div class="move-name">{{move}}</div>

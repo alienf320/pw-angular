@@ -9,6 +9,7 @@ import { TooltipDirective } from 'src/app/utils/directives/tooltip.directive';
 import { InputAutocompleteComponent } from 'src/app/utils/components/input-autocomplete/input-autocomplete.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
+import { SharedModule } from 'src/app/utils/modules/shared.module';
 
 const routes: Routes = [
   {
@@ -22,16 +23,15 @@ const routes: Routes = [
     BattleComponent,
     PokemonBattleComponent,
     TooltipComponent,
-    TooltipDirective,
-    InputAutocompleteComponent
+    TooltipDirective
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
-    MatAutocompleteModule,
-    MatInputModule,
+
+    SharedModule
   ],
   entryComponents: [TooltipComponent],
 })

@@ -10,6 +10,7 @@ import { PortalModule } from '@angular/cdk/portal';
 import { PokemonBoxCardComponent } from './components/pokemon-box-card/pokemon-box-card.component';
 import { PokemonBoxDetailsComponent } from './components/pokemon-box-details/pokemon-box-details.component';
 import { InputAutocompleteComponent } from 'src/app/utils/components/input-autocomplete/input-autocomplete.component';
+import { SharedModule } from 'src/app/utils/modules/shared.module';
 
 const routes: Routes = [
   {
@@ -24,7 +25,7 @@ const routes: Routes = [
     MyTeamComponent,
     EditStatsOverlayComponent,
     PokemonBoxCardComponent,
-    PokemonBoxDetailsComponent
+    PokemonBoxDetailsComponent,
   ],
   imports: [
     CommonModule,
@@ -32,6 +33,7 @@ const routes: Routes = [
     OverlayModule,
     PortalModule,
     ReactiveFormsModule,
+    SharedModule,
     RouterModule.forChild(routes)
   ]
 })
