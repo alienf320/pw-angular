@@ -1,9 +1,20 @@
-import { Overlay, OverlayPositionBuilder, OverlayRef } from '@angular/cdk/overlay';
+import {
+  Overlay,
+  OverlayPositionBuilder,
+  OverlayRef,
+} from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { ComponentRef, Directive, ElementRef, HostListener, Input, OnInit } from '@angular/core';
+import {
+  ComponentRef,
+  Directive,
+  ElementRef,
+  HostListener,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { TooltipComponent } from '../components/tooltip/tooltip.component';
 import { Move } from 'src/app/models/moves.models';
-
+import { TooltipAbilityComponent } from '../components/tooltip-ability/tooltip-ability.component';
 
 export interface TooltipData {
   power: string;
@@ -16,7 +27,8 @@ export interface TooltipData {
 })
 export class TooltipDirective implements OnInit {
   private overlayRef!: OverlayRef;
-  @Input('tooltip') move!: Move;
+  @Input() tooltip!: any;
+  @Input() typeTooltip: 'default' | 'ability' = 'default';
 
   constructor(
     private overlayPositionBuilder: OverlayPositionBuilder,
@@ -42,15 +54,26 @@ export class TooltipDirective implements OnInit {
 
   @HostListener('mouseenter')
   show() {
-    // Create tooltip portal
-    const tooltipPortal = new ComponentPortal(TooltipComponent);
+    if (this.tooltip) {
+      let tooltipComponent: any;
 
-    // Attach tooltip portal to overlay
-    const tooltipRef: ComponentRef<TooltipComponent> =
-      this.overlayRef.attach(tooltipPortal);
+      // Determine the tooltip component based on the type input
+      if (this.typeTooltip === 'ability') {
+        tooltipComponent = TooltipAbilityComponent;
+        const tooltipPortal = new ComponentPortal(tooltipComponent);
+        const tooltipRef: ComponentRef<any> =
+          this.overlayRef.attach(tooltipPortal);
 
-    // Pass content to tooltip component instance
-    tooltipRef.instance.move = this.move;
+        tooltipRef.instance.ability = this.tooltip;
+      } else {
+        tooltipComponent = TooltipComponent;
+        const tooltipPortal = new ComponentPortal(tooltipComponent);
+        const tooltipRef: ComponentRef<any> =
+          this.overlayRef.attach(tooltipPortal);
+
+        tooltipRef.instance.move = this.tooltip;
+      }
+    }
   }
 
   @HostListener('mouseout')

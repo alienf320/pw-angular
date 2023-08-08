@@ -17,6 +17,7 @@ import { InputAutocompleteComponent } from './utils/components/input-autocomplet
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TooltipAbilityComponent } from './utils/components/tooltip-ability/tooltip-ability.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     NavbarComponent,
     TrainerCardComponent,
     TrainerInfoComponent,
+    TooltipAbilityComponent,
     
 
   ],
