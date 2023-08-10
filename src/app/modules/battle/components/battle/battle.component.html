@@ -15,6 +15,9 @@
     <div class="rival-box">
       <app-input-autocomplete (suggestionSelected)="loadTrainer($event)"></app-input-autocomplete>
     </div>
+    <div class="rival-box">
+      <app-input-autocomplete inputType="pokemon" (suggestionSelected)="loadPokemon($event)"></app-input-autocomplete>
+    </div>
     <!-- <div class="rival-box">
       <label for="boxes">Trainer</label>
       <select name="boxes" (change)="rivalBoxSelected($event)">

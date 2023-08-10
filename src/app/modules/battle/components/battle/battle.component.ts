@@ -129,6 +129,14 @@ export class BattleComponent {
     this.pokemonRivalSelected()
   }
 
+  async loadPokemon(pokemon: Pokemon) {
+    const fullPokemon: myPokemon = {
+      pokemon: pokemon,
+      moves: []
+    }
+    this.battleService.updateRivalPokemon(fullPokemon);
+  }
+
   fillMoves(pokemon: Pokemon, level: number) {
     const levelUpMoves = pokemon.moves.filter(
       (moveEntry) => moveEntry.level <= level

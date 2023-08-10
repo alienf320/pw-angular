@@ -1,41 +1,82 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output, forwardRef } from '@angular/core';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable, startWith, map, tap, take } from 'rxjs';
 import { Trainer } from 'src/app/models/trainer.models';
 import { MoveService } from 'src/app/services/move.service';
 import { TrainerService } from 'src/app/services/trainer.service';
 import { Constants } from '../../constants';
 import { TRAINERS } from '../../trainers';
+import { POKEMON_INTERNAL_NAMES } from '../../pokemonNames';
+import { PokemonService } from 'src/app/services/pokemon-service.service';
 
 @Component({
   selector: 'app-input-autocomplete',
   templateUrl: './input-autocomplete.component.html',
   styleUrls: ['./input-autocomplete.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => InputAutocompleteComponent),
+      multi: true,
+    },
+  ],
 })
-export class InputAutocompleteComponent implements OnInit {
-  inputControl = new FormControl();
+export class InputAutocompleteComponent implements OnInit, ControlValueAccessor {
+  @Input() inputControl = new FormControl();
   filteredSuggestions: Observable<string[]>;
-  trainers: Trainer[] = []
+  trainers: Trainer[] = [];
+  pokemonNames: string[] = POKEMON_INTERNAL_NAMES;
   suggestions: string[] = [];
   loaded = false;
-  @Input() inputType: 'default' | 'moves' = 'default';
+  @Input() inputType: 'default' | 'moves' | 'pokemon' | 'moves'= 'default';
 
+  private onChange: (value: any) => void = () => {};
+  private onTouch: () => void = () => {};
   @Output() suggestionSelected = new EventEmitter<any>();
 
-  constructor(private trainerService: TrainerService, private moveService: MoveService) {
+  constructor(
+    private trainerService: TrainerService,
+    private moveService: MoveService,
+    private pokemonService: PokemonService
+  ) {
     this.filteredSuggestions = this.inputControl.valueChanges.pipe(
       startWith(''),
       map((value) => this.filterSuggestions(value))
     );
   }
 
+  writeValue(value: any): void {
+    this.inputControl.setValue(value);
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouch = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    isDisabled ? this.inputControl.disable() : this.inputControl.enable();
+  }
+
   ngOnInit(): void {
-    if(this.inputType === 'default') {
+    if (this.inputType === 'default') {
       this.suggestions = TRAINERS;
       this.loaded = true;
-      this.trainerService.getTrainers().pipe(take(1)).subscribe((data) => {
-        this.trainers = data;
-      });
+      this.trainerService
+        .getTrainers()
+        .pipe(take(1))
+        .subscribe((data) => {
+          this.trainers = data;
+        });
+    } else if (this.inputType === 'pokemon') {
+      this.suggestions = this.pokemonNames;
+      this.loaded = true;
+    } else if (this.inputType === 'moves') {
+      this.suggestions = Constants.movesNames;
+      this.loaded = true
     } else {
       this.loaded = true;
       this.suggestions = Constants.movesNames;
@@ -51,11 +92,26 @@ export class InputAutocompleteComponent implements OnInit {
 
   onClickItem(suggestion: string) {
     let data;
-    if(this.inputType === 'default') {
-      data = this.trainers.find( t => t.name === suggestion)
+
+    this.inputControl.setValue(suggestion);
+    this.onChange(suggestion);
+    this.onTouch();
+
+    if (this.inputType === 'default') {
+      data = this.trainers.find((t) => t.name === suggestion);
+      this.suggestionSelected.emit(data);
+    } else if(this.inputType === 'pokemon') {
+      this.pokemonService.getPokemonByName('', suggestion, true).pipe(take(1)).subscribe( pokemon => {
+        data = pokemon[0]
+        this.suggestionSelected.emit(data);
+      })
+    } else if(this.inputType === 'moves') {
+      this.moveService.getMoveByName(suggestion).pipe(take(1)).subscribe( move => {
+        this.suggestionSelected.emit(move)
+      })
     } else {
-      data = suggestion
+      data = suggestion;
+      this.suggestionSelected.emit(data);
     }
-    this.suggestionSelected.emit(data)
   }
 }

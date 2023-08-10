@@ -3,7 +3,7 @@ import { InputAutocompleteComponent } from '../components/input-autocomplete/inp
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
@@ -17,6 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   ],
   exports: [
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,

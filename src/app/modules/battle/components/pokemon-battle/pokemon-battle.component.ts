@@ -96,7 +96,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
       attack4: [this.pokemon.moves[3]?.displayName], // Selector de Ataque 4
     });
   
-    console.log('ability', this.pokemon.ability)
+    //console.log('ability', this.pokemon.ability)
     this.pokemonForm = this.formBuilder.group({
       level: [this.pokemon.level],
       nature: [this.pokemon.nature],
@@ -376,9 +376,10 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
     return selectedMove ? selectedMove.displayName : '';
   }
 
-  getAttackFormControl(index: number): FormControl {
+  getAttackFormControl(index: number): any {
     const controlName = 'attack' + (index + 1);
     return this.pokemonForm.get(['attacks', controlName]) as FormControl;
+    //eturn controlName
   }
 
   getTypeColor(type: string): string {

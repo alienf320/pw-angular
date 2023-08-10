@@ -1,8 +1,14 @@
 <div class="pokemon-form" [formGroup]="pokemonForm">
   <div class="row">
     <h2>{{ pokemon.pokemon.name | titlecase }}</h2>
-    <span [style.backgroundColor]="getTypeColor(pokemon.pokemon.type1)">{{pokemon.pokemon.type1}}</span>
-    <span *ngIf="pokemon.pokemon.type2" [style.backgroundColor]="getTypeColor(pokemon.pokemon.type2)">{{pokemon.pokemon.type2}}</span>
+    <span [style.backgroundColor]="getTypeColor(pokemon.pokemon.type1)">{{
+      pokemon.pokemon.type1
+    }}</span>
+    <span
+      *ngIf="pokemon.pokemon.type2"
+      [style.backgroundColor]="getTypeColor(pokemon.pokemon.type2)"
+      >{{ pokemon.pokemon.type2 }}</span
+    >
   </div>
   <div class="form-group">
     <label for="level">Nivel:</label>
@@ -25,14 +31,24 @@
   <div class="form-group">
     <ng-container *ngIf="this.pokemon?.ability; else possibleAbilitiesSection">
       <label for="ability">Ability:</label>
-      <input id="ability" formControlName="ability" [tooltip]="this.pokemon.ability" typeTooltip="ability" />
+      <input
+        id="ability"
+        formControlName="ability"
+        [tooltip]="this.pokemon.ability"
+        typeTooltip="ability"
+      />
     </ng-container>
   </div>
-  
+
   <ng-template #possibleAbilitiesSection>
     <div class="possible-abilities">
       <label for="possibleAbilities">Possible Abilities:</label>
-      <div *ngFor="let ability of possibleAbilities" class="chip" [tooltip]="ability" typeTooltip="ability">
+      <div
+        *ngFor="let ability of possibleAbilities"
+        class="chip"
+        [tooltip]="ability"
+        typeTooltip="ability"
+      >
         {{ ability }}
       </div>
     </div>
@@ -46,8 +62,13 @@
       <div class="stat-input-group">
         <input type="number" formControlName="ivHP" />
         <input type="number" formControlName="evHP" />
-        <select formControlName="statChangeHP" (change)="onStatModifierChange($event)">
-          <option *ngFor="let change of statChanges" [value]="change">{{ change }}</option>
+        <select
+          formControlName="statChangeHP"
+          (change)="onStatModifierChange($event)"
+        >
+          <option *ngFor="let change of statChanges" [value]="change">
+            {{ change }}
+          </option>
         </select>
       </div>
     </div>
@@ -63,8 +84,13 @@
       />
       <input type="number" formControlName="ivAttack" />
       <input type="number" formControlName="evAttack" />
-      <select formControlName="statChangeAttack" (change)="onStatModifierChange($event)">
-        <option *ngFor="let change of statChanges" [value]="change">{{ change }}</option>
+      <select
+        formControlName="statChangeAttack"
+        (change)="onStatModifierChange($event)"
+      >
+        <option *ngFor="let change of statChanges" [value]="change">
+          {{ change }}
+        </option>
       </select>
     </div>
 
@@ -79,8 +105,13 @@
       />
       <input type="number" formControlName="ivDefense" />
       <input type="number" formControlName="evDefense" />
-      <select formControlName="statChangeDefense" (change)="onStatModifierChange($event)">
-        <option *ngFor="let change of statChanges" [value]="change">{{ change }}</option>
+      <select
+        formControlName="statChangeDefense"
+        (change)="onStatModifierChange($event)"
+      >
+        <option *ngFor="let change of statChanges" [value]="change">
+          {{ change }}
+        </option>
       </select>
     </div>
 
@@ -95,8 +126,13 @@
       />
       <input type="number" formControlName="ivSpAttack" />
       <input type="number" formControlName="evSpAttack" />
-      <select formControlName="statChangeSpAttack" (change)="onStatModifierChange($event)">
-        <option *ngFor="let change of statChanges" [value]="change">{{ change }}</option>
+      <select
+        formControlName="statChangeSpAttack"
+        (change)="onStatModifierChange($event)"
+      >
+        <option *ngFor="let change of statChanges" [value]="change">
+          {{ change }}
+        </option>
       </select>
     </div>
 
@@ -111,8 +147,13 @@
       />
       <input type="number" formControlName="ivSpDefense" />
       <input type="number" formControlName="evSpDefense" />
-      <select formControlName="statChangeSpDefense" (change)="onStatModifierChange($event)">
-        <option *ngFor="let change of statChanges" [value]="change">{{ change }}</option>
+      <select
+        formControlName="statChangeSpDefense"
+        (change)="onStatModifierChange($event)"
+      >
+        <option *ngFor="let change of statChanges" [value]="change">
+          {{ change }}
+        </option>
       </select>
     </div>
 
@@ -127,16 +168,26 @@
       />
       <input type="number" formControlName="ivSpeed" />
       <input type="number" formControlName="evSpeed" />
-      <select formControlName="statChangeSpeed" (change)="onStatModifierChange($event)">
-        <option *ngFor="let change of statChanges" [value]="change">{{ change }}</option>
+      <select
+        formControlName="statChangeSpeed"
+        (change)="onStatModifierChange($event)"
+      >
+        <option *ngFor="let change of statChanges" [value]="change">
+          {{ change }}
+        </option>
       </select>
     </div>
   </div>
 
   <div class="attacks-container">
     <h3>Ataques</h3>
-    <div class="form-group" *ngFor="let move of pokemon.moves; let i = index" >
-      <input type="text" [id]="'attack' + (i + 1)" [formControl]="getAttackFormControl(i)" [value]="move.displayName" readonly [tooltip]="move"/>
+    <div class="form-group" formGroupName="attacks" *ngFor="let move of pokemon.moves; let i = index">
+      <input
+        type="text"
+        [id]="'attack' + (i + 1)"
+        [formControl]="getAttackFormControl(i)"
+        [tooltip]="move"
+      />
       <div
         class="damage"
         *ngIf="damage.length > i"
@@ -147,6 +198,5 @@
         Damage: {{ damage[i].min }} - {{ damage[i].max }}
       </div>
     </div>
-     
   </div>
 </div>
