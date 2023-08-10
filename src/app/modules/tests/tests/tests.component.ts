@@ -18,6 +18,13 @@ export class TestsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // this.customForm.valueChanges.subscribe( data => {
+    //   console.log('valueChanges: ', data)
+    // })
+
+    this.customForm.get('myInputControl')?.valueChanges.subscribe( data => {
+      console.log('valueChanges del Input: ', data)
+    })
   }
 
   onSubmit() {

@@ -6,13 +6,16 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription, merge } from 'rxjs';
 import { Damage } from 'src/app/models/damage.models';
 import { Move } from 'src/app/models/move.models';
 import { myPokemon } from 'src/app/models/myPokemon.models';
 import { Stats } from 'src/app/models/stats.models';
 import { PokemonBattleService } from 'src/app/services/pokemon-battle.service';
-import { StatModifierService, StatsModifier } from 'src/app/services/stat-modifier.service';
+import {
+  StatModifierService,
+  StatsModifier,
+} from 'src/app/services/stat-modifier.service';
 import { StatsService } from 'src/app/services/stats.service';
 import { WRTABLE } from 'src/app/utils/WRTable';
 import { pokemonTypes } from 'src/app/utils/colors';
@@ -35,6 +38,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   damage: Damage[] = [];
   possibleAbilities: string[] = [];
   subscriptions: Subscription[] = [];
+  valueChanges = new Observable();
   statChanges: number[] = [-6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6];
 
   constructor(
@@ -50,57 +54,72 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
 
   reinitialize() {
     const subs1 = this.battleService.getMyPokemon().subscribe((pokemon) => {
+      //console.log('mi poke update', pokemon);
       if (this.type === 'Mine') {
         this.pokemon = pokemon;
-        this.possibleAbilities = [...pokemon.pokemon.abilities, pokemon.pokemon.hiddenAbility]
+        this.possibleAbilities = [
+          ...pokemon.pokemon.abilities,
+          pokemon.pokemon.hiddenAbility,
+        ];
       } else {
         this.rivalPokemon = pokemon;
       }
       this.check();
     });
-  
+
     const subs2 = this.battleService.getRivalPokemon().subscribe((pokemon) => {
       if (this.type === 'Mine') {
         this.rivalPokemon = pokemon;
       } else {
         this.pokemon = pokemon;
-        this.possibleAbilities = [...pokemon.pokemon.abilities, pokemon.pokemon.hiddenAbility]
+        this.possibleAbilities = [
+          ...pokemon.pokemon.abilities,
+          pokemon.pokemon.hiddenAbility,
+        ];
       }
       this.check();
     });
 
-    const subs3 = this.statsModifiersService.myPokemonStatModifier$.subscribe( stats => {
-      if (this.formValueChangesEnabled && this.pokemonForm) {
-        this.updatePokemon();
-        this.formValueChangesEnabled = false;
-        this.populateForm();
-        this.recalculate();
+    const subs3 = this.statsModifiersService.myPokemonStatModifier$.subscribe(
+      (stats) => {
+        if (this.formValueChangesEnabled && this.pokemonForm) {
+          //this.updatePokemon();
+          this.formValueChangesEnabled = false;
+          this.populateForm();
+          // console.log('recalculate - my pokemon stats modified');
+          // this.recalculate();
+        }
       }
-    })
+    );
 
-    const subs4 = this.statsModifiersService.rivalPokemonStatModifier$.subscribe( stats => {
-      if (this.formValueChangesEnabled && this.pokemonForm) {
-        this.updatePokemon();
-        this.formValueChangesEnabled = false;
-        this.populateForm();
-        this.recalculate();
-      }
-    })
-  
+    const subs4 =
+      this.statsModifiersService.rivalPokemonStatModifier$.subscribe(
+        (stats) => {
+          if (this.formValueChangesEnabled && this.pokemonForm) {
+            //this.battleService.updatePokemonFull();
+            this.formValueChangesEnabled = false;
+            this.populateForm();
+            // console.log('recalculate - rival pokemon stats modified');
+            // this.recalculate();
+          }
+        }
+      );
+
     this.subscriptions.push(subs1, subs2, subs3, subs4);
-  
+
     const attacksFormGroup = this.formBuilder.group({
       attack1: [this.pokemon.moves[0]?.displayName], // Selector de Ataque 1
       attack2: [this.pokemon.moves[1]?.displayName], // Selector de Ataque 2
       attack3: [this.pokemon.moves[2]?.displayName], // Selector de Ataque 3
       attack4: [this.pokemon.moves[3]?.displayName], // Selector de Ataque 4
     });
-  
-    //console.log('ability', this.pokemon.ability)
+
     this.pokemonForm = this.formBuilder.group({
-      level: [this.pokemon.level],
-      nature: [this.pokemon.nature],
-      ability: [this.pokemon.ability],
+      basic: this.formBuilder.group({
+        level: [this.pokemon.level],
+        nature: [this.pokemon.nature],
+        ability: [this.pokemon.ability],
+      }),
       stats: this.formBuilder.group({
         hp: [this.stats.hp],
         ivHP: [0],
@@ -129,33 +148,41 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
       }),
       attacks: attacksFormGroup, // Agrega el FormGroup de ataques
     });
-  
+
     this.recalculate();
-  
-    this.pokemonForm.valueChanges.subscribe((value) => {
-      if (this.formValueChangesEnabled) {
-        this.updatePokemon();
-        this.formValueChangesEnabled = false;
-        this.populateForm();
-        this.recalculate();
+
+    const basicFormGroup = this.pokemonForm.get('basic') as FormGroup;
+    const statsFormGroup = this.pokemonForm.get('stats') as FormGroup;
+
+    merge(basicFormGroup.valueChanges, statsFormGroup.valueChanges).subscribe(
+      (value) => {
+        if (this.formValueChangesEnabled) {
+          this.formValueChangesEnabled = false;
+          //this.updatePokemon(value);
+          if(value.hasOwnProperty('level')) {
+            this.battleService.updatePokemonBasic(this.pokemon, value, this.type)
+          } else {
+            this.battleService.updatePokemonStats(this.pokemon, value, this.type)
+          }
+          this.populateForm();
+          this.recalculate();
+        }
       }
-    });
+    );
   }
 
   check() {
     if (this.formValueChangesEnabled && this.pokemonForm) {
       //console.log('entro al if: ', this.pokemon)
-      //this.updatePokemon();
       this.formValueChangesEnabled = false;
       this.populateForm();
+      //console.log('recalculate - check');
       this.recalculate();
     } else {
       //console.log('entro al else: ', this.pokemon)
       if (this.pokemon) {
         this.stats = this.statsService.calculateStats(this.pokemon, this.type);
-        //this.recalculate()
       }
-      //this.recalculate();
     }
   }
 
@@ -170,8 +197,12 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   }
 
   recalculate() {
+    //console.log('recalculate: ', this.pokemon.moves)
     this.stats = this.statsService.calculateStats(this.pokemon, this.type);
-    this.statsRival = this.statsService.calculateStats(this.rivalPokemon, this.type === 'Mine' ? 'Rival' : 'Mine');
+    this.statsRival = this.statsService.calculateStats(
+      this.rivalPokemon,
+      this.type === 'Mine' ? 'Rival' : 'Mine'
+    );
     // console.log("Ahora voy a recalcular el daño de: ", this.pokemon.pokemon.internalName)
     // console.log("Los stats de mi rival son: ", this.statsRival)
     if (this.stats) {
@@ -184,36 +215,6 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
     }
   }
 
-  updatePokemon(): void {
-    this.pokemon = {
-      ...this.pokemon,
-      level: this.pokemonForm.value.level,
-      nature: this.pokemonForm.value.nature,
-      ivs: {
-        HP: this.pokemonForm.value.stats.ivHP,
-        attack: this.pokemonForm.value.stats.ivAttack,
-        defense: this.pokemonForm.value.stats.ivDefense,
-        spAttack: this.pokemonForm.value.stats.ivSpAttack,
-        spDefense: this.pokemonForm.value.stats.ivSpDefense,
-        speed: this.pokemonForm.value.stats.ivSpeed,
-      },
-      evs: {
-        HP: this.pokemonForm.value.stats.evHP,
-        attack: this.pokemonForm.value.stats.evAttack,
-        defense: this.pokemonForm.value.stats.evDefense,
-        spAttack: this.pokemonForm.value.stats.evSpAttack,
-        spDefense: this.pokemonForm.value.stats.evSpDefense,
-        speed: this.pokemonForm.value.stats.evSpeed,
-      },
-    };
-    //console.log('updated?', this.pokemon)
-    if (this.type === 'Mine') {
-      this.battleService.updateMyPokemon(this.pokemon);
-    } else {
-      this.battleService.updateRivalPokemon(this.pokemon);
-    }
-  }
-
   populateForm(): void {
     const statsModifiers = {
       HPM: this.pokemonForm.value.stats.statChangeHP,
@@ -222,15 +223,20 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
       spAttackM: this.pokemonForm.value.stats.statChangeSpAttack,
       spDefenseM: this.pokemonForm.value.stats.statChangeSpDefense,
       speedM: this.pokemonForm.value.stats.statChangeSpeed,
-    }
-  
+    };
+
     this.stats = this.statsService.calculateStats(this.pokemon, this.type);
-    this.statsRival = this.statsService.calculateStats(this.rivalPokemon, this.type === 'Mine' ? 'Rival' : 'Mine');
-  
+    this.statsRival = this.statsService.calculateStats(
+      this.rivalPokemon,
+      this.type === 'Mine' ? 'Rival' : 'Mine'
+    );
+
     this.pokemonForm.patchValue({
-      level: this.pokemon.level,
-      nature: this.pokemon.nature,
-      ability: this.pokemon.ability,
+      basic: {
+        level: this.pokemon.level,
+        nature: this.pokemon.nature,
+        ability: this.pokemon.ability,
+      },
       stats: {
         hp: this.stats.hp,
         ivHP: this.pokemon.ivs?.HP || 0,
@@ -252,25 +258,32 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
         evSpeed: this.pokemon.evs?.speed || 0,
       },
     });
-  
+
+    //console.log('Aca hace patch con estos moves: ', this.pokemon.moves);
     const attacksFormGroup = this.pokemonForm.get('attacks') as FormGroup;
     for (const attackKey in this.pokemon.moves) {
       const key = 'attack' + (Number(attackKey) + 1);
       if (this.pokemon.moves.hasOwnProperty(attackKey)) {
         const attackGroup = attacksFormGroup.get(key) as FormControl;
-        attackGroup.patchValue(this.pokemon.moves[attackKey].displayName);
+        attackGroup.patchValue(this.pokemon.moves[attackKey].displayName, {
+          emitEvent: false,
+        });
       }
     }
-  
+    // console.log('Así quedó después del patch: ', attacksFormGroup.value)
     this.formValueChangesEnabled = true;
   }
-  
 
   calculateDamage(move: Move): Damage {
     this.stats = this.statsService.calculateStats(this.pokemon, this.type);
-    this.statsRival = this.statsService.calculateStats(this.rivalPokemon, this.type === 'Mine' ? 'Rival' : 'Mine');
+    this.statsRival = this.statsService.calculateStats(
+      this.rivalPokemon,
+      this.type === 'Mine' ? 'Rival' : 'Mine'
+    );
 
-    //console.log('calculateDamage:', this.stats)
+    if(this.type === 'Mine') {
+      console.log('calculateDamage:', this.stats)
+    }
 
     let attackStat, defenseStat;
     if (move.category === 'special') {
@@ -280,7 +293,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
       attackStat = this.stats.attack;
       defenseStat = this.statsRival.defense;
     } else {
-      return {min: 0, max: 0, effectiveness: 1};
+      return { min: 0, max: 0, effectiveness: 1 };
     }
 
     const damage = this.calculateBaseDamage(move, attackStat, defenseStat);
@@ -292,13 +305,19 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
     attackStat: number,
     defenseStat: number
   ): Damage {
-    const level = this.pokemonForm.value.level || 50; // Nivel predeterminado si no se proporciona uno
+    const level = this.pokemonForm.value.basic.level || 50; // Nivel predeterminado si no se proporciona uno
     const power = move.power || 0; // Poder del movimiento o 0 si no se proporciona
     const typeMultiplier = this.getTypeMultiplier(move, this.rivalPokemon); // Obtener el multiplicador de tipo para el movimiento
-    //console.log('calculateBaseDamage: ', level, power, randomMultiplier, typeMultiplier, attackStat, defenseStat)
+    
+    if(this.type === 'Mine') {
+      console.log('calculateBaseDamage: ', level, power, typeMultiplier, attackStat, defenseStat)
+    }
+
     const minDamageMultiplier = 0.85;
     const maxDamageMultiplier = 1;
-    const hasSTAB = this.pokemon.pokemon.type1 === move.type || this.pokemon.pokemon.type2 === move.type;
+    const hasSTAB =
+      this.pokemon.pokemon.type1 === move.type ||
+      this.pokemon.pokemon.type2 === move.type;
     const stabMultiplier = hasSTAB ? 1.5 : 1.0;
     const damage = Math.floor(
       Math.floor(Math.floor((2 * level) / 5 + 2) * attackStat * power) /
@@ -308,10 +327,14 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
     );
 
     return {
-      min: Math.floor(damage * minDamageMultiplier * typeMultiplier * stabMultiplier),
-      max: Math.floor(damage * maxDamageMultiplier * typeMultiplier * stabMultiplier),
-      effectiveness: typeMultiplier 
-    }
+      min: Math.floor(
+        damage * minDamageMultiplier * typeMultiplier * stabMultiplier
+      ),
+      max: Math.floor(
+        damage * maxDamageMultiplier * typeMultiplier * stabMultiplier
+      ),
+      effectiveness: typeMultiplier,
+    };
   }
 
   private getTypeMultiplier(move: Move, rivalPokemon: myPokemon): number {
@@ -325,33 +348,37 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
     return m1 * m2;
   }
 
-  
   onStatModifierChange(event: any) {
-    const value = event.target.value;
-    const statKey = event.target.attributes.formControlName.nodeValue;
-    
-    // Get the form control to update the value
-    // const statModifierFormControl = this.pokemonForm.get(['stats', statKey]);
-
-    // if (statModifierFormControl) {
-    //   statModifierFormControl.setValue(Number(value));
-    // }
-
     const currentModifiers: StatsModifier = {
       HP: +this.pokemonForm.value.stats.statChangeHP,
       attack: +this.pokemonForm.value.stats.statChangeAttack,
       defense: +this.pokemonForm.value.stats.statChangeDefense,
       spAttack: +this.pokemonForm.value.stats.statChangeSpAttack,
       spDefense: +this.pokemonForm.value.stats.statChangeSpDefense,
-      speed: +this.pokemonForm.value.stats.statChangeSpeed
+      speed: +this.pokemonForm.value.stats.statChangeSpeed,
     };
 
     // Update the service with the new stat modifier value
     if (this.type === 'Mine') {
       this.statsModifiersService.updateMyPokemonStatModifier(currentModifiers);
     } else {
-      this.statsModifiersService.updateRivalPokemonStatModifier(currentModifiers);
+      this.statsModifiersService.updateRivalPokemonStatModifier(
+        currentModifiers
+      );
     }
+  }
+
+  onSuggestionSelected(move: Move[], i: number) {
+    //console.log('onSuggestion', suggestion)
+    // const controlName = 'attack' + (i + 1);
+    // const control = this.pokemonForm.get(['attacks', controlName]) as FormControl;
+    // control.setValue(suggestion)
+
+    this.pokemon.moves[i] = move[0];
+    console.log('recalculate - onSuggestion');
+    //this.recalculate()
+    //this.populateForm()
+    this.check();
   }
 
   getBackgroundColor(effectiveness: number): string {

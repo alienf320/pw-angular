@@ -26,4 +26,74 @@ export class PokemonBattleService {
   updateMyPokemon(pokemon: myPokemon) {
     this.myPokemonSubject.next(pokemon);
   }
+
+  updatePokemonBasic(pokemon: myPokemon, values?: any, type = 'Mine'): void {
+    const pk: myPokemon = {
+      ...pokemon,
+      level: values.level,
+      nature: values.nature,
+    }
+    if (type === 'Mine') {
+      this.updateMyPokemon(pk);
+    } else {
+      this.updateRivalPokemon(pk);
+    }
+  }
+
+  updatePokemonStats(pokemon: myPokemon, values?: any, type = 'Mine'): void {
+    const pk: myPokemon = {
+      ...pokemon,
+      ivs: {
+        HP: values.ivHP,
+        attack: values.ivAttack,
+        defense: values.ivDefense,
+        spAttack: values.ivSpAttack,
+        spDefense: values.ivSpDefense,
+        speed: values.ivSpeed,
+      },
+      evs: {
+        HP: values.evHP,
+        attack: values.evAttack,
+        defense: values.evDefense,
+        spAttack: values.evSpAttack,
+        spDefense: values.evSpDefense,
+        speed: values.evSpeed,
+      },
+    };
+    if (type === 'Mine') {
+      this.updateMyPokemon(pk);
+    } else {
+      this.updateRivalPokemon(pk);
+    }
+  }
+
+  updatePokemonFull(pokemon: myPokemon, values?: any, type = 'Mine'): void {
+    const pk = {
+      ...pokemon,
+      level: values.level,
+      nature: values.nature,
+      ivs: {
+        HP: values.ivHP,
+        attack: values.ivAttack,
+        defense: values.ivDefense,
+        spAttack: values.ivSpAttack,
+        spDefense: values.ivSpDefense,
+        speed: values.ivSpeed,
+      },
+      evs: {
+        HP: values.evHP,
+        attack: values.evAttack,
+        defense: values.evDefense,
+        spAttack: values.evSpAttack,
+        spDefense: values.evSpDefense,
+        speed: values.evSpeed,
+      },
+    };
+    //console.log('updated?', this.pokemon)
+    if (type === 'Mine') {
+      this.updateMyPokemon(pk);
+    } else {
+      this.updateRivalPokemon(pk);
+    }
+  }
 }

@@ -11,7 +11,9 @@ export class StatsService {
   constructor(private statModifierService: StatModifierService) { }
 
   calculateStats(pokemon: myPokemon, type: string): Stats {
-    //console.log('calculeStats', pokemon);
+    if(type==='Mine') {
+      console.log('calculeStats', pokemon);
+    }
     const pk = pokemon.pokemon;
     const level = pokemon.level ?? 1;
     let ivs = pokemon.ivs;
@@ -45,7 +47,9 @@ export class StatsService {
     if (type === 'Rival') {
       statModifiers = this.statModifierService.getRivalPokemonStatModifiers();
     }
-    //console.log('statModifiers', statModifiers)
+    if(type==='Mine') {
+      console.log('statModifiers', statModifiers)
+    }
 
     // Apply the stat modifiers to the respective stats
     const hpM = this.applyStatModifier(pk.baseStats[0], statModifiers.HP);

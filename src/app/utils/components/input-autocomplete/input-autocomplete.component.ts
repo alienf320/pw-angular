@@ -1,5 +1,17 @@
-import { Component, EventEmitter, Input, OnInit, Output, forwardRef } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnInit,
+  Output,
+  forwardRef,
+} from '@angular/core';
+import {
+  ControlValueAccessor,
+  FormControl,
+  NG_VALUE_ACCESSOR,
+} from '@angular/forms';
 import { Observable, startWith, map, tap, take } from 'rxjs';
 import { Trainer } from 'src/app/models/trainer.models';
 import { MoveService } from 'src/app/services/move.service';
@@ -21,14 +33,16 @@ import { PokemonService } from 'src/app/services/pokemon-service.service';
     },
   ],
 })
-export class InputAutocompleteComponent implements OnInit, ControlValueAccessor {
+export class InputAutocompleteComponent
+  implements ControlValueAccessor
+{
   @Input() inputControl = new FormControl();
-  filteredSuggestions: Observable<string[]>;
+  filteredSuggestions!: Observable<string[]>;
   trainers: Trainer[] = [];
   pokemonNames: string[] = POKEMON_INTERNAL_NAMES;
   suggestions: string[] = [];
   loaded = false;
-  @Input() inputType: 'default' | 'moves' | 'pokemon' | 'moves'= 'default';
+  @Input() inputType: 'default' | 'moves' | 'pokemon' | 'moves' = 'default';
 
   private onChange: (value: any) => void = () => {};
   private onTouch: () => void = () => {};
@@ -39,13 +53,18 @@ export class InputAutocompleteComponent implements OnInit, ControlValueAccessor 
     private moveService: MoveService,
     private pokemonService: PokemonService
   ) {
+  }
+  
+  ngOnInit() {
     this.filteredSuggestions = this.inputControl.valueChanges.pipe(
+      tap(() => console.log('TAP')),
       startWith(''),
       map((value) => this.filterSuggestions(value))
     );
   }
 
   writeValue(value: any): void {
+    console.log('writeValue');
     this.inputControl.setValue(value);
   }
 
@@ -61,7 +80,7 @@ export class InputAutocompleteComponent implements OnInit, ControlValueAccessor 
     isDisabled ? this.inputControl.disable() : this.inputControl.enable();
   }
 
-  ngOnInit(): void {
+  onInputFocus(): void {
     if (this.inputType === 'default') {
       this.suggestions = TRAINERS;
       this.loaded = true;
@@ -76,7 +95,8 @@ export class InputAutocompleteComponent implements OnInit, ControlValueAccessor 
       this.loaded = true;
     } else if (this.inputType === 'moves') {
       this.suggestions = Constants.movesNames;
-      this.loaded = true
+      this.loaded = true;
+      console.log('debería cargar moves: ', this.suggestions);
     } else {
       this.loaded = true;
       this.suggestions = Constants.movesNames;
@@ -96,19 +116,26 @@ export class InputAutocompleteComponent implements OnInit, ControlValueAccessor 
     this.inputControl.setValue(suggestion);
     this.onChange(suggestion);
     this.onTouch();
+    console.log('inputControl value: ', this.inputControl.value, suggestion);
 
     if (this.inputType === 'default') {
       data = this.trainers.find((t) => t.name === suggestion);
       this.suggestionSelected.emit(data);
-    } else if(this.inputType === 'pokemon') {
-      this.pokemonService.getPokemonByName('', suggestion, true).pipe(take(1)).subscribe( pokemon => {
-        data = pokemon[0]
-        this.suggestionSelected.emit(data);
-      })
-    } else if(this.inputType === 'moves') {
-      this.moveService.getMoveByName(suggestion).pipe(take(1)).subscribe( move => {
-        this.suggestionSelected.emit(move)
-      })
+    } else if (this.inputType === 'pokemon') {
+      this.pokemonService
+        .getPokemonByName('', suggestion, true)
+        .pipe(take(1))
+        .subscribe((pokemon) => {
+          data = pokemon[0];
+          this.suggestionSelected.emit(data);
+        });
+    } else if (this.inputType === 'moves') {
+      this.moveService
+        .getMoveByName(suggestion)
+        .pipe(take(1))
+        .subscribe((move) => {
+          this.suggestionSelected.emit(move);
+        });
     } else {
       data = suggestion;
       this.suggestionSelected.emit(data);
