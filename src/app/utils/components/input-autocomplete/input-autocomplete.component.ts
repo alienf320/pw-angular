@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable, startWith, map, tap } from 'rxjs';
+import { Observable, startWith, map, tap, take } from 'rxjs';
 import { Trainer } from 'src/app/models/trainer.models';
 import { MoveService } from 'src/app/services/move.service';
 import { TrainerService } from 'src/app/services/trainer.service';
 import { Constants } from '../../constants';
+import { TRAINERS } from '../../trainers';
 
 @Component({
   selector: 'app-input-autocomplete',
@@ -30,13 +31,10 @@ export class InputAutocompleteComponent implements OnInit {
 
   ngOnInit(): void {
     if(this.inputType === 'default') {
-      this.trainerService.getTrainers().subscribe((data) => {
+      this.suggestions = TRAINERS;
+      this.loaded = true;
+      this.trainerService.getTrainers().pipe(take(1)).subscribe((data) => {
         this.trainers = data;
-        this.suggestions = data.map((trainer) => trainer.name);
-        if(data) {
-          this.loaded = true
-          //console.log('data', this.suggestions)
-        }
       });
     } else {
       this.loaded = true;
