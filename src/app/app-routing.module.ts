@@ -8,7 +8,8 @@ const routes: Routes = [
   { path: 'pokemon-info', component: PokemonInfoComponent },
   { path: 'trainer', component: TrainerComponent },
   { path: 'user', loadChildren: () => import('./modules/my-team/my-team.module').then(m => m.MyTeamModule) },
-  { path: 'battle', loadChildren: () => import('./modules/battle/battle.module').then(m => m.BattleModule) }
+  { path: 'battle', loadChildren: () => import('./modules/battle/battle.module').then(m => m.BattleModule) },
+  { path: 'tests', loadChildren: () => import('./modules/tests/tests.module').then(m => m.TestsModule) }
 ];
 
 @NgModule({

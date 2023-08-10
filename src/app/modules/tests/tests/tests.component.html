@@ -1,0 +1,14 @@
+<div [formGroup]="customForm" class="main-container">
+  <label for="input">Input:</label>
+  <app-input-autocomplete
+  [inputControl]="getFormControl()"
+  [inputType]="'default'"
+  (suggestionSelected)="onSuggestionSelected($event)"
+></app-input-autocomplete>
+
+
+  <label for="textField">Text Field:</label>
+  <textarea id="textField" formControlName="textField"></textarea>
+
+  <button (click)="onSubmit()">Submit</button>
+</div>
