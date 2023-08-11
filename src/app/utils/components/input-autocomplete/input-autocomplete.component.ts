@@ -81,7 +81,7 @@ export class InputAutocompleteComponent
 
   onInputFocus(): void {
     if (this.inputType === 'default') {
-      this.suggestions = TRAINERS;
+      this.suggestions = TRAINERS.map(el => el.name + ' - ' + el.type);
       this.loaded = true;
       this.trainerService
         .getTrainers()
@@ -117,7 +117,8 @@ export class InputAutocompleteComponent
     //console.log('inputControl value: ', this.inputControl.value, suggestion);
 
     if (this.inputType === 'default') {
-      data = this.trainers.find((t) => t.name === suggestion);
+      const [name, type] = suggestion.split(' - ')
+      data = this.trainers.find((t) => t.name === name && t.type === type);
       this.suggestionSelected.emit(data);
     } else if (this.inputType === 'pokemon') {
       this.pokemonService
