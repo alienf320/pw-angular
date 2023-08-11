@@ -193,6 +193,7 @@
 
   <div class="attacks-container">
     <h3>Ataques</h3>
+    <button *ngIf="type!=='Mine'" (click)="loadAttacks()">Load attacks</button>
     <div
       class="row"
       formGroupName="attacks"

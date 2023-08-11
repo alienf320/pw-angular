@@ -51,28 +51,29 @@ export class StatsService {
     //   console.log('statModifiers', statModifiers)
     // }
 
+    
+    const hp = Math.floor((((ivs?.HP ?? 0) + 2 * pk.baseStats[0] + (evs?.HP ?? 0) / 4) / 100) * level + 10 + level);
+    const attack = Math.floor((((ivs?.attack ?? 0) + 2 * pk.baseStats[1] + (evs?.attack ?? 0) / 4) / 100) * level + 5);
+    const defense = Math.floor((((ivs?.defense ?? 0) + 2 * pk.baseStats[2] + (evs?.defense ?? 0) / 4) / 100) * level + 5);
+    const spAttack = Math.floor((((ivs?.spAttack ?? 0) + 2 * pk.baseStats[4] + (evs?.spAttack ?? 0) / 4) / 100) * level + 5);
+    const spDefense = Math.floor((((ivs?.spDefense ?? 0) + 2 * pk.baseStats[5] + (evs?.spDefense ?? 0) / 4) / 100) * level + 5);
+    const speed = Math.floor((((ivs?.speed ?? 0) + 2 * pk.baseStats[3] + (evs?.speed ?? 0) / 4) / 100) * level + 5);
+
     // Apply the stat modifiers to the respective stats
-    const hpM = this.applyStatModifier(pk.baseStats[0], statModifiers.HP);
-    const attackM = this.applyStatModifier(pk.baseStats[1], statModifiers.attack);
-    const defenseM = this.applyStatModifier(pk.baseStats[2], statModifiers.defense);
-    const spAttackM = this.applyStatModifier(pk.baseStats[4], statModifiers.spAttack);
-    const spDefenseM = this.applyStatModifier(pk.baseStats[5], statModifiers.spDefense);
-    const speedM = this.applyStatModifier(pk.baseStats[3], statModifiers.speed);
-  
-    const hp = Math.floor((((ivs?.HP ?? 0) + 2 * hpM + (evs?.HP ?? 0) / 4) / 100) * level + 10 + level);
-    const attack = Math.floor((((ivs?.attack ?? 0) + 2 * attackM + (evs?.attack ?? 0) / 4) / 100) * level + 5);
-    const defense = Math.floor((((ivs?.defense ?? 0) + 2 * defenseM + (evs?.defense ?? 0) / 4) / 100) * level + 5);
-    const spAttack = Math.floor((((ivs?.spAttack ?? 0) + 2 * spAttackM + (evs?.spAttack ?? 0) / 4) / 100) * level + 5);
-    const spDefense = Math.floor((((ivs?.spDefense ?? 0) + 2 * spDefenseM + (evs?.spDefense ?? 0) / 4) / 100) * level + 5);
-    const speed = Math.floor((((ivs?.speed ?? 0) + 2 * speedM + (evs?.speed ?? 0) / 4) / 100) * level + 5);
-  
+    const hpM = this.applyStatModifier(hp, statModifiers.HP);
+    const attackM = this.applyStatModifier(attack, statModifiers.attack);
+    const defenseM = this.applyStatModifier(defense, statModifiers.defense);
+    const spAttackM = this.applyStatModifier(spAttack, statModifiers.spAttack);
+    const spDefenseM = this.applyStatModifier(spDefense, statModifiers.spDefense);
+    const speedM = this.applyStatModifier(speed, statModifiers.speed);
+    
     const stats: Stats = {
-      hp: Math.floor(hp * this.getNatureModifier('HP', nature!)),
-      attack: Math.floor(attack * this.getNatureModifier('Attack', nature!)),
-      defense: Math.floor(defense * this.getNatureModifier('Defense', nature!)),
-      spAttack: Math.floor(spAttack * this.getNatureModifier('Special Attack', nature!)),
-      spDefense: Math.floor(spDefense * this.getNatureModifier('Special Defense', nature!)),
-      speed: Math.floor(speed * this.getNatureModifier('Speed', nature!))
+      hp: Math.floor(hpM * this.getNatureModifier('HP', nature!)),
+      attack: Math.floor(attackM * this.getNatureModifier('Attack', nature!)),
+      defense: Math.floor(defenseM * this.getNatureModifier('Defense', nature!)),
+      spAttack: Math.floor(spAttackM * this.getNatureModifier('Special Attack', nature!)),
+      spDefense: Math.floor(spDefenseM * this.getNatureModifier('Special Defense', nature!)),
+      speed: Math.floor(speedM * this.getNatureModifier('Speed', nature!))
     };
 
     return stats;
@@ -124,7 +125,7 @@ export class StatsService {
     }
   }
 
-    private applyStatModifier(baseStat: number, modifier: number): number {
+    private applyStatModifier(stat: number, modifier: number): number {
     const stageMultiplier: { [key: string]: number } = {
       '-6': 2 / 8,
       '-5': 2 / 7,
@@ -143,7 +144,7 @@ export class StatsService {
 
     const stageKey = modifier.toString();
     const stageValue = stageMultiplier[stageKey];
-
-    return Math.floor(baseStat * stageValue);
+    //console.log('Multiplicador y resultado', stat, stageValue, stat * stageValue)
+    return Math.floor(stat * stageValue);
   }
 }

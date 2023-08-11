@@ -12,6 +12,7 @@ import { Move } from 'src/app/models/move.models';
 import { myPokemon } from 'src/app/models/myPokemon.models';
 import { Stats } from 'src/app/models/stats.models';
 import { PokemonBattleService } from 'src/app/services/pokemon-battle.service';
+import { PokemonService } from 'src/app/services/pokemon-service.service';
 import {
   StatModifierService,
   StatsModifier,
@@ -45,7 +46,8 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
     private formBuilder: FormBuilder,
     private statsService: StatsService,
     private battleService: PokemonBattleService,
-    private statsModifiersService: StatModifierService
+    private statsModifiersService: StatModifierService,
+    private pokemonService: PokemonService
   ) {}
 
   ngOnInit(): void {
@@ -216,6 +218,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   }
 
   populateForm(): void {
+    console.log('populateForm')
     const statsModifiers = {
       HPM: this.pokemonForm.value.stats.statChangeHP,
       attackM: this.pokemonForm.value.stats.statChangeAttack,
@@ -277,6 +280,11 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   savePokemon() {
     //console.log(this.pokemonForm.value, this.pokemon)
     this.battleService.updatePokemonFull(this.pokemon)
+  }
+
+  loadAttacks() {
+    this.pokemon.moves = this.pokemonService.fillMoves(this.pokemon.pokemon, this.pokemon.level!)
+    this.populateForm()
   }
 
   calculateDamage(move: Move): Damage {
