@@ -274,6 +274,11 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
     this.formValueChangesEnabled = true;
   }
 
+  savePokemon() {
+    //console.log(this.pokemonForm.value, this.pokemon)
+    this.battleService.updatePokemonFull(this.pokemon)
+  }
+
   calculateDamage(move: Move): Damage {
     this.stats = this.statsService.calculateStats(this.pokemon, this.type);
     this.statsRival = this.statsService.calculateStats(

@@ -12,6 +12,9 @@
           >{{ pokemon.pokemon.type2 | titlecase }}</span
         >
       </div>
+      <div class="sub-group">
+        <button (click)="savePokemon()" *ngIf="type==='Mine'">Save</button>
+      </div>
     </div>
 
     <div class="row">
