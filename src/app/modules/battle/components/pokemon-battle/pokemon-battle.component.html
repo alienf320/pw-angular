@@ -194,15 +194,16 @@
   <div class="attacks-container">
     <h3>Ataques</h3>
     <div
-      class="form-group"
+      class="row"
       formGroupName="attacks"
       *ngFor="let move of pokemon.moves; let i = index"
     >
+    <div class="info" [tooltip]="move">i</div>
       <app-input-autocomplete
         [inputControl]="getAttackFormControl(i)"
         [inputType]="'moves'"
         (suggestionSelected)="onSuggestionSelected($event, i)"
-        [tooltip]="move"
+        
       ></app-input-autocomplete>
       <div
         class="damage"
