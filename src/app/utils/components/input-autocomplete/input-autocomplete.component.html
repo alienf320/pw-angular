@@ -1,6 +1,8 @@
 <mat-form-field>
+  <label [for]="label">{{label}}</label>
   <input
     type="text"
+    [name]="label"
     matInput
     [formControl]="inputControl"
     [matAutocomplete]="auto"

@@ -13,10 +13,10 @@
   
   <div class="rival-menu input-box">
     <div class="rival-box">
-      <app-input-autocomplete (suggestionSelected)="loadTrainer($event)"></app-input-autocomplete>
+      <app-input-autocomplete label="Trainers" (suggestionSelected)="loadTrainer($event)"></app-input-autocomplete>
     </div>
     <div class="rival-box">
-      <app-input-autocomplete inputType="pokemon" (suggestionSelected)="loadPokemon($event)"></app-input-autocomplete>
+      <app-input-autocomplete label="Pokemon" inputType="pokemon" (suggestionSelected)="loadPokemon($event)"></app-input-autocomplete>
     </div>
     <!-- <div class="rival-box">
       <label for="boxes">Trainer</label>

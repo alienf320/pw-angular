@@ -37,6 +37,7 @@ export class InputAutocompleteComponent
   implements ControlValueAccessor
 {
   @Input() inputControl = new FormControl();
+  @Input() label = '';
   filteredSuggestions!: Observable<string[]>;
   trainers: Trainer[] = [];
   pokemonNames: string[] = POKEMON_INTERNAL_NAMES;
@@ -57,14 +58,12 @@ export class InputAutocompleteComponent
   
   ngOnInit() {
     this.filteredSuggestions = this.inputControl.valueChanges.pipe(
-      tap(() => console.log('TAP')),
       startWith(''),
       map((value) => this.filterSuggestions(value))
     );
   }
 
   writeValue(value: any): void {
-    console.log('writeValue');
     this.inputControl.setValue(value);
   }
 
@@ -96,7 +95,6 @@ export class InputAutocompleteComponent
     } else if (this.inputType === 'moves') {
       this.suggestions = Constants.movesNames;
       this.loaded = true;
-      console.log('debería cargar moves: ', this.suggestions);
     } else {
       this.loaded = true;
       this.suggestions = Constants.movesNames;
@@ -116,7 +114,7 @@ export class InputAutocompleteComponent
     this.inputControl.setValue(suggestion);
     this.onChange(suggestion);
     this.onTouch();
-    console.log('inputControl value: ', this.inputControl.value, suggestion);
+    //console.log('inputControl value: ', this.inputControl.value, suggestion);
 
     if (this.inputType === 'default') {
       data = this.trainers.find((t) => t.name === suggestion);

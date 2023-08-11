@@ -2,23 +2,25 @@
   <div class="form-group basic" formGroupName="basic">
     <div class="row">
       <h2>{{ pokemon.pokemon.name | titlecase }}</h2>
-      <span [style.backgroundColor]="getTypeColor(pokemon.pokemon.type1)">{{
-        pokemon.pokemon.type1
-      }}</span>
-      <span
-        *ngIf="pokemon.pokemon.type2"
-        [style.backgroundColor]="getTypeColor(pokemon.pokemon.type2)"
-        >{{ pokemon.pokemon.type2 }}</span
-      >
+      <div class="sub-group">
+        <span [style.backgroundColor]="getTypeColor(pokemon.pokemon.type1)">{{
+          pokemon.pokemon.type1 | titlecase
+        }}</span>
+        <span
+          *ngIf="pokemon.pokemon.type2"
+          [style.backgroundColor]="getTypeColor(pokemon.pokemon.type2)"
+          >{{ pokemon.pokemon.type2 | titlecase }}</span
+        >
+      </div>
     </div>
 
     <div class="row">
-      <div class="form-group">
+      <div class="sub-group">
         <label for="level">Nivel:</label>
         <input type="number" id="level" formControlName="level" />
       </div>
     
-      <div class="form-group">
+      <div class="sub-group">
         <label for="nature">Nature:</label>
         <select id="nature" formControlName="nature">
           <option
@@ -32,31 +34,33 @@
       </div>
     </div>
   
-    <div class="form-group">
-      <ng-container *ngIf="this.pokemon?.ability; else possibleAbilitiesSection">
-        <label for="ability">Ability:</label>
-        <input
-          id="ability"
-          formControlName="ability"
-          [tooltip]="this.pokemon.ability"
-          typeTooltip="ability"
-        />
-      </ng-container>
+    <div class="row">
+      <div class="sub-group">
+        <ng-container *ngIf="this.pokemon?.ability; else possibleAbilitiesSection">
+          <label for="ability">Ability:</label>
+          <input
+            id="ability"
+            formControlName="ability"
+            [tooltip]="this.pokemon.ability"
+            typeTooltip="ability"
+          />
+        </ng-container>
+        <ng-template #possibleAbilitiesSection>
+          <div class="possible-abilities">
+            <label for="possibleAbilities">Possible Abilities:</label>
+            <div
+              *ngFor="let ability of possibleAbilities"
+              class="chip"
+              [tooltip]="ability"
+              typeTooltip="ability"
+            >
+              {{ ability }}
+            </div>
+          </div>
+        </ng-template>
+      </div>
     </div>
   
-    <ng-template #possibleAbilitiesSection>
-      <div class="possible-abilities">
-        <label for="possibleAbilities">Possible Abilities:</label>
-        <div
-          *ngFor="let ability of possibleAbilities"
-          class="chip"
-          [tooltip]="ability"
-          typeTooltip="ability"
-        >
-          {{ ability }}
-        </div>
-      </div>
-    </ng-template>
   </div>
 
   <div class="stats-container" *ngIf="stats" formGroupName="stats">
@@ -191,13 +195,6 @@
       formGroupName="attacks"
       *ngFor="let move of pokemon.moves; let i = index"
     >
-      <!-- <input-autocomplete
-        type="text"
-        [id]="'attack' + (i + 1)"
-        [inputControl]="getAttackFormControl(i)"
-        inputType="moves"
-        [tooltip]="move"
-      ></input-autocomplete> -->
       <app-input-autocomplete
         [inputControl]="getAttackFormControl(i)"
         [inputType]="'moves'"

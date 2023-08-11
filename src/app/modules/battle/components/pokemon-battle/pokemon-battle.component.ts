@@ -281,9 +281,9 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
       this.type === 'Mine' ? 'Rival' : 'Mine'
     );
 
-    if(this.type === 'Mine') {
-      console.log('calculateDamage:', this.stats)
-    }
+    // if(this.type === 'Mine') {
+    //   console.log('calculateDamage:', this.stats)
+    // }
 
     let attackStat, defenseStat;
     if (move.category === 'special') {
@@ -309,9 +309,9 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
     const power = move.power || 0; // Poder del movimiento o 0 si no se proporciona
     const typeMultiplier = this.getTypeMultiplier(move, this.rivalPokemon); // Obtener el multiplicador de tipo para el movimiento
     
-    if(this.type === 'Mine') {
-      console.log('calculateBaseDamage: ', level, power, typeMultiplier, attackStat, defenseStat)
-    }
+    // if(this.type === 'Mine') {
+    //   console.log('calculateBaseDamage: ', level, power, typeMultiplier, attackStat, defenseStat)
+    // }
 
     const minDamageMultiplier = 0.85;
     const maxDamageMultiplier = 1;
@@ -369,15 +369,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   }
 
   onSuggestionSelected(move: Move[], i: number) {
-    //console.log('onSuggestion', suggestion)
-    // const controlName = 'attack' + (i + 1);
-    // const control = this.pokemonForm.get(['attacks', controlName]) as FormControl;
-    // control.setValue(suggestion)
-
     this.pokemon.moves[i] = move[0];
-    console.log('recalculate - onSuggestion');
-    //this.recalculate()
-    //this.populateForm()
     this.check();
   }
 
@@ -406,7 +398,6 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   getAttackFormControl(index: number): any {
     const controlName = 'attack' + (index + 1);
     return this.pokemonForm.get(['attacks', controlName]) as FormControl;
-    //eturn controlName
   }
 
   getTypeColor(type: string): string {
