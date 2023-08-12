@@ -1,0 +1,132 @@
+th,
+td {
+  border: 1px solid black;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+}
+
+.green-cell {
+  background-color: green;
+}
+
+.white-cell {
+  background-color: white;
+}
+
+.red-cell {
+  background-color: red;
+}
+
+.black-cell {
+  background-color: black;
+}
+
+table {
+  overflow: hidden;
+}
+
+th,
+td {
+  border: 1px solid black;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  position: relative;
+}
+
+/* Rotar el texto verticalmente */
+.vertical-text {
+
+  span {
+    writing-mode: vertical-rl;
+    height: 80px;
+    min-width: 32px;
+    vertical-align: center;
+    transform: scale(-1);
+    margin-left: 22%;
+  }
+}
+
+/* Agrega clases para resaltar filas y columnas */
+
+.row-highlight {
+  background-color: lightgray;
+}
+
+.column-highlight {
+  background-color: lightgray;
+}
+
+.row-column-highlight {
+  background-color: lightblue;
+}
+
+td:hover::before { 
+  background-color: rgb(251, 251, 1);
+  content: '\00a0';  
+  height: 100%;
+  left: -5000px;
+  position: absolute;  
+  top: 0;
+  width: 10000px;   
+  z-index: -1;        
+}
+
+td:hover::after { 
+  background-color: rgb(251, 251, 1);
+  content: '\00a0';  
+  height: 10000px;    
+  left: 0;
+  position: absolute;  
+  top: -5000px;
+  width: 100%;
+  z-index: -1;        
+}
+
+
+th:first-child,
+td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background-color: white;
+  border-right: 2px solid gray; /* Para separar visualmente la columna fija */
+}
+
+//----------------------------------------
+
+.table-container {
+  overflow: auto;
+  max-width: 100%;
+}
+
+.header-table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: auto;
+}
+
+.data-table-container {
+  overflow: auto;
+}
+
+.data-table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: auto;
+}
+
+.row-header,
+.data-table th {
+  position: sticky;
+  left: 0;
+  background-color: white;
+  z-index: 1;
+}
+
+.row-header {
+  background-color: #f0f0f0; /* Cambia al color deseado */
+  z-index: 2;
+}
+

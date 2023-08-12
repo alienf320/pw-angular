@@ -16,6 +16,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TooltipAbilityComponent } from './utils/components/tooltip-ability/tooltip-ability.component';
 import { SentenceFormatPipe } from './utils/pipes/sentence-format';
+import { TypeTableComponent } from './components/type-table/type-table.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { SentenceFormatPipe } from './utils/pipes/sentence-format';
     TrainerCardComponent,
     TrainerInfoComponent,
     TooltipAbilityComponent,
-    SentenceFormatPipe
+    SentenceFormatPipe,
+    TypeTableComponent
   ],
   imports: [
     BrowserModule,
