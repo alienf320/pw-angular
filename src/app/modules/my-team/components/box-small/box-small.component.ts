@@ -8,6 +8,7 @@ import { Box, BoxService } from 'src/app/services/box.service';
 import { PokemonService } from 'src/app/services/pokemon-service.service';
 import { EditStatsOverlayComponent } from '../edit-stats-overlay/edit-stats-overlay.component';
 import { PokemonBoxDetailsComponent } from '../pokemon-box-details/pokemon-box-details.component';
+import { TeamService } from 'src/app/services/team.service';
 
 @Component({
   selector: 'app-box-small',
@@ -24,7 +25,7 @@ export class BoxSmallComponent {
   }
 
   constructor(
-    private pokemonService: PokemonService,
+    private teamService: TeamService,
     private boxService: BoxService,
     private overlay: Overlay
   ) {}
@@ -40,10 +41,6 @@ export class BoxSmallComponent {
         this.box = box
       }
     )
-  }
-
-  addToBox(pokemon: Pokemon) {
-    this.openOverlay(pokemon);
   }
 
   openOverlay(pokemonFull: Pokemon, pokemonStats?: myPokemon) {
@@ -118,8 +115,8 @@ export class BoxSmallComponent {
     });
   }
   
-  addPokemonToTeam() {
-    console.log('add Pokemon to Team: ')
+  addPokemonToTeam(event: myPokemon) {
+    this.teamService.addPokemonToTeam(event)
   }
 
   modifyPokemon(pk: myPokemon) {
