@@ -8,9 +8,11 @@ import { myPokemon } from 'src/app/models/myPokemon.models';
 })
 export class PokemonBoxCardComponent {
   @Input() myPokemon!: myPokemon
-  @Output() delete: EventEmitter<any> = new EventEmitter<any>();
+  @Input() type: 'Default' | 'Small' = 'Default';
+  @Output() delete: EventEmitter<string> = new EventEmitter<string>();
   @Output() modify: EventEmitter<any> = new EventEmitter<any>();
   @Output() details: EventEmitter<myPokemon> = new EventEmitter<myPokemon>();
+  @Output() add: EventEmitter<myPokemon> = new EventEmitter<myPokemon>();
 
   deletePokemon() {
     const confirmDelete = confirm('Are you sure?');
@@ -25,5 +27,9 @@ export class PokemonBoxCardComponent {
   
   openDetails() {
     this.details.emit(this.myPokemon);
+  }
+
+  addPokemon() {
+    this.add.emit(this.myPokemon)
   }
 }

@@ -11,6 +11,7 @@ import { PokemonBoxCardComponent } from './components/pokemon-box-card/pokemon-b
 import { PokemonBoxDetailsComponent } from './components/pokemon-box-details/pokemon-box-details.component';
 import { InputAutocompleteComponent } from 'src/app/utils/components/input-autocomplete/input-autocomplete.component';
 import { SharedModule } from 'src/app/utils/modules/shared.module';
+import { BoxSmallComponent } from './components/box-small/box-small.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,7 @@ const routes: Routes = [
     EditStatsOverlayComponent,
     PokemonBoxCardComponent,
     PokemonBoxDetailsComponent,
+    BoxSmallComponent,
   ],
   imports: [
     CommonModule,

@@ -20,9 +20,12 @@
         {{ pokemon }}
       </div>
     </div>
+    <app-box-small
+      [pokemon]="pokemonSelected"
+    ></app-box-small>
   </div>
   <div class="right-container">
-    <h3>My Box</h3>
+    <!-- <h3>My Box</h3>
     <div class="box" *ngIf="box">
       <div class="box-container">
         <div class="pokemon-box" *ngFor="let pk of box">
@@ -34,6 +37,6 @@
           ></app-pokemon-box-card>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>
