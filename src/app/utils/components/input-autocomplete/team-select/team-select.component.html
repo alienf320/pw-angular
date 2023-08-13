@@ -1,9 +1,19 @@
-<div class="pokemon-grid">
+<div
+  class="pokemon-grid"
+  (mouseenter)="toggleComponentVisibility()"
+  (mouseleave)="toggleComponentVisibility()"
+  [ngClass]="{ collapsed: !isComponentVisible }"
+  [class.vertical]="vertical"
+>
+  <div class="icon" *ngIf="!isComponentVisible && !vertical"><i class="ri-expand-right-fill"></i></div>
   <div
     class="pokemon-card"
     *ngFor="let pk of team.pokemons"
     (click)="selectPokemon(pk)"
-    [ngClass]="{ 'selected': pk.pokemon.name === pokemonSelected?.pokemon?.name }"
+    [ngClass]="{
+      selected: pk.pokemon.name === pokemonSelected?.pokemon?.name,
+      hidden: !isComponentVisible
+    }"
   >
     <div class="pokemon-name">{{ pk.pokemon.internalName }}</div>
     <div class="pokemon-types">
