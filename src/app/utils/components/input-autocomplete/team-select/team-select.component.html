@@ -1,9 +1,16 @@
 <div class="pokemon-grid">
-  <div class="pokemon-card" *ngFor="let pk of team.pokemons">
+  <div
+    class="pokemon-card"
+    *ngFor="let pk of team.pokemons"
+    (click)="selectPokemon(pk)"
+    [ngClass]="{ 'selected': pk.pokemon.name === pokemonSelected?.pokemon?.name }"
+  >
     <div class="pokemon-name">{{ pk.pokemon.internalName }}</div>
     <div class="pokemon-types">
       <div class="type">{{ pk.pokemon.type1 }}</div>
-      <div class="type" *ngIf="pk.pokemon.type2">{{ pk.pokemon.type2 ?? '' }}</div>
+      <div class="type" *ngIf="pk.pokemon.type2">
+        {{ pk.pokemon.type2 ?? "" }}
+      </div>
     </div>
   </div>
 </div>

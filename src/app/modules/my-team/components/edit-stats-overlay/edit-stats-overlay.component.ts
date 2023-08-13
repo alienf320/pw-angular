@@ -207,11 +207,11 @@ export class EditStatsOverlayComponent {
     }
   }
 
-  addMove(event: any) {
+  addMove(event: Move[]) {
     //const move = event.target.innerText;
     console.log("MOVES?: ", event)
     if (this.moves.length < 4) {
-      this.moves.push(event);
+      this.moves.push(event[0].name);
     }
   }
 

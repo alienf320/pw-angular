@@ -2,14 +2,14 @@
   <div class="my-box-menu" *ngIf="box">
     <div class="my-box">
       <label for="myPokemon">My box</label>
-      <select name="myPokemon" (change)="pokemonSelected($event)">
+      <select name="myPokemon" (change)="selectPokemon($event)">
         <option value=""></option>
         <option *ngFor="let pokemon of box" [value]="pokemon.pokemon.internalName">{{pokemon.pokemon.name | titlecase}}</option>
       </select>
     </div>
     <!-- <label for="search-pokemon"></label>
     <input type="text" name="search-pokemon" [(ngModel)]="pokemonName"> -->
-    <app-team-select [team]="teamSelected"></app-team-select>
+    <app-team-select [team]="teamSelected" (selectionEvent)="loadMyPokemon($event)" [pokemonSelected]="pokemonSelected"></app-team-select>
   </div>
   
   <div class="rival-menu input-box">
@@ -17,7 +17,7 @@
       <app-input-autocomplete label="Trainers" (suggestionSelected)="loadTrainer($event)"></app-input-autocomplete>
     </div>
     <div class="rival-box">
-      <app-input-autocomplete label="Pokemon" inputType="pokemon" (suggestionSelected)="loadPokemon($event)"></app-input-autocomplete>
+      <app-input-autocomplete label="Pokemon" inputType="pokemon" (suggestionSelected)="loadRivalPokemon($event)"></app-input-autocomplete>
     </div>
     <!-- <div class="rival-box">
       <label for="boxes">Trainer</label>

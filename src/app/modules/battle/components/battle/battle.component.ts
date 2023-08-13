@@ -4,13 +4,11 @@ import { myPokemon1, myPokemon2 } from './pokemonDummy';
 import { Box, BoxService } from 'src/app/services/box.service';
 import { PokemonBattleService } from 'src/app/services/pokemon-battle.service';
 import { Router } from '@angular/router';
-import { TeamMember, Trainer } from 'src/app/models/trainer.models';
+import { Trainer } from 'src/app/models/trainer.models';
 import { PokemonService } from 'src/app/services/pokemon-service.service';
-import { forkJoin, map } from 'rxjs';
 import { Move } from 'src/app/models/moves.models';
 import { MoveService } from 'src/app/services/move.service';
 import { Pokemon } from 'src/app/models/pokemon.models';
-import {pokemonTypes} from '../../../../utils/colors'
 import { TeamService } from 'src/app/services/team.service';
 import { Team } from 'src/app/models/team.models';
 
@@ -27,6 +25,7 @@ export class BattleComponent {
   allBoxes: Box[] = [];
   rivalPokemons!: { pokemons: myPokemon[] };
   teamSelected!: Team;
+  pokemonSelected!: myPokemon;
 
   constructor(
     private boxService: BoxService,
@@ -45,7 +44,7 @@ export class BattleComponent {
 
     this.teamService.teamSelected$.subscribe( team => {
       this.teamSelected = team;
-      console.log('Team: ', this.teamSelected)
+      this.pokemonSelected = team.pokemons[0];
     })
   }
 
@@ -59,10 +58,11 @@ export class BattleComponent {
     });
   }
 
-  pokemonSelected(event: any) {
+  selectPokemon(event: any) {
     const pokemonName = event.target.value;
     const pk = this.box.find((pk) => pk.pokemon.internalName === pokemonName)!;
 
+    this.pokemonSelected = pk;
     this.battleService.updateMyPokemon(pk);
   }
 
@@ -138,7 +138,11 @@ export class BattleComponent {
     this.pokemonRivalSelected()
   }
 
-  async loadPokemon(pokemon: Pokemon) {
+  async loadMyPokemon(pokemon: myPokemon) {
+    this.battleService.updateMyPokemon(pokemon)
+  }
+
+  async loadRivalPokemon(pokemon: Pokemon) {
     const fullPokemon: myPokemon = {
       pokemon: pokemon,
       moves: []
