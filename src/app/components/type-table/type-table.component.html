@@ -1,5 +1,5 @@
-<table>
-  <thead>
+<div class="table-container">
+  <table class="header-table">
     <tr>
       <th></th>
       <ng-container *ngFor="let defender of types; let j = index">
@@ -13,18 +13,17 @@
         </th>
       </ng-container>
     </tr>
-  </thead>
-  <tbody>
-    <tr
-      *ngFor="let attacker of types; let i = index"
-      [ngClass]="{ 'row-highlight': i === hoveredRowIndex }"
-    >
-      <!-- Celda de tipo de ataque -->
-      <td>{{ attacker }}</td>
-      <td
-        *ngFor="let defender of types; let j = index"
-        [ngClass]="getCellClass(typeTable[i][j], i, j)"
-      ></td>
-    </tr>
-  </tbody>
-</table>
+  </table>
+  <div class="data-table-container">
+    <table class="data-table">
+      <tr *ngFor="let attacker of types; let i = index">
+        <td class="row-header">{{ attacker }}</td>
+        <td
+          *ngFor="let defender of types; let j = index"
+          [ngClass]="getCellClass(typeTable[i][j], i, j)"
+        ></td>
+      </tr>
+    </table>
+  </div>
+  
+</div>
