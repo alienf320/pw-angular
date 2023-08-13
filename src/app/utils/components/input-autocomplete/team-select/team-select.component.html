@@ -1,0 +1,9 @@
+<div class="pokemon-grid">
+  <div class="pokemon-card" *ngFor="let pk of team.pokemons">
+    <div class="pokemon-name">{{ pk.pokemon.internalName }}</div>
+    <div class="pokemon-types">
+      <div class="type">{{ pk.pokemon.type1 }}</div>
+      <div class="type" *ngIf="pk.pokemon.type2">{{ pk.pokemon.type2 ?? '' }}</div>
+    </div>
+  </div>
+</div>

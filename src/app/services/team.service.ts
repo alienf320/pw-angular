@@ -27,6 +27,7 @@ export class TeamService {
   private loadTeamsFromServer() {
     this.http.get<Team[]>(this.apiUrl + '/all').subscribe(teams => {
       this.teamsSubject.next(teams);
+      this.teamSelected.next(teams[0])
     });
   }
 

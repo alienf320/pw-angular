@@ -11,6 +11,8 @@ import { Move } from 'src/app/models/moves.models';
 import { MoveService } from 'src/app/services/move.service';
 import { Pokemon } from 'src/app/models/pokemon.models';
 import {pokemonTypes} from '../../../../utils/colors'
+import { TeamService } from 'src/app/services/team.service';
+import { Team } from 'src/app/models/team.models';
 
 @Component({
   selector: 'app-battle',
@@ -24,12 +26,14 @@ export class BattleComponent {
   pokemonName!: string;
   allBoxes: Box[] = [];
   rivalPokemons!: { pokemons: myPokemon[] };
+  teamSelected!: Team;
 
   constructor(
     private boxService: BoxService,
     private battleService: PokemonBattleService,
     private pokemonService: PokemonService,
     private moveService: MoveService,
+    private teamService: TeamService,
     private router: Router
   ) {}
 
@@ -38,6 +42,11 @@ export class BattleComponent {
     if (currentRoute === '/battle') {
       this.update();
     }
+
+    this.teamService.teamSelected$.subscribe( team => {
+      this.teamSelected = team;
+      console.log('Team: ', this.teamSelected)
+    })
   }
 
   update() {

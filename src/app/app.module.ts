@@ -17,6 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TooltipAbilityComponent } from './utils/components/tooltip-ability/tooltip-ability.component';
 import { SentenceFormatPipe } from './utils/pipes/sentence-format';
 import { TypeTableComponent } from './components/type-table/type-table.component';
+import { TeamSelectComponent } from './utils/components/input-autocomplete/team-select/team-select.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import { TypeTableComponent } from './components/type-table/type-table.component
     TrainerInfoComponent,
     TooltipAbilityComponent,
     SentenceFormatPipe,
-    TypeTableComponent
+    TypeTableComponent,
   ],
   imports: [
     BrowserModule,

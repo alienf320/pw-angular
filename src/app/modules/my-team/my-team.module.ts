@@ -12,6 +12,7 @@ import { PokemonBoxDetailsComponent } from './components/pokemon-box-details/pok
 import { InputAutocompleteComponent } from 'src/app/utils/components/input-autocomplete/input-autocomplete.component';
 import { SharedModule } from 'src/app/utils/modules/shared.module';
 import { BoxSmallComponent } from './components/box-small/box-small.component';
+import { TeamSelectComponent } from 'src/app/utils/components/input-autocomplete/team-select/team-select.component';
 
 const routes: Routes = [
   {
