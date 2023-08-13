@@ -30,10 +30,10 @@
       <input *ngIf="inputVisible" [(ngModel)]="inputValue" (keyup.enter)="onInputEnter()">
     </div>
     <div class="teams-container" *ngIf="teams">
-      <div class="team" *ngFor="let team of teams">
+      <div class="team" *ngFor="let team of teams" (click)="selectTeam(team)" [ngClass]="{'selected': team.name === selectedTeam}">
         <div class="team-title">{{team.name}}</div>
         <div class="pokemon-container" *ngIf="team.pokemons.length > 0">
-          <div class="pokemon" *ngFor="let pk of team.pokemons">{{pk.pokemon.internalName}}</div>
+          <div class="pokemon" *ngFor="let pk of team.pokemons">{{pk.pokemon.internalName | titlecase}}</div>
         </div>
       </div>
     </div>

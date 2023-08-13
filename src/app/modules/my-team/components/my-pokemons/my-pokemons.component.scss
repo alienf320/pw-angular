@@ -92,3 +92,40 @@ button {
 button:hover {
   background-color: #45a049;
 }
+
+
+.teams-container {
+  display: flex; 
+  overflow: auto; 
+  border: 1px solid green;
+  margin: 20px auto;
+}
+
+.team {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+  cursor: pointer;
+  width: 100px;
+}
+
+.selected {
+  border: 2px solid orange;
+}
+
+.team-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.pokemon-container {
+  display: flex;
+  flex-direction: column; 
+  align-items: center; 
+  margin-top: 5px;
+}
+
+.pokemon {
+  margin-top: 3px;
+}

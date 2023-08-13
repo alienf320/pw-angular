@@ -22,6 +22,7 @@ export class MyPokemonsComponent implements OnInit {
   pokemonSelected!: Pokemon;
   inputVisible = false;
   inputValue = '';
+  selectedTeam!: string;
 
   constructor(private pokemonService: PokemonService, private teamService: TeamService) {}
 
@@ -33,6 +34,7 @@ export class MyPokemonsComponent implements OnInit {
   loadTeams() {
     this.teamService.teams$.subscribe( data => {
       this.teams = data;
+      this.selectedTeam = data[0].name
       this.teamService.setTeamSelected(data[0])
     })
   }
@@ -58,6 +60,11 @@ export class MyPokemonsComponent implements OnInit {
       (p) => p.internalName === pokemonName
     );
     this.pokemonSelected = pokemonFull!;
+  }
+
+  selectTeam(team: Team) {
+    this.selectedTeam = team.name;
+    this.teamService.setTeamSelected(team);
   }
 
   showInput() {
