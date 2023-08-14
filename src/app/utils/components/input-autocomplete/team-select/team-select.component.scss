@@ -11,6 +11,15 @@
   padding: 10px;
   text-align: center;
   background-color: white;
+
+  .delete {
+    position: absolute;
+    i {
+      position: relative;
+      top: 61px;
+      left: 134px;
+    }
+  }
 }
 
 .selected {
@@ -61,5 +70,5 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  top: 50vh
+  top: 50vh;
 }

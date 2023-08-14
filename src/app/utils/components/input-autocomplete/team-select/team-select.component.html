@@ -4,6 +4,7 @@
   (mouseleave)="toggleComponentVisibility()"
   [ngClass]="{ collapsed: !isComponentVisible }"
   [class.vertical]="vertical"
+  *ngIf="team"
 >
   <div class="icon" *ngIf="!isComponentVisible && vertical"><i class="ri-expand-right-fill"></i></div>
   <div
@@ -15,6 +16,7 @@
       hidden: !isComponentVisible
     }"
   >
+    <div class="delete" *ngIf="editable" (click)="onDelete(pk)"><i class="ri-delete-bin-line"></i> </div>
     <div class="pokemon-name">{{ pk.pokemon.internalName }}</div>
     <div class="pokemon-types">
       <div class="type">{{ pk.pokemon.type1 }}</div>

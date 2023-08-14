@@ -12,7 +12,9 @@ export class TeamSelectComponent implements OnInit {
   @Input() team!: Team;
   @Input() pokemonSelected!: myPokemon;
   @Input() vertical = false;
+  @Input() editable = false;
   @Output() selectionEvent: EventEmitter<myPokemon> = new EventEmitter();
+  @Output() deleteEvent: EventEmitter<myPokemon> = new EventEmitter();
   isComponentVisible = false;
   
   ngOnInit(): void {
@@ -27,6 +29,11 @@ export class TeamSelectComponent implements OnInit {
 
   selectPokemon(pk: myPokemon) {
     this.selectionEvent.emit(pk)
+  }
+
+  onDelete(pk: myPokemon) {
+    console.log('Quiero borrar este pokemon: ', pk)
+    this.deleteEvent.emit(pk)
   }
 
 }

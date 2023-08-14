@@ -34,8 +34,11 @@ export class MyPokemonsComponent implements OnInit {
   loadTeams() {
     this.teamService.teams$.subscribe( data => {
       this.teams = data;
-      this.selectedTeam = data[0]
       this.teamService.setTeamSelected(data[0])
+    })
+
+    this.teamService.teamSelected$.subscribe( t => {
+      this.selectedTeam = t;
     })
   }
 
@@ -43,7 +46,7 @@ export class MyPokemonsComponent implements OnInit {
     if (this.pokemonName) {
       this.pokemonService.getPokemonByName(this.pokemonName).subscribe(
         (pokemon) => {
-          console.log(pokemon);
+          //console.log(pokemon);
           this.pokemonsFiltered = pokemon;
           this.pokemons = pokemon.map((i) => i.internalName);
         },
@@ -65,6 +68,10 @@ export class MyPokemonsComponent implements OnInit {
   selectTeam(team: Team) {
     this.selectedTeam = team;
     this.teamService.setTeamSelected(team);
+  }
+
+  deletePokemonFromTeam(pk: myPokemon) {
+    this.teamService.deletePokemonFromTeam(pk)
   }
 
   showInput() {

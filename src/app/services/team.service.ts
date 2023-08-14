@@ -50,11 +50,28 @@ export class TeamService {
     const updatedTeam = this.teamSelected.value;
     updatedTeam.pokemons.push(pokemon);
   
-    this.http.post<any>(this.apiUrl + '/add-pokemon', { name: updatedTeam.name, pokemon })
+    this.http.post<any>(this.apiUrl + '/add-pokemon', { teamId: updatedTeam._id, pokemon })
       .subscribe(response => {
+        const teamSelectedId = this.teamSelected.value._id
+        console.log('addPokemonToTeam - response: ', response, teamSelectedId)
+        if(response._id === teamSelectedId) {
+          console.log('entró al if')
+          this.teamSelected.next(response)
+        }
         if (response.success) {
           this.teamsSubject.next([...this.teamsSubject.value]); // Emitir una nueva instancia de la lista de equipos
         }
+      });
+  }
+
+  deletePokemonFromTeam(pokemon: myPokemon) {
+    const teamId = this.teamSelected.value._id
+    console.log('TeamId - PokemonId: ', teamId, pokemon._id)
+    const uri = `${this.apiUrl}/${teamId}/pokemons/${pokemon._id}`
+    this.http.delete<any>(uri)
+      .subscribe(data => {
+        console.log('Así queda el team despues del delete: ', data)
+        this.setTeamSelected(data)
       });
   }
   

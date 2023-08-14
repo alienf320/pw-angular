@@ -71,7 +71,7 @@ export class BoxSmallComponent {
     });
 
     componentRef.instance.savePokemon.subscribe((pokemonData: any) => {
-      console.log('save data:', pokemonData)
+      //console.log('save data:', pokemonData)
       this.handleSavePokemon(pokemonData, pokemonFull.internalName);
     });
 
@@ -82,12 +82,12 @@ export class BoxSmallComponent {
   }
   
   deletePokemon(pkID: any) {
-    console.log('deletePokemon', pkID)
+    //console.log('deletePokemon', pkID)
     const pokemon = this.box.find( pk => pk._id === pkID)
-    console.log('Esto es un ID?', pokemon?._id)
+    //console.log('Esto es un ID?', pokemon?._id)
     if(pokemon) {
       this.boxService.deletePokemon(pokemon._id!).subscribe( data => {
-        console.log("delete data", data);
+        //console.log("delete data", data);
         this.box = data
       })  
     }
@@ -124,7 +124,7 @@ export class BoxSmallComponent {
   }
 
   openDetails(event: myPokemon) {
-    console.log('target', event)
+    //console.log('target', event)
 
     this.openOverlayDetails(event)
   
