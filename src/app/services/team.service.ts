@@ -9,6 +9,7 @@ import { myPokemon } from '../models/myPokemon.models';
 })
 export class TeamService {
   teamZero: Team = {
+    _id: '',
     name: '',
     pokemons: []
   }
@@ -60,5 +61,15 @@ export class TeamService {
 
   setTeamSelected(team: Team) {
     this.teamSelected.next(team)
+  }
+
+  getTeamSelected() {
+    return this.teamSelected.value
+  }
+
+  updatePokemonInTeam(teamId: string, pokemonData: any): Observable<any> {
+    const data = { teamId: teamId, pokemon: pokemonData };
+    console.log('Update pokemon in Team', data);
+    return this.http.put(this.apiUrl, data);
   }
 }

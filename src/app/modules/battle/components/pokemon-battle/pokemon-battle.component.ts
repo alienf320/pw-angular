@@ -414,8 +414,13 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   }
 
   getTypeColor(type: string): string {
-    const color = pokemonTypes[type];
+    const color = pokemonTypes[type.toLowerCase()].color;
     return color || '#FFFFFF';
+  }
+
+  getFontColor(type: string): string {
+    const color = pokemonTypes[type.toLowerCase()].fontColor;
+    return color || "#FFFFFF";
   }
 
   ngOnDestroy(): void {

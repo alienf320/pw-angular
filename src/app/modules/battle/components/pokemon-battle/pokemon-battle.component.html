@@ -3,17 +3,20 @@
     <div class="row">
       <h2>{{ pokemon.pokemon.name | titlecase }}</h2>
       <div class="sub-group">
-        <span [style.backgroundColor]="getTypeColor(pokemon.pokemon.type1)">{{
-          pokemon.pokemon.type1 | titlecase
-        }}</span>
+        <span
+          [style.backgroundColor]="getTypeColor(pokemon.pokemon.type1)"
+          [style.color]="getFontColor(pokemon.pokemon.type1)"
+          >{{ pokemon.pokemon.type1 | titlecase }}</span
+        >
         <span
           *ngIf="pokemon.pokemon.type2"
           [style.backgroundColor]="getTypeColor(pokemon.pokemon.type2)"
+          [style.color]="getFontColor(pokemon.pokemon.type2)"
           >{{ pokemon.pokemon.type2 | titlecase }}</span
         >
       </div>
       <div class="sub-group">
-        <button (click)="savePokemon()" *ngIf="type==='Mine'">Save</button>
+        <button (click)="savePokemon()" *ngIf="type === 'Mine'">Save</button>
       </div>
     </div>
 
@@ -22,7 +25,7 @@
         <label for="level">Nivel:</label>
         <input type="number" id="level" formControlName="level" />
       </div>
-    
+
       <div class="sub-group">
         <label for="nature">Nature:</label>
         <select id="nature" formControlName="nature">
@@ -36,10 +39,12 @@
         </select>
       </div>
     </div>
-  
+
     <div class="row">
       <div class="sub-group">
-        <ng-container *ngIf="this.pokemon?.ability; else possibleAbilitiesSection">
+        <ng-container
+          *ngIf="this.pokemon?.ability; else possibleAbilitiesSection"
+        >
           <label for="ability">Ability:</label>
           <input
             id="ability"
@@ -63,7 +68,6 @@
         </ng-template>
       </div>
     </div>
-  
   </div>
 
   <div class="stats-container" *ngIf="stats" formGroupName="stats">
@@ -193,18 +197,19 @@
 
   <div class="attacks-container">
     <h3>Ataques</h3>
-    <button *ngIf="type!=='Mine'" (click)="loadAttacks()">Load attacks</button>
+    <button *ngIf="type !== 'Mine'" (click)="loadAttacks()">
+      Load attacks
+    </button>
     <div
       class="row"
       formGroupName="attacks"
       *ngFor="let move of pokemon.moves; let i = index"
     >
-    <div class="info" [tooltip]="move">i</div>
+      <div class="info" [tooltip]="move">i</div>
       <app-input-autocomplete
         [inputControl]="getAttackFormControl(i)"
         [inputType]="'moves'"
         (suggestionSelected)="onSuggestionSelected($event, i)"
-        
       ></app-input-autocomplete>
       <div
         class="damage"

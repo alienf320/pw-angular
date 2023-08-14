@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable, take } from 'rxjs';
 import { myPokemon } from '../models/myPokemon.models';
 import { PIKACHU } from '../utils/myPokemon0';
 import { BoxService } from './box.service';
+import { TeamService } from './team.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class PokemonBattleService {
   private myPokemonSubject: BehaviorSubject<myPokemon> = new BehaviorSubject<myPokemon>(PIKACHU);
   private rivalPokemonSubject: BehaviorSubject<myPokemon> = new BehaviorSubject<myPokemon>(PIKACHU);  
 
-  constructor(private boxService: BoxService) {}
+  constructor(private boxService: BoxService, private teamService: TeamService) {}
 
   getRivalPokemon(): Observable<myPokemon> {
     return this.rivalPokemonSubject.asObservable();
@@ -71,6 +72,6 @@ export class PokemonBattleService {
   }
 
   updatePokemonFull(pokemon: myPokemon, type = 'Mine'): void {
-    this.boxService.updatePokemon(pokemon._id!, pokemon).pipe(take(1)).subscribe()
+    this.teamService.updatePokemonInTeam(this.teamService.getTeamSelected()._id, pokemon).pipe(take(1)).subscribe()
   }
 }

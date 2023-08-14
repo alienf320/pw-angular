@@ -62,7 +62,9 @@ export class BattleComponent {
     const pokemonName = event.target.value;
     const pk = this.box.find((pk) => pk.pokemon.internalName === pokemonName)!;
 
+    //console.log("Acá cambia el pokemon seleccionado: ", this.pokemonSelected)
     this.pokemonSelected = pk;
+    //console.log("Cambió: ", this.pokemonSelected)
     this.battleService.updateMyPokemon(pk);
   }
 
@@ -139,6 +141,7 @@ export class BattleComponent {
   }
 
   async loadMyPokemon(pokemon: myPokemon) {
+    this.pokemonSelected = pokemon;
     this.battleService.updateMyPokemon(pokemon)
   }
 

@@ -14,9 +14,6 @@ export class TeamSelectComponent implements OnInit {
   @Input() vertical = false;
   @Output() selectionEvent: EventEmitter<myPokemon> = new EventEmitter();
   isComponentVisible = false;
-
-  
-  constructor() { }
   
   ngOnInit(): void {
     this.isComponentVisible = !this.vertical
@@ -29,7 +26,6 @@ export class TeamSelectComponent implements OnInit {
   }
 
   selectPokemon(pk: myPokemon) {
-    console.log('Este es el team que tengo: ', this.team)
     this.selectionEvent.emit(pk)
   }
 

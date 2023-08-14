@@ -5,7 +5,7 @@
   [ngClass]="{ collapsed: !isComponentVisible }"
   [class.vertical]="vertical"
 >
-  <div class="icon" *ngIf="!isComponentVisible && !vertical"><i class="ri-expand-right-fill"></i></div>
+  <div class="icon" *ngIf="!isComponentVisible && vertical"><i class="ri-expand-right-fill"></i></div>
   <div
     class="pokemon-card"
     *ngFor="let pk of team.pokemons"
