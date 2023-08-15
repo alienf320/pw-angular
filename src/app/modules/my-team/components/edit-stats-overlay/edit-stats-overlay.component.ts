@@ -243,7 +243,7 @@ export class EditStatsOverlayComponent {
         ivs,
         moves: this.movesFull,
         _id: this.pokemonName._id ?? '',
-        newPokemon: this.newPokemon._id ?? '',
+        newPokemon: this.newPokemon?._id ?? '',
       };
 
       if (this.myPokemon) {

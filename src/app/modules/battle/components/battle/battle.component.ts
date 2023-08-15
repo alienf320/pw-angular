@@ -49,7 +49,7 @@ export class BattleComponent {
   }
 
   update() {
-    this.boxService.getBox().subscribe((data) => {
+    this.boxService.currentBox$.subscribe((data) => {
       this.box = data;
     });
     this.boxService.getAllBox().subscribe((data) => {

@@ -31,16 +31,14 @@ export class BoxSmallComponent {
   ) {}
 
   ngOnInit() {
+    console.log('ngOnInit de box-small')
     this.loadBox()
   }
 
   loadBox() {
-    this.boxService.getBox().subscribe(
-      box => {
-        console.log('box', box)
-        this.box = box
-      }
-    )
+    this.boxService.currentBox$.subscribe( data => {
+      this.box = data;
+    })
   }
 
   openOverlay(pokemonFull: Pokemon, pokemonStats?: myPokemon) {

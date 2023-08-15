@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { EventEmitter, Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Pokemon } from '../models/pokemon.models';
 import { myPokemon } from '../models/myPokemon.models';
 
@@ -8,15 +8,26 @@ import { myPokemon } from '../models/myPokemon.models';
   providedIn: 'root'
 })
 export class BoxService {
+
+  private BoxZero: myPokemon[] = []
+
+  private currentBox: BehaviorSubject<myPokemon[]> = new BehaviorSubject(this.BoxZero);
+  currentBox$ = this.currentBox.asObservable()
   
   private baseUrl = 'http://localhost:3000/box';
   private allBoxesUrl = 'http://localhost:3000/box/all';
   private rivalUrl = 'http://localhost:3000/box/rival';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.http.get<myPokemon[]>(this.baseUrl).subscribe( data => {
+      //console.log('Es una box?: ', data)
+      this.currentBox.next(data)
+    })
 
-  getBox(): Observable<any> {
-    return this.http.get(this.baseUrl);
+   }
+
+  getBox(): myPokemon[] {
+    return this.currentBox.value
   }
 
   getAllBox(): Observable<any> {
