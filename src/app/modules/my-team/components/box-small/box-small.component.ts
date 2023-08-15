@@ -108,9 +108,10 @@ export class BoxSmallComponent {
   }    
 
   handleUpdatePokemon(pokemonData: any, pkID: string) {
-    //console.log('Datos del Pokémon:', pokemonData);
+    // console.log('Datos del Pokémon que actualizo:', pokemonData);
+
     this.boxService.updatePokemon(pkID, pokemonData).subscribe((data) => {
-      //console.log('respuesta del server: ', data)
+      console.log('Respuesta del server: ', data)
       this.box = data;
     });
   }

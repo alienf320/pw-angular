@@ -13,7 +13,7 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subject, debounceTime } from 'rxjs';
 import { Move } from 'src/app/models/move.models';
 import { myPokemon } from 'src/app/models/myPokemon.models';
@@ -44,6 +44,7 @@ export class EditStatsOverlayComponent {
   ivs: { stat: string; value: number }[] = [];
   suggestions!: string[];
   movesFull: Move[] = [];
+  newPokemon!: Pokemon;
 
   natureOptions: string[] = [
     'Adamant',
@@ -92,6 +93,7 @@ export class EditStatsOverlayComponent {
     private moveService: MoveService
   ) {
     this.form = this.formBuilder.group({
+      specie: [''],
       level: [1, Validators.required],
       ability: ['', Validators.required],
       nature: ['', Validators.required],
@@ -130,6 +132,7 @@ export class EditStatsOverlayComponent {
 
   ngAfterContentInit() {
     if (this.myPokemon) {
+      this.form.controls['specie'].setValue(this.myPokemon.pokemon.name)
       this.form.controls['ability'].setValue(this.myPokemon?.pokemon.abilities);
       this.form.controls['level'].setValue(this.myPokemon.level);
       this.form.controls['nature'].setValue(this.myPokemon.nature);
@@ -239,7 +242,8 @@ export class EditStatsOverlayComponent {
         evs,
         ivs,
         moves: this.movesFull,
-        _id: this.myPokemon ? this.myPokemon._id : '',
+        _id: this.pokemonName._id ?? '',
+        newPokemon: this.newPokemon._id ?? '',
       };
 
       if (this.myPokemon) {
@@ -250,6 +254,14 @@ export class EditStatsOverlayComponent {
 
       this.closeOverlay();
     }
+  }
+
+  changePokemon(pk: Pokemon) {
+    this.newPokemon = pk;
+  }
+
+  getControl(name: string) {
+    return this.form.get(name) as FormControl;
   }
 
   onCancel() {

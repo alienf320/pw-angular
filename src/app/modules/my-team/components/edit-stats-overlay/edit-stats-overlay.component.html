@@ -4,29 +4,53 @@
     <div class="section">
       <div class="general">
         <div class="form-group">
+          <app-input-autocomplete
+            inputType="pokemon"
+            [inputControl]="getControl('specie')"
+            (suggestionSelected)="changePokemon($event)"
+          ></app-input-autocomplete>
+        </div>
+        <div class="form-group">
           <label for="level">Level</label>
-          <input type="number" formControlName="level">
+          <input type="number" formControlName="level" />
         </div>
         <div class="form-group">
           <label for="ability">Ability</label>
           <select formControlName="ability">
-            <option *ngFor="let option of pokemonName.abilities" [value]="option">{{option | titlecase}}</option>
-            <option [value]="pokemonName.hiddenAbility">{{pokemonName.hiddenAbility | titlecase}}</option>
+            <option
+              *ngFor="let option of pokemonName.abilities"
+              [value]="option"
+            >
+              {{ option | titlecase }}
+            </option>
+            <option [value]="pokemonName.hiddenAbility">
+              {{ pokemonName.hiddenAbility | titlecase }}
+            </option>
           </select>
         </div>
         <div class="form-group">
           <label for="nature">Nature</label>
           <select formControlName="nature">
-            <option *ngFor="let option of natureOptions" [value]="option">{{ option }}</option>
+            <option *ngFor="let option of natureOptions" [value]="option">
+              {{ option }}
+            </option>
           </select>
         </div>
       </div>
       <div class="move-set" formGroupName="moveSet">
-        <app-input-autocomplete inputType="moves" (suggestionSelected)="addMove($event)"></app-input-autocomplete>
+        <app-input-autocomplete
+          inputType="moves"
+          (suggestionSelected)="addMove($event)"
+        ></app-input-autocomplete>
         <div class="moves" *ngIf="moves">
           <div class="move" *ngFor="let move of moves">
-            <div class="move-name">{{move}}</div>
-            <button class="action-button delete-button" (click)="deleteMove(move)"><i class="ri-delete-bin-line"></i></button>
+            <div class="move-name">{{ move }}</div>
+            <button
+              class="action-button delete-button"
+              (click)="deleteMove(move)"
+            >
+              <i class="ri-delete-bin-line"></i>
+            </button>
           </div>
         </div>
       </div>
@@ -37,8 +61,8 @@
         <label for="evs" class="title">EVs</label>
         <div class="stat-inputs" formGroupName="evs">
           <div *ngFor="let stat of stats" class="stat-input">
-            <label>{{ stat | titlecase}}</label>
-            <input type="number" [formControlName]="stat" min="0">
+            <label>{{ stat | titlecase }}</label>
+            <input type="number" [formControlName]="stat" min="0" />
           </div>
         </div>
       </div>
@@ -47,7 +71,7 @@
         <div class="stat-inputs" formGroupName="ivs">
           <div *ngFor="let stat of stats" class="stat-input">
             <label>{{ stat }}</label>
-            <input type="number" [formControlName]="stat" min="0">
+            <input type="number" [formControlName]="stat" min="0" />
           </div>
         </div>
       </div>
