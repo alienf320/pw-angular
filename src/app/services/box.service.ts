@@ -29,7 +29,7 @@ export class BoxService {
 
   updatePokemon(pkID: string, pokemonData: any): Observable<any> {
     const data = { _id: pkID, ...pokemonData};
-    console.log('data que envío', JSON.stringify(data));
+    //console.log('data que envío', JSON.stringify(data));
     return this.http.patch(this.baseUrl, data);
   }
 
