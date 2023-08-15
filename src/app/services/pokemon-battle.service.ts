@@ -73,5 +73,6 @@ export class PokemonBattleService {
 
   updatePokemonFull(pokemon: myPokemon, type = 'Mine'): void {
     this.teamService.updatePokemonInTeam(this.teamService.getTeamSelected()._id, pokemon).pipe(take(1)).subscribe()
+    this.boxService.updatePokemon(pokemon.pokemon._id!, pokemon).pipe(take(1)).subscribe()
   }
 }

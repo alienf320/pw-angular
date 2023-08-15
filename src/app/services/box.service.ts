@@ -39,8 +39,8 @@ export class BoxService {
   }
 
   updatePokemon(pkID: string, pokemonData: any): Observable<any> {
-    const data = { _id: pkID, ...pokemonData};
-    //console.log('data que envío', JSON.stringify(data));
+    const data = { ...pokemonData, _id: pkID};
+    //console.log('data que envío', pkID, pokemonData);
     return this.http.patch(this.baseUrl, data);
   }
 
@@ -50,14 +50,7 @@ export class BoxService {
   }
 
   saveRivalBox(box: Box): Observable<any> {
-    // const httpOptions = {
-    //   headers: new HttpHeaders({
-    //     'Content-Type': 'application/json'
-    //   })
-    // };
-
-    console.log("Eso es lo que enviamos a backend:", JSON.stringify(box))
-
+    //console.log("Eso es lo que enviamos a backend:", JSON.stringify(box))
     return this.http.post(this.rivalUrl, box);
   }
 }
