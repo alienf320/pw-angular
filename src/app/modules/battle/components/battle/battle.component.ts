@@ -11,6 +11,7 @@ import { MoveService } from 'src/app/services/move.service';
 import { Pokemon } from 'src/app/models/pokemon.models';
 import { TeamService } from 'src/app/services/team.service';
 import { Team } from 'src/app/models/team.models';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 
 @Component({
   selector: 'app-battle',
@@ -33,6 +34,7 @@ export class BattleComponent {
     private pokemonService: PokemonService,
     private moveService: MoveService,
     private teamService: TeamService,
+    private localStorageService: LocalStorageService,
     private router: Router
   ) {}
 
@@ -46,6 +48,15 @@ export class BattleComponent {
       this.teamSelected = team;
       this.pokemonSelected = team.pokemons[0];
     })
+
+    this.checkLocalStorage();
+  }
+
+  checkLocalStorage() {
+    const data = this.localStorageService.loadStateForBattle()
+    if(data?.yourPokemon) {
+      this.loadTrainer(data.yourPokemon)
+    }
   }
 
   update() {
@@ -64,7 +75,7 @@ export class BattleComponent {
 
     //console.log("Acá cambia el pokemon seleccionado: ", this.pokemonSelected)
     this.pokemonSelected = pk;
-    //console.log("Cambió: ", this.pokemonSelected)
+      //console.log("Cambió: ", this.pokemonSelected)
     this.battleService.updateMyPokemon(pk);
   }
 
@@ -93,6 +104,7 @@ export class BattleComponent {
   }
 
   async loadTrainer(event: any) {
+    this.localStorageService.saveStateForBattle(undefined, event as myPokemon )
     const team = (event as Trainer).team;
     let box: myPokemon[] = [];
 
