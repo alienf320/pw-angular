@@ -25,6 +25,7 @@ export class BattleComponent {
   pokemonName!: string;
   allBoxes: Box[] = [];
   rivalPokemons!: { pokemons: myPokemon[] };
+  teams: Team[] = [];
   teamSelected!: Team;
   pokemonSelected!: myPokemon;
 
@@ -43,6 +44,10 @@ export class BattleComponent {
     if (currentRoute === '/battle') {
       this.update();
     }
+
+    this.teamService.teams$.subscribe (teams => {
+      this.teams = teams;
+    })
 
     this.teamService.teamSelected$.subscribe( team => {
       this.teamSelected = team;
@@ -101,6 +106,13 @@ export class BattleComponent {
     //console.log(pk)
     console.log('Ahí te envío rival', pk)
     this.battleService.updateRivalPokemon(pk);
+  }
+
+  selectTeam(event: any) {
+    const teamId = event.target.value;
+    const team = this.teams.find( t => t._id === teamId)
+    //console.log('selecTeam: ', this.teams, team)
+    this.teamService.setTeamSelected(team!)
   }
 
   async loadTrainer(event: any) {

@@ -12,6 +12,13 @@
         </option>
       </select>
     </div>
+    <div class="my-box">
+      <label for="teams">Teams</label>
+      <select name="teams" id="teams" (change)="selectTeam($event)">
+        <option value=""></option>
+        <option [value]="team._id" *ngFor="let team of teams">{{team.name}}</option>
+      </select>
+    </div>
     <!-- <label for="search-pokemon"></label>
     <input type="text" name="search-pokemon" [(ngModel)]="pokemonName"> -->
     <app-team-select
