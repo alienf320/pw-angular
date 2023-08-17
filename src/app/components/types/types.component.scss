@@ -1,0 +1,171 @@
+.type-selector {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+  gap: 10px;
+
+  .type {
+    background-color: bisque;
+    padding: 5px;
+    border-radius: 5px;
+  }
+}
+
+.tables {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px;
+
+  .type-table {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+  }
+
+  h2 {
+    //flex-basis: 100%;
+    grid-column: 1 / span 2;
+    text-align: center;
+    margin: 20px;
+  }
+
+  table {
+    //flex-basis: 40%;
+    grid-column: span 1;
+  }
+}
+
+.resume {
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  align-items: center;
+  //flex-basis: 40%;
+  grid-column: span 1;
+
+  .effectiveness {
+    display: flex;
+    height: fit-content;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    margin: 20px;
+    border: 1px solid lightgray;
+    max-width: 300px;
+  }
+
+  .title {
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+
+  .sub-title {
+    font-size: 1.1rem;
+    margin: 20px 0 15px 0;
+  }
+
+  .tags {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    .tag {
+      border-radius: 3px;
+      padding: 6px;
+    }
+    
+    .non-effective {
+      border: 2px solid red;
+    }
+
+    .effective {
+      border: 2px solid green
+    }
+  }
+}
+//-----------------------
+
+/* Estilos para el contenedor principal de la tabla */
+.table-container {
+  overflow: auto;
+  max-width: 100%;
+  max-height: 92vh; /* Ajusta según tus necesidades */
+}
+
+/* Estilos para la tabla de encabezados */
+.header-table {
+  table-layout: fixed;
+  position: sticky;
+  width: auto;
+  top: 0;
+  z-index: 2;
+  background-color: #f0f0f0;
+
+  th:first-child {
+    width: 100px;
+  }
+}
+
+/* Estilos para el contenedor de la tabla de datos */
+.data-table-container {
+  overflow: auto;
+}
+
+/* Estilos para la tabla de datos */
+.data-table {
+  table-layout: fixed;
+  width: auto;
+}
+
+/* Estilos para la celda de la primera columna */
+.row-header,
+.data-table th {
+  position: sticky;
+  left: 0;
+  background-color: #f0f0f0; /* Cambia al color deseado */
+  z-index: 2;
+}
+
+// --------------------------------------------
+
+th,
+td {
+  border: 1px solid black;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+}
+
+.green-cell {
+  background-color: green;
+}
+
+.white-cell {
+  background-color: white;
+}
+
+.red-cell {
+  background-color: red;
+}
+
+.black-cell {
+  background-color: black;
+}
+
+table {
+  overflow: hidden;
+}
+
+th,
+td {
+  border: 1px solid black;
+  min-width: 50px;
+  padding: 3px;
+  height: 30px;
+  text-align: center;
+  position: relative;
+}

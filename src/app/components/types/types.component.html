@@ -1,0 +1,54 @@
+<div class="type-selector">
+  <div class="type" *ngFor="let type of types" (click)="selectType(type)">{{type}}</div>
+</div>
+<div class="tables" *ngIf="typesSelected.length > 0">
+  <div class="type-table">
+    <h2>Attacking</h2>
+    <table *ngIf="typesSelected">
+      <tr>
+        <th></th>
+        <th *ngFor="let type of typesSelected">{{type}}</th>
+      </tr>
+      <tr *ngFor="let attacker of types; let i = index">
+        <td class="row-header">{{ attacker }}</td>
+        <td
+          *ngFor="let defender of typesSelected; let j = index"
+          [ngClass]="getCellClassOffensive(attacker, defender)"
+        ></td>
+      </tr>
+    </table>
+
+  </div>
+  
+  <div class="type-table">
+    <h2>Defending</h2>
+    <table *ngIf="typesSelected">
+      <tr>
+        <th></th>
+        <th *ngFor="let type of typesSelected">{{type}}</th>
+      </tr>
+      <tr *ngFor="let attacker of types; let i = index">
+        <td class="row-header">{{ attacker }}</td>
+        <td
+        *ngFor="let defender of typesSelected; let j = index"
+        [ngClass]="getCellClassDefensive(attacker, defender)"
+        ></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="resume">
+    <h2>Resume</h2>
+    <div class="effectiveness" *ngFor="let type of typesSelected">
+      <div class="title">{{type | titlecase}}</div>
+      <div class="sub-title">Effective</div>
+      <div class="tags">
+        <div class="tag effective" *ngFor="let tag of getEffectiveness(type)">{{tag | titlecase}}</div>
+      </div>
+      <div class="sub-title">Non effective</div>
+      <div class="tags">
+        <div class="tag non-effective" *ngFor="let tag of getNonEffectiveness(type)">{{tag | titlecase}}</div>
+      </div>
+    </div>
+  </div>
+</div>
