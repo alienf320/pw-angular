@@ -35,12 +35,6 @@ export class TypesComponent {
         arr.push(def)
       }
     }
-    // for(let entry in values) {
-    //   let value = values[entry]
-    //   if(value === 2) {
-    //     arr.push(entry)
-    //   }
-    // }
     
     return arr;
   }
