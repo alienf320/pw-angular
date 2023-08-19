@@ -6,25 +6,43 @@ main {
   .tms-container {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 10px;
+    height: 55vh;
+    width: 25vw;
+    overflow-y: auto;
 
-    
+    .tm {
+      display: flex;
+      gap: 10px;
+    }    
+
+    .name {
+      font-size: 1.05em;
+      font-weight: 700;
+      margin-right: 20px;
+    }
   }
 
   .team {
-    flex-basis: 70%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    flex-basis: 60%;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: repeat(3, min-content);
 
     .pokemon-team {
       border: 1px solid lightgray;
       background-color: rgb(244, 129, 129);
       padding: 20px;
+      height: min-content;
     }
 
     .can-learn {
       background-color: rgb(158, 241, 158);
+    }
+
+    .base-stats {
+      display: grid;
+      grid-template-columns: repeat(6, 50px);
     }
   }
 }

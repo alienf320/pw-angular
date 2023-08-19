@@ -1,11 +1,22 @@
 <main>
   <div class="tms-container">
-    <div class="tm" *ngFor="let tm of tms" (click)="onTMSelected(tm)">{{tm.name}}</div>
+    <div class="tm" *ngFor="let tm of tms" (click)="onTMSelected(tm)">
+      <div class="tm-prop name">{{tm.move.displayName | titlecase}}</div>
+      <div class="tm-prop">{{tm.move.category}}</div>
+      <div class="tm-prop">{{tm.move.type}}</div>
+      <div class="tm-prop">{{tm.move.power}}</div>
+    </div>
   </div>
   <div class="team">
     <div class="pokemon-team" *ngFor="let pk of teamSelected.pokemons" [class.can-learn]="canLearn[pk.pokemon._id]">
       <h2>{{pk.pokemon.internalName}}</h2>
-      <div class="base-stat">
+      <div class="base-stats">
+        <div class="stat-label">HP</div>
+        <div class="stat-label">Atk</div>
+        <div class="stat-label">Def</div>
+        <div class="stat-label">Sp Atk</div>
+        <div class="stat-label">Sp Def</div>
+        <div class="stat-label">Speed</div>
         <div class="stat">{{pk.pokemon.baseStats[0]}}</div>
         <div class="stat">{{pk.pokemon.baseStats[1]}}</div>
         <div class="stat">{{pk.pokemon.baseStats[2]}}</div>
