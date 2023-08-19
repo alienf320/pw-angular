@@ -1,0 +1,13 @@
+main {
+  display: flex;
+  margin: 20px;
+  justify-content: space-evenly;
+
+  .tms-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    
+  }
+}

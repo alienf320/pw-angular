@@ -6,29 +6,31 @@ import { FormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/utils/modules/shared.module';
 import { MatTable, MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { TMsListComponent } from './components/tms-list/tms-list.component';
+import { LearnableTMsComponent } from './components/learnable-tms/learnable-tms.component';
 
 const routes: Routes = [
-  
-    { path: '', redirectTo: '/learnable-tms', pathMatch: 'full' },
-    { path: 'learnable-tms', component: TMsComponent },
-    // { path: 'trainer', component: TrainerComponent },
-    // { path: 'types', component: TypesComponent },
-    // { path: 'tms', component: TMsComponent },
-  
+  //{ path: '', redirectTo: '', pathMatch: 'full' },
+  {
+    path: '',
+    component: TMsComponent,
+    children: [
+      { path: 'learnable-tms', component: LearnableTMsComponent },
+      { path: 'tms-list', component: TMsListComponent },
+      // { path: 'tms', component: TMsComponent },
+    ],
+  },
 ];
 
-
 @NgModule({
-  declarations: [
-    TMsComponent,
-  ],
+  declarations: [TMsComponent, TMsListComponent, LearnableTMsComponent],
   imports: [
     CommonModule,
     FormsModule,
     SharedModule,
     MatTableModule,
     MatSortModule,
-    RouterModule.forChild(routes)
-  ]
+    RouterModule.forChild(routes),
+  ],
 })
-export class MovesModule { }
+export class MovesModule {}

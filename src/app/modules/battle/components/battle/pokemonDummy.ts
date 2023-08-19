@@ -15,8 +15,8 @@ export const pokemon1: Pokemon = {
   effortPoints: [0, 0, 0, 0, 0, 2],
   rareness: 190,
   happiness: 70,
-  abilities: ['Static', 'Lightning Rod'],
-  hiddenAbility: 'Lightning Rod',
+  abilities: ['static', 'lightning Rod'],
+  hiddenAbility: 'lightning Rod',
   moves: [
     {
       level: 1,

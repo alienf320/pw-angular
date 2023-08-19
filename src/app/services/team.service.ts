@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Team } from '../models/team.models';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { myPokemon } from '../models/myPokemon.models';
+import { pokemon1 } from '../modules/battle/components/battle/pokemonDummy';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +14,18 @@ export class TeamService {
     name: '',
     pokemons: []
   }
+  pokemonZero: myPokemon = {
+    level: 5,
+    pokemon: pokemon1,
+    moves: []
+  }
 
   private teamsSubject: BehaviorSubject<Team[]> = new BehaviorSubject<Team[]>([]);
   private teamSelected: BehaviorSubject<Team>= new BehaviorSubject(this.teamZero)
+  private teamPokemonSelected: BehaviorSubject<myPokemon> = new BehaviorSubject(this.pokemonZero)
   teams$: Observable<Team[]> = this.teamsSubject.asObservable();
   teamSelected$: Observable<Team> = this.teamSelected.asObservable()
+  teamPokemonSelected$: Observable<myPokemon> = this.teamPokemonSelected.asObservable()
 
   private apiUrl = 'http://localhost:3000/team';
 
@@ -82,6 +90,10 @@ export class TeamService {
 
   getTeamSelected() {
     return this.teamSelected.value
+  }
+
+  setPokemonInTeam(pk: myPokemon) {
+    this.teamPokemonSelected.next(pk)
   }
 
   updatePokemonInTeam(teamId: string, pokemonData: any): Observable<any> {

@@ -1,4 +1,8 @@
 <main>
+  <div class="tms-navbar">
+    <a routerLink="learnable-tms">Pokemon TMs</a>
+    <a routerLink="tms-list">TMs List</a>
+  </div>
   <div class="controls">
     <div class="add-tm-control">
       <label for="tmsInput">Add TM</label>
@@ -17,51 +21,5 @@
     [team]="team"
     (selectionEvent)="pokemonSelected($event)"
   ></app-team-select>
-  <div class="mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource" matSort>
-      <ng-container matColumnDef="displayName">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Move Name</th>
-        <td mat-cell *matCellDef="let tm">
-          {{ tm.displayName | sentenceFormat }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="category">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
-        <td mat-cell *matCellDef="let tm">{{ tm.category }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="type">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
-        <td mat-cell *matCellDef="let tm">
-          <span
-            [style.backgroundColor]="getTypeColor(tm.type)"
-            [style.color]="getFontColor(tm.type)"
-          >
-            {{ tm.type | titlecase}}
-          </span>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="power">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Power</th>
-        <td mat-cell *matCellDef="let tm">{{ tm.power }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="accuracy">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Accuracy</th>
-        <td mat-cell *matCellDef="let tm">{{ tm.accuracy }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="description">
-        <th mat-header-cell *matHeaderCellDef>Description</th>
-        <td mat-cell *matCellDef="let tm">
-          {{ tm.description | sentenceFormat }}
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let tm; columns: displayedColumns"></tr>
-    </table>
-  </div>
+  <router-outlet></router-outlet>
 </main>
