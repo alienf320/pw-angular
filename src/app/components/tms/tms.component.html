@@ -2,6 +2,13 @@
   <div class="controls">
     <input type="text" [(ngModel)]="tmInput" />
     <button (click)="addToBag()">Add TM</button>
+    <div class="input-teams">
+      <label for="teams">Teams</label>
+      <select name="teams" id="teams" (change)="selectTeam($event)">
+        <option value=""></option>
+        <option [value]="team._id" *ngFor="let team of teams">{{team.name}}</option>
+      </select>
+    </div>
   </div>
   <app-team-select
     [team]="team"

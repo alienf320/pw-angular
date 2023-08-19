@@ -16,6 +16,7 @@ import { pokemonTypes } from 'src/app/utils/colors';
 })
 export class TMsComponent implements OnInit, AfterViewInit {
   team!: Team;
+  teams: Team[] = [];
   learnableTMs!: TM[];
   tmInput = '';
   dataSource!: MatTableDataSource<Move>;
@@ -41,6 +42,9 @@ export class TMsComponent implements OnInit, AfterViewInit {
     this.teamService.teamSelected$.subscribe((data) => {
       this.team = data;
     });
+    this.teamService.getAllTeams().subscribe(data => {
+      this.teams = data;
+    })
   }
 
   ngAfterViewInit() {
@@ -59,6 +63,12 @@ export class TMsComponent implements OnInit, AfterViewInit {
       this.dataSource.data = this.learnableTMs.map(tm => tm.move);
       //this.dataSource.sort = this.sort;
     });
+  }
+
+  selectTeam(event: any) {
+    const teamId = event.target.value
+    const aux = this.teams.find(el => el._id === teamId);
+    this.team = aux!
   }
 
   getTypeColor(type: string): string {
