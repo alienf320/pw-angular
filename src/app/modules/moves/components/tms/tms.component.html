@@ -1,7 +1,10 @@
 <main>
   <div class="controls">
-    <input type="text" [(ngModel)]="tmInput" />
-    <button (click)="addToBag()">Add TM</button>
+    <div class="add-tm-control">
+      <label for="tmsInput">Add TM</label>
+      <input type="text" name="tmsInput" [(ngModel)]="tmInput" />
+      <button (click)="addToBag()">Add TM</button>
+    </div>
     <div class="input-teams">
       <label for="teams">Teams</label>
       <select name="teams" id="teams" (change)="selectTeam($event)">
