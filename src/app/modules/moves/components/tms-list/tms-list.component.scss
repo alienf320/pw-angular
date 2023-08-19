@@ -10,4 +10,21 @@ main {
 
     
   }
+
+  .team {
+    flex-basis: 70%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .pokemon-team {
+      border: 1px solid lightgray;
+      background-color: rgb(244, 129, 129);
+      padding: 20px;
+    }
+
+    .can-learn {
+      background-color: rgb(158, 241, 158);
+    }
+  }
 }

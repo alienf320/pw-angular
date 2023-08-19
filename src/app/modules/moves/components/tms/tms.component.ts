@@ -17,9 +17,6 @@ export class TMsComponent implements OnInit {
   learnableTMs!: TM[];
   tmInput = '';
 
-
-
-
   constructor(
     private teamService: TeamService,
     private tmsService: TmsService
@@ -36,7 +33,6 @@ export class TMsComponent implements OnInit {
     })
   }
 
-
   addToBag() {
     this.tmsService.addTMToBag(this.tmInput);
     this.tmInput = '';
@@ -50,6 +46,7 @@ export class TMsComponent implements OnInit {
     const teamId = event.target.value
     const aux = this.teams.find(el => el._id === teamId);
     this.team = aux!
+    this.teamService.setTeamSelected(aux!)
   }
 
 
