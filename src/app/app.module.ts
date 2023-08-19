@@ -19,6 +19,11 @@ import { SentenceFormatPipe } from './utils/pipes/sentence-format';
 import { TypeTableComponent } from './components/type-table/type-table.component';
 import { TeamSelectComponent } from './utils/components/input-autocomplete/team-select/team-select.component';
 import { TypesComponent } from './components/types/types.component';
+import { TMsComponent } from './components/tms/tms.component';
+import { SharedModule } from './utils/modules/shared.module';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -34,6 +39,7 @@ import { TypesComponent } from './components/types/types.component';
     SentenceFormatPipe,
     TypeTableComponent,
     TypesComponent,
+    TMsComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,6 +48,10 @@ import { TypesComponent } from './components/types/types.component';
     FormsModule,
     OverlayModule,
     HttpClientModule,
+    SharedModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
   ],
   providers: [],
 

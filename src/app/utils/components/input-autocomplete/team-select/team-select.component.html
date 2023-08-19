@@ -17,7 +17,7 @@
     }"
   >
     <div class="delete" *ngIf="editable" (click)="onDelete(pk)"><i class="ri-delete-bin-line"></i> </div>
-    <div class="pokemon-name">{{ pk.pokemon.internalName }}</div>
+    <div class="pokemon-name">{{ pk.pokemon.internalName | titlecase }}</div>
     <div class="pokemon-types">
       <div class="type">{{ pk.pokemon.type1 }}</div>
       <div class="type" *ngIf="pk.pokemon.type2">

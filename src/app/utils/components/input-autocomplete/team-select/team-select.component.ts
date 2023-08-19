@@ -28,6 +28,7 @@ export class TeamSelectComponent implements OnInit {
   }
 
   selectPokemon(pk: myPokemon) {
+    this.pokemonSelected = pk
     this.selectionEvent.emit(pk)
   }
 
