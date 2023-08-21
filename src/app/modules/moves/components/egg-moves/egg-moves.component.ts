@@ -12,6 +12,7 @@ import {
   LocationEncounters,
 } from 'src/app/utils/encounters';
 import { ENCOUNTERS_BY_POKEMON } from 'src/app/utils/encountersByPokemons';
+import { FAMILY_POKEMON } from 'src/app/utils/pokemonFamily';
 import { EVOLUTION_STARTERS } from 'src/app/utils/pokemonStarters';
 
 @Component({
@@ -52,7 +53,7 @@ export class EggMovesComponent implements OnInit {
         this.moves = data;
       });
 
-      console.log(this.encounterService.findFamily('prismolis'))
+      console.log(this.encounterService.findFamily('luxio'))
   }
 
   onMoveSelection(move: Move) {
@@ -66,9 +67,7 @@ export class EggMovesComponent implements OnInit {
 
           return {
             pokemon: pk.internalName,
-            encounter: JSON.stringify(
-              this.encounterService.findEncounter(pk.internalName)
-            ),
+            encounter: this.encounterService.findEncounter(pk.internalName),            
             moves: pk.moves
               .filter((m) => m.move.name === move.name)
               .map((move) => ({
@@ -84,7 +83,7 @@ export class EggMovesComponent implements OnInit {
 
 type TransformedPokemon = {
   pokemon: string;
-  encounter: string;
+  encounter: {pokemon: string, encounter: string[]}[];
   moves: {
     level: number;
     name: string;

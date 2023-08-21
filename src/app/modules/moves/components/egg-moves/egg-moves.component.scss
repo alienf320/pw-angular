@@ -57,6 +57,43 @@ main {
       gap: 10px;
       padding: 10px;
       border: 1px solid lightgray;
+      margin: 10px 0;
+
+      .name {
+        font-size: 1.1em;
+        font-weight: 700;
+      }
+
+      .encounter {
+        display: flex;
+        border: 1px solid lightgray;
+        padding: 8px 12px;
+
+        .sub {
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+          align-self: center;
+          border-left: 1px solid lightgray;
+        }
+
+        .encounters {
+          .enc {
+            display: flex;
+            padding: 9px;
+            gap: 16px;
+          }
+
+          .final {
+            margin-right: 10px;
+          }
+        }
+
+        .sub:first-child {
+          width: 20%;
+          font-weight: 700;
+        }
+      }
     }
   }
 }

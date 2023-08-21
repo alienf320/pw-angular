@@ -10,10 +10,20 @@
   </div>
   <div class="pokemon-compatible">
     <div class="pokemon" *ngFor="let pk of transformedData">
-      <div class="pk-attr name">{{pk.pokemon}}</div>
-      <div class="pk-attr name">{{pk.moves[0].level}} {{pk.moves[0].name}}</div>
-      <div class="pk-attr name" *ngIf="pk.encounter">{{pk.encounter}}</div>
-      
+      <div class="pk-attr name">{{pk.pokemon | titlecase}}</div>
+      <div class="pk-attr level">It learns it at level: <strong>{{pk.moves[0].level}}</strong></div>
+      <div class="pk-attr encounter" *ngIf="pk.encounter.length > 0; else noEncounter">
+        <div class="pk-attr sub">How obtain it?</div>
+        <div class="encounters">
+          <div class="pk-attr enc" *ngFor="let encounter of pk.encounter">
+            <div class="sub-enc">{{encounter.pokemon | titlecase}}</div>
+            <div class="sub-enc final" *ngFor="let e of encounter.encounter">{{e}}</div>
+          </div>
+        </div>
+      </div>
+      <ng-template #noEncounter>
+        <div class="pk-attr sub">It cannot be obtain</div>
+      </ng-template>      
     </div>
   </div>
 </main>
