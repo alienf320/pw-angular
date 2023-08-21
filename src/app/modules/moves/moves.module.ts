@@ -8,6 +8,7 @@ import { MatTable, MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { TMsListComponent } from './components/tms-list/tms-list.component';
 import { LearnableTMsComponent } from './components/learnable-tms/learnable-tms.component';
+import { EggMovesComponent } from './components/egg-moves/egg-moves.component';
 
 const routes: Routes = [
   //{ path: '', redirectTo: '', pathMatch: 'full' },
@@ -17,13 +18,13 @@ const routes: Routes = [
     children: [
       { path: 'learnable-tms', component: LearnableTMsComponent },
       { path: 'tms-list', component: TMsListComponent },
-      // { path: 'tms', component: TMsComponent },
+      { path: 'egg-moves', component: EggMovesComponent },
     ],
   },
 ];
 
 @NgModule({
-  declarations: [TMsComponent, TMsListComponent, LearnableTMsComponent],
+  declarations: [TMsComponent, TMsListComponent, LearnableTMsComponent, EggMovesComponent],
   imports: [
     CommonModule,
     FormsModule,

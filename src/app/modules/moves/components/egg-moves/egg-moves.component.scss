@@ -1,0 +1,47 @@
+main {
+  margin: 20px;
+
+  .moves-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .move-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      width: 40vw;
+      grid-template-rows: auto auto;
+      border: 1px solid lightgray;
+      border-radius: 5px;
+      padding: 10px 16px;
+
+      .name {
+        grid-row: span 2;
+        grid-column: span 1;
+        font-weight: 700;
+        align-self: center;
+        font-size: 1.2em;
+      }
+
+      .category,
+      .type,
+      .power {
+        grid-column: span 1;
+        padding: 5px 0;
+        text-align: center;
+      }
+
+      .description {
+        grid-row: 1 2;
+        grid-column: span 3;
+        padding: 5px 0;
+        text-align: center;
+      }
+    }
+
+    .move-grid:hover {
+      border: 2px solid blueviolet;
+    }
+  }
+
+}

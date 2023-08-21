@@ -1,0 +1,11 @@
+<main>
+  <div class="moves-container">
+    <div class="move-grid" *ngFor="let move of moves">
+      <div class="move-prop name">{{move.displayName | titlecase}}</div>
+      <div class="move-prop category">{{move.category | titlecase}}</div>
+      <div class="move-prop type">{{move.type | titlecase}}</div>
+      <div class="move-prop power">{{move.power}}</div>
+      <div class="move-prop description">{{move.description | sentenceFormat}}</div>
+    </div>
+  </div>
+</main>
