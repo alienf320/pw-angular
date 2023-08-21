@@ -29,7 +29,7 @@ export class MoveService {
     return this.http.get<any>(this.apiUrl, { params });
   }
 
-  getEggMovesCompatibility(eggMove: string, type: string[]) {
+  getEggMovesCompatibility(eggMove: string, type: string[]): Observable<Pokemon[]> {
     let params = new HttpParams();
 
     if (eggMove) {
@@ -40,11 +40,14 @@ export class MoveService {
       params = params.set('compatibilityType', type.join(','));
     }
 
-    return this.http.get<any>(this.urlEgg, { params });
+    return this.http.get<Pokemon[]>(this.urlEgg, { params });
   }
 
   getEggMoves(pk: string): Observable<Move[]> {
-    const starter = EVOLUTION_STARTERS[pk];
+    let starter = EVOLUTION_STARTERS[pk];
+    if(!starter) {
+      starter = pk
+    }
     let params = new HttpParams();
     params = params.set('internalName', starter);
     //params = params.set('exact', 'true')

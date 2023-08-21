@@ -1,5 +1,8 @@
 main {
   margin: 20px;
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
 
   .moves-container {
     display: flex;
@@ -44,4 +47,16 @@ main {
     }
   }
 
+  .pokemon-compatible {
+    padding: 0 20px;
+    flex: 1;
+
+    .pokemon {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 10px;
+      border: 1px solid lightgray;
+    }
+  }
 }

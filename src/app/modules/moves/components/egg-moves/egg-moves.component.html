@@ -1,11 +1,19 @@
 <main>
   <div class="moves-container">
-    <div class="move-grid" *ngFor="let move of moves">
+    <div class="move-grid" *ngFor="let move of moves" (click)="onMoveSelection(move)">
       <div class="move-prop name">{{move.displayName | titlecase}}</div>
       <div class="move-prop category">{{move.category | titlecase}}</div>
       <div class="move-prop type">{{move.type | titlecase}}</div>
       <div class="move-prop power">{{move.power}}</div>
       <div class="move-prop description">{{move.description | sentenceFormat}}</div>
+    </div>
+  </div>
+  <div class="pokemon-compatible">
+    <div class="pokemon" *ngFor="let pk of transformedData">
+      <div class="pk-attr name">{{pk.pokemon}}</div>
+      <div class="pk-attr name">{{pk.moves[0].level}} {{pk.moves[0].name}}</div>
+      <div class="pk-attr name" *ngIf="pk.encounter">{{pk.encounter}}</div>
+      
     </div>
   </div>
 </main>
