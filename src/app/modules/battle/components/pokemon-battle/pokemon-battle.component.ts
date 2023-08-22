@@ -21,6 +21,7 @@ import { StatsService } from 'src/app/services/stats.service';
 import { WRTABLE } from 'src/app/utils/WRTable';
 import { pokemonTypes } from 'src/app/utils/colors';
 import { Constants } from 'src/app/utils/constants';
+import { MEGAEVOLUTIONS, Mega } from 'src/app/utils/megaevolutions';
 
 @Component({
   selector: 'app-pokemon-battle',
@@ -37,6 +38,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   statsRival!: Stats;
   formValueChangesEnabled = true;
   damage: Damage[] = [];
+  megas!: Mega[];
   possibleAbilities: string[] = [];
   subscriptions: Subscription[] = [];
   valueChanges = new Observable();
@@ -55,8 +57,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   }
 
   reinitialize() {
-    const subs1 = this.battleService.getMyPokemon().subscribe((pokemon) => {
-      console.log('rival pokemon', this.rivalPokemon);
+    const subs1 = this.battleService.myPokemonSubject$.subscribe((pokemon) => {
       if (this.type === 'Mine') {
         this.pokemon = pokemon;
         this.possibleAbilities = [
@@ -69,7 +70,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
       this.check();
     });
 
-    const subs2 = this.battleService.getRivalPokemon().subscribe((pokemon) => {
+    const subs2 = this.battleService.rivalPokemonSubject$.subscribe((pokemon) => {
       if (this.type === 'Mine') {
         this.rivalPokemon = pokemon;
       } else {
@@ -106,6 +107,8 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
           }
         }
       );
+
+    this.checkMega();
 
     this.subscriptions.push(subs1, subs2, subs3, subs4);
 
@@ -161,16 +164,30 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
         if (this.formValueChangesEnabled) {
           this.formValueChangesEnabled = false;
           //this.updatePokemon(value);
-          if(value.hasOwnProperty('level')) {
-            this.battleService.updatePokemonBasic(this.pokemon, value, this.type)
+          if (value.hasOwnProperty('level')) {
+            this.battleService.updatePokemonBasic(
+              this.pokemon,
+              value,
+              this.type
+            );
           } else {
-            this.battleService.updatePokemonStats(this.pokemon, value, this.type)
+            this.battleService.updatePokemonStats(
+              this.pokemon,
+              value,
+              this.type
+            );
           }
           this.populateForm();
           this.recalculate();
         }
       }
     );
+  }
+
+  checkMega() {
+    if (this.pokemon) {
+      this.megas = MEGAEVOLUTIONS[this.pokemon.pokemon.internalName];
+    }
   }
 
   check() {
@@ -186,6 +203,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
         this.stats = this.statsService.calculateStats(this.pokemon, this.type);
       }
     }
+    this.checkMega();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -218,7 +236,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   }
 
   populateForm(): void {
-    console.log('populateForm')
+    console.log('populateForm');
     const statsModifiers = {
       HPM: this.pokemonForm.value.stats.statChangeHP,
       attackM: this.pokemonForm.value.stats.statChangeAttack,
@@ -279,12 +297,15 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
 
   savePokemon() {
     //console.log(this.pokemonForm.value, this.pokemon)
-    this.battleService.updatePokemonFull(this.pokemon)
+    this.battleService.updatePokemonFull(this.pokemon);
   }
 
   loadAttacks() {
-    this.pokemon.moves = this.pokemonService.fillMoves(this.pokemon.pokemon, this.pokemon.level!)
-    this.populateForm()
+    this.pokemon.moves = this.pokemonService.fillMoves(
+      this.pokemon.pokemon,
+      this.pokemon.level!
+    );
+    this.populateForm();
   }
 
   calculateDamage(move: Move): Damage {
@@ -321,7 +342,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
     const level = this.pokemonForm.value.basic.level || 50; // Nivel predeterminado si no se proporciona uno
     const power = move.power || 0; // Poder del movimiento o 0 si no se proporciona
     const typeMultiplier = this.getTypeMultiplier(move, this.rivalPokemon); // Obtener el multiplicador de tipo para el movimiento
-    
+
     // if(this.type === 'Mine') {
     //   console.log('calculateBaseDamage: ', level, power, typeMultiplier, attackStat, defenseStat)
     // }
@@ -386,6 +407,18 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
     this.check();
   }
 
+  megaevolve(event: any) {
+    const megaName = event.target.value;
+    const megaStats = this.megas?.filter((form) => form.name === megaName)[0];
+
+    this.battleService.updatePokemonStats(
+      this.pokemon,
+      null,
+      'Mine',
+      megaStats
+    );
+  }
+
   getBackgroundColor(effectiveness: number): string {
     switch (effectiveness) {
       case 0.25:
@@ -420,14 +453,14 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
 
   getFontColor(type: string): string {
     const color = pokemonTypes[type.toLowerCase()].fontColor;
-    return color || "#FFFFFF";
+    return color || '#FFFFFF';
   }
 
   getPerceptualDamage(damage: Damage) {
-    const rivalHP = this.statsRival.hp
-    const damageMin = 100 - ((rivalHP - damage.min)/(rivalHP) * 100)
-    const damageMax = 100 - ((rivalHP - damage.max)/(rivalHP) * 100)
-    return damageMin.toFixed(2) + '% - ' + damageMax.toFixed(2) + '%'
+    const rivalHP = this.statsRival.hp;
+    const damageMin = 100 - ((rivalHP - damage.min) / rivalHP) * 100;
+    const damageMax = 100 - ((rivalHP - damage.max) / rivalHP) * 100;
+    return damageMin.toFixed(2) + '% - ' + damageMax.toFixed(2) + '%';
   }
 
   ngOnDestroy(): void {

@@ -18,6 +18,12 @@
       <div class="sub-group">
         <button (click)="savePokemon()" *ngIf="type === 'Mine'">Save</button>
       </div>
+      <div class="sub-group" *ngIf="megas">
+        <select name="megas" id="megas" (change)="megaevolve($event)">
+          <option value=""></option>
+          <option [value]="mega.name" *ngFor="let mega of megas">{{mega.name}}</option>
+        </select>
+      </div>
     </div>
 
     <div class="row">

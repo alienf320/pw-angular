@@ -4,6 +4,8 @@ import { myPokemon } from '../models/myPokemon.models';
 import { PIKACHU } from '../utils/myPokemon0';
 import { BoxService } from './box.service';
 import { TeamService } from './team.service';
+import { Mega } from '../utils/megaevolutions';
+import { Pokemon } from '../models/pokemon.models';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,9 @@ export class PokemonBattleService {
 
   private myPokemonSubject: BehaviorSubject<myPokemon> = new BehaviorSubject<myPokemon>(PIKACHU);
   private rivalPokemonSubject: BehaviorSubject<myPokemon> = new BehaviorSubject<myPokemon>(PIKACHU);  
+
+  myPokemonSubject$ = this.myPokemonSubject.asObservable();
+  rivalPokemonSubject$ = this.rivalPokemonSubject.asObservable();
 
   constructor(private boxService: BoxService, private teamService: TeamService) {}
 
@@ -44,24 +49,29 @@ export class PokemonBattleService {
     }
   }
 
-  updatePokemonStats(pokemon: myPokemon, values?: any, type = 'Mine'): void {
+  updatePokemonStats(pokemon: myPokemon, values?: any, type = 'Mine', mega?: Mega): void {
+    let poke: myPokemon = pokemon;
+    if(mega) {
+      poke["pokemon"] = {...pokemon.pokemon, baseStats: mega.stats!}
+      poke["ability"] = mega.ability!
+    }
     const pk: myPokemon = {
-      ...pokemon,
+      ...poke,
       ivs: {
-        HP: values.ivHP,
-        attack: values.ivAttack,
-        defense: values.ivDefense,
-        spAttack: values.ivSpAttack,
-        spDefense: values.ivSpDefense,
-        speed: values.ivSpeed,
+        HP: values?.ivHP ?? 0,
+        attack: values?.ivAttack ?? 0,
+        defense: values?.ivDefense ?? 0,
+        spAttack: values?.ivSpAttack ?? 0,
+        spDefense: values?.ivSpDefense ?? 0,
+        speed: values?.ivSpeed ?? 0,
       },
       evs: {
-        HP: values.evHP,
-        attack: values.evAttack,
-        defense: values.evDefense,
-        spAttack: values.evSpAttack,
-        spDefense: values.evSpDefense,
-        speed: values.evSpeed,
+        HP: values?.evHP ?? 0,
+        attack: values?.evAttack ?? 0,
+        defense: values?.evDefense ?? 0,
+        spAttack: values?.evSpAttack ?? 0,
+        spDefense: values?.evSpDefense ?? 0,
+        speed: values?.evSpeed ?? 0,
       },
     };
     if (type === 'Mine') {
