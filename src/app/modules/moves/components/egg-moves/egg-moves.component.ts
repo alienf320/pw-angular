@@ -2,18 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { EMPTY, catchError, mergeMap } from 'rxjs';
 import { Move } from 'src/app/models/move.models';
 import { Pokemon } from 'src/app/models/pokemon.models';
-import { Team } from 'src/app/models/team.models';
 import { EncounterService } from 'src/app/services/encounter.service';
 import { MoveService } from 'src/app/services/move.service';
 import { TeamService } from 'src/app/services/team.service';
-import {
-  ENCOUNTERS,
-  Encounter,
-  LocationEncounters,
-} from 'src/app/utils/encounters';
-import { ENCOUNTERS_BY_POKEMON } from 'src/app/utils/encountersByPokemons';
-import { FAMILY_POKEMON } from 'src/app/utils/pokemonFamily';
-import { EVOLUTION_STARTERS } from 'src/app/utils/pokemonStarters';
 
 @Component({
   selector: 'app-egg-moves',
@@ -25,7 +16,7 @@ export class EggMovesComponent implements OnInit {
   pokemonCompatible: Pokemon[] = [];
   pokemonSelected!: Pokemon;
   transformedData!: TransformedPokemon[];
-  errorMessage: string = 'Esto es un error pedorro'; // A property to hold the error message
+  errorMessage: string = 'Esto es un error pedorro';
   result = [];
 
   constructor(
@@ -44,7 +35,7 @@ export class EggMovesComponent implements OnInit {
               this.errorMessage = error;
               console.error('An error occurred:', error);
               this.moves = [];
-              return EMPTY; // Return an empty observable to continue the stream
+              return EMPTY;
             })
           );
         })
@@ -52,8 +43,6 @@ export class EggMovesComponent implements OnInit {
       .subscribe((data) => {
         this.moves = data;
       });
-
-      console.log(this.encounterService.findFamily('luxio'))
   }
 
   onMoveSelection(move: Move) {
@@ -62,9 +51,6 @@ export class EggMovesComponent implements OnInit {
       .subscribe((data) => {
         this.pokemonCompatible = data;
         this.transformedData = data.map((pk) => {
-          // console.log('------------ Encuentros para este pokemon: ----------------');
-          // console.log(pk.internalName)
-
           return {
             pokemon: pk.internalName,
             encounter: this.encounterService.findEncounter(pk.internalName),            

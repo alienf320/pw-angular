@@ -45,7 +45,7 @@ export class BoxService {
   }
 
   deletePokemon(pkID: string): Observable<any> {
-    const url = `${this.baseUrl}/${pkID}`;
+    const url = `${this.baseUrl}/pokemon/${pkID}`;
     return this.http.delete(url);
   }
 
@@ -56,6 +56,6 @@ export class BoxService {
 }
 
 export interface Box {
-  trainerName: string,
+  name: string,
   pokemons: myPokemon[]
 }

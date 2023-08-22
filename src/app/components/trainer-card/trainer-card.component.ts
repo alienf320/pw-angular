@@ -52,7 +52,7 @@ export class TrainerCardComponent  {
       }
     }
     const boxFilled: Box = {
-      trainerName: this.trainer.name,
+      name: this.trainer.name,
       pokemons: box
     }
     

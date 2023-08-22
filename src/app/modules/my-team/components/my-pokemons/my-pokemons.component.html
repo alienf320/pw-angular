@@ -20,6 +20,11 @@
         {{ pokemon }}
       </div>
     </div>
+    <div class="box-selector">
+      <select name="box-selector" id="box-selector">
+        <option value="box.name" *ngFor="let box of boxes">{{box.name}}</option>
+      </select>
+    </div>
     <app-box-small [pokemon]="pokemonSelected"></app-box-small>
   </div>
   <div class="right-container">

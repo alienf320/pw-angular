@@ -6,6 +6,7 @@ import { Pokemon } from 'src/app/models/pokemon.models';
 import { TeamService } from 'src/app/services/team.service';
 import { Team } from 'src/app/models/team.models';
 import { take } from 'rxjs';
+import { Box, BoxService } from 'src/app/services/box.service';
 
 @Component({
   selector: 'app-my-pokemons',
@@ -17,6 +18,7 @@ export class MyPokemonsComponent implements OnInit {
   pokemons!: string[];
   pokemonsFiltered!: Pokemon[];
   box!: myPokemon[];
+  boxes: Box[] = [];
   teams!: Team[];
   overlayRef: OverlayRef | null = null;
   pokemonSelected!: Pokemon;
@@ -24,7 +26,7 @@ export class MyPokemonsComponent implements OnInit {
   inputValue = '';
   selectedTeam!: Team;
 
-  constructor(private pokemonService: PokemonService, private teamService: TeamService) {}
+  constructor(private pokemonService: PokemonService, private teamService: TeamService, private boxService: BoxService) {}
 
   ngOnInit() {
     this.searchPokemon();
@@ -39,6 +41,10 @@ export class MyPokemonsComponent implements OnInit {
 
     this.teamService.teamSelected$.subscribe( t => {
       this.selectedTeam = t;
+    })
+
+    this.boxService.getAllBox().subscribe( data => {
+      this.boxes = data
     })
   }
 
