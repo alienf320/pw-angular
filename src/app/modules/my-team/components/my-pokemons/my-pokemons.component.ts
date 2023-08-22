@@ -64,11 +64,13 @@ export class MyPokemonsComponent implements OnInit {
   }
 
   addToBox(event: any) {
+    const boxId = this.boxService.getBox()
     const pokemonName = event.target.innerText;
     const pokemonFull = this.pokemonsFiltered.find(
       (p) => p.internalName === pokemonName
     );
     this.pokemonSelected = pokemonFull!;
+    this.boxService.savePokemon(pokemonName, boxId._id!, {pokemon: pokemonFull}).pipe(take(1)).subscribe()
   }
 
   selectTeam(team: Team) {

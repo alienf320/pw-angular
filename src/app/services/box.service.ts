@@ -9,9 +9,9 @@ import { myPokemon } from '../models/myPokemon.models';
 })
 export class BoxService {
 
-  private BoxZero: myPokemon[] = []
+  private BoxZero: Box = {_id: '', name: '', pokemons: []};
 
-  private currentBox: BehaviorSubject<myPokemon[]> = new BehaviorSubject(this.BoxZero);
+  private currentBox: BehaviorSubject<Box> = new BehaviorSubject(this.BoxZero);
   currentBox$ = this.currentBox.asObservable()
   
   private baseUrl = 'http://localhost:3000/box';
@@ -19,14 +19,14 @@ export class BoxService {
   private rivalUrl = 'http://localhost:3000/box/rival';
 
   constructor(private http: HttpClient) {
-    this.http.get<myPokemon[]>(this.baseUrl).subscribe( data => {
+    this.http.get<Box[]>(this.allBoxesUrl).subscribe( data => {
       //console.log('Es una box?: ', data)
-      this.currentBox.next(data)
+      this.currentBox.next(data[0])
     })
 
    }
 
-  getBox(): myPokemon[] {
+  getBox(): Box {
     return this.currentBox.value
   }
 
@@ -34,8 +34,8 @@ export class BoxService {
     return this.http.get(this.allBoxesUrl);
   }
 
-  savePokemon(pokemon: string, pokemonData?: any): Observable<any> {
-    return this.http.post(this.baseUrl, { displayName: pokemon, ...pokemonData });
+  savePokemon(pokemon: string, boxId: string, pokemonData?: any): Observable<any> {
+    return this.http.post(this.baseUrl + '/add-pokemon', { displayName: pokemon, ...pokemonData, boxId: boxId });
   }
 
   updatePokemon(pkID: string, pokemonData: any): Observable<any> {
@@ -56,6 +56,7 @@ export class BoxService {
 }
 
 export interface Box {
+  _id?: string,
   name: string,
   pokemons: myPokemon[]
 }

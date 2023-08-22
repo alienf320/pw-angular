@@ -66,7 +66,7 @@ export class BattleComponent {
 
   update() {
     this.boxService.currentBox$.subscribe((data) => {
-      this.box = data;
+      this.box = data.pokemons;
     });
     this.boxService.getAllBox().subscribe((data) => {
       //console.log('allBoxes:', data);

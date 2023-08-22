@@ -37,7 +37,7 @@ export class BoxSmallComponent {
 
   loadBox() {
     this.boxService.currentBox$.subscribe( data => {
-      this.box = data;
+      this.box = data.pokemons;
     })
   }
 
