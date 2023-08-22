@@ -7,16 +7,21 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { TeamSelectComponent } from '../components/input-autocomplete/team-select/team-select.component';
 import { SentenceFormatPipe } from '../pipes/sentence-format';
+import { TypeTagComponent } from '../components/type-tag/type-tag.component';
 
 @NgModule({
-  declarations: [InputAutocompleteComponent, TeamSelectComponent, SentenceFormatPipe],
+  declarations: [
+    InputAutocompleteComponent,
+    TeamSelectComponent,
+    SentenceFormatPipe,
+    TypeTagComponent,
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatAutocompleteModule,
-    
   ],
   exports: [
     CommonModule,
@@ -27,7 +32,8 @@ import { SentenceFormatPipe } from '../pipes/sentence-format';
     MatAutocompleteModule,
     TeamSelectComponent,
     SentenceFormatPipe,
-    InputAutocompleteComponent, // También exportamos el componente para que pueda ser utilizado fuera de este módulo.
+    InputAutocompleteComponent,
+    TypeTagComponent
   ],
 })
 export class SharedModule {}

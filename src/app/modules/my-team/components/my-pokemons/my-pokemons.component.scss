@@ -21,11 +21,21 @@
       background-color: #c8ebfa;
     }
   }
+
+  small-box {
+    width: 100%;
+  }
 }
 
 .right-container {
-  width: 100%;
   padding: 20px;
+
+  .controls {
+    display: flex;
+    gap: 20px;
+    padding: 16px;
+  }
+  
   .box {
     border: 1px solid gray;
     border-radius: 20px;

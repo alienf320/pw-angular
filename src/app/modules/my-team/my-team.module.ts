@@ -14,6 +14,7 @@ import { SharedModule } from 'src/app/utils/modules/shared.module';
 import { BoxSmallComponent } from './components/box-small/box-small.component';
 import { TeamSelectComponent } from 'src/app/utils/components/input-autocomplete/team-select/team-select.component';
 import { TeamAnalyticsComponent } from './components/team-analytics/team-analytics.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 const routes: Routes = [
   {
@@ -39,6 +40,7 @@ const routes: Routes = [
     PortalModule,
     ReactiveFormsModule,
     SharedModule,
+    MatSidenavModule,
     RouterModule.forChild(routes)
   ]
 })

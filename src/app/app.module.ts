@@ -23,6 +23,8 @@ import { SharedModule } from './utils/modules/shared.module';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import { TypeTagComponent } from './utils/components/type-tag/type-tag.component'; 
 
 @NgModule({
   declarations: [
@@ -48,7 +50,7 @@ import { MatTableModule } from '@angular/material/table';
     SharedModule,
     MatTableModule,
     MatSortModule,
-    MatPaginatorModule,
+    MatPaginatorModule,    
   ],
   providers: [],
 

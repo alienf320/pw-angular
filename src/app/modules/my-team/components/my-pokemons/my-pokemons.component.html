@@ -1,63 +1,74 @@
-<div class="max-container">
-  <div class="left-container">
-    <div class="container">
-      <div class="input-container">
-        <input
-          type="text"
-          [(ngModel)]="pokemonName"
-          placeholder="Nombre del Pokémon"
-          (keyup.enter)="searchPokemon()"
-        />
-        <button (click)="searchPokemon()">Buscar</button>
+<mat-sidenav-container>
+  <mat-sidenav #sidenav>
+    <div class="left-container">
+      <div class="container">
+        <div class="input-container">
+          <input
+            type="text"
+            [(ngModel)]="pokemonName"
+            placeholder="Nombre del Pokémon"
+            (keyup.enter)="searchPokemon()"
+          />
+          <button (click)="searchPokemon()">Buscar</button>
+        </div>
       </div>
-    </div>
-    <div class="suggestions" *ngIf="pokemons">
-      <div
-        class="suggestion"
-        *ngFor="let pokemon of pokemons"
-        (click)="addToBox($event)"
-      >
-        {{ pokemon }}
+      <div class="suggestions" *ngIf="pokemons">
+        <div
+          class="suggestion"
+          *ngFor="let pokemon of pokemons"
+          (click)="addToBox($event)"
+        >
+          {{ pokemon }}
+        </div>
       </div>
+      <div class="box-selector" mode="over">
+        <select name="box-selector" id="box-selector">
+          <option value="box.name" *ngFor="let box of boxes">
+            {{ box.name }}
+          </option>
+        </select>
+      </div>
+      <app-box-small [pokemon]="pokemonSelected"></app-box-small>
     </div>
-    <div class="box-selector">
-      <select name="box-selector" id="box-selector">
-        <option value="box.name" *ngFor="let box of boxes">{{box.name}}</option>
-      </select>
-    </div>
-    <app-box-small [pokemon]="pokemonSelected"></app-box-small>
-  </div>
-  <div class="right-container">
-    <div class="new-team-container">
-      <button (click)="showInput()">+</button>
-      <input
-        *ngIf="inputVisible"
-        [(ngModel)]="inputValue"
-        (keyup.enter)="onInputEnter()"
-      />
-    </div>
-    <div class="teams-container" *ngIf="teams">
-      <div
-        class="team"
-        *ngFor="let team of teams"
-        (click)="selectTeam(team)"
-        [ngClass]="{ selected: team.name === selectedTeam.name }"
-      >
-        <div class="team-title">{{ team.name }}</div>
-        <div class="pokemon-container" *ngIf="team.pokemons.length > 0">
-          <div class="pokemon" *ngFor="let pk of team.pokemons">
-            {{ pk.pokemon.internalName | titlecase }}
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="right-container">
+      <div class="controls">
+        <div class="sidenav">
+          <button (click)="sidenav.toggle()">Sidebar</button>
+        </div>
+        <div class="new-team-container">
+          <button (click)="showInput()">+</button>
+          <input
+            *ngIf="inputVisible"
+            [(ngModel)]="inputValue"
+            (keyup.enter)="onInputEnter()"
+          />
+        </div>        
+      </div>
+      <div class="teams-container" *ngIf="teams">
+        <div
+          class="team"
+          *ngFor="let team of teams"
+          (click)="selectTeam(team)"
+          [ngClass]="{ selected: team.name === selectedTeam.name }"
+        >
+          <div class="team-title">{{ team.name }}</div>
+          <div class="pokemon-container" *ngIf="team.pokemons.length > 0">
+            <div class="pokemon" *ngFor="let pk of team.pokemons">
+              {{ pk.pokemon.internalName | titlecase }}
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <app-team-select
-      [team]="selectedTeam"
-      [editable]="true"
-      (deleteEvent)="deletePokemonFromTeam($event)"
-    ></app-team-select>
-    <app-team-analytics [inputTeam]="selectedTeam"></app-team-analytics>
-    <!-- <h3>My Box</h3>
+      <app-team-select
+        [team]="selectedTeam"
+        [editable]="true"
+        (deleteEvent)="deletePokemonFromTeam($event)"
+      ></app-team-select>
+      <app-team-analytics [inputTeam]="selectedTeam"></app-team-analytics>
+      <!-- <h3>My Box</h3>
     <div class="box" *ngIf="box">
       <div class="box-container">
         <div class="pokemon-box" *ngFor="let pk of box">
@@ -70,5 +81,6 @@
         </div>
       </div>
     </div> -->
-  </div>
-</div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
