@@ -70,7 +70,7 @@ export class MyPokemonsComponent implements OnInit {
       (p) => p.internalName === pokemonName
     );
     this.pokemonSelected = pokemonFull!;
-    this.boxService.savePokemon(pokemonName, boxId._id!, {pokemon: pokemonFull}).pipe(take(1)).subscribe()
+    //this.boxService.savePokemon(pokemonName, boxId._id!, {pokemon: pokemonFull}).pipe(take(1)).subscribe()
   }
 
   selectTeam(team: Team) {

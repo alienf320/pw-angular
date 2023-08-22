@@ -6,6 +6,7 @@ export interface myPokemon {
   level?: number,
   nature?: string,
   ability?: string,
+  item?: string,
   moves: Move[]
   evs?: {
     HP: number,

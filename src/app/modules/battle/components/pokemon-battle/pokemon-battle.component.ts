@@ -56,7 +56,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
 
   reinitialize() {
     const subs1 = this.battleService.getMyPokemon().subscribe((pokemon) => {
-      //console.log('mi poke update', pokemon);
+      console.log('rival pokemon', this.rivalPokemon);
       if (this.type === 'Mine') {
         this.pokemon = pokemon;
         this.possibleAbilities = [

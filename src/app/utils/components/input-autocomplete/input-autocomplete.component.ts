@@ -87,6 +87,7 @@ export class InputAutocompleteComponent
         .getTrainers()
         .pipe(take(1))
         .subscribe((data) => {
+          //console.log('Data de trainer: ', data)
           this.trainers = data;
         });
     } else if (this.inputType === 'pokemon') {

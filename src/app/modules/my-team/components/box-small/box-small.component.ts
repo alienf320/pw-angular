@@ -100,7 +100,7 @@ export class BoxSmallComponent {
 
   handleSavePokemon(pokemonData: any, pkName: string) {
     //console.log('Datos del Pokémon:', pokemonData);
-    this.boxService.savePokemon(pkName, pokemonData).subscribe((data) => {
+    this.boxService.savePokemon(pkName, this.boxService.getCurrentBoxId(), pokemonData).subscribe((data) => {
       this.box = data;
     });
   }    

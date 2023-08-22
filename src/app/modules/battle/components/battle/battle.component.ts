@@ -115,8 +115,8 @@ export class BattleComponent {
     this.teamService.setTeamSelected(team!)
   }
 
-  async loadTrainer(event: any) {
-    this.localStorageService.saveStateForBattle(undefined, event as myPokemon )
+  async loadTrainer(event: Trainer) {
+    this.localStorageService.saveStateForBattle(undefined, event)
     const team = (event as Trainer).team;
     let box: myPokemon[] = [];
 
@@ -151,6 +151,7 @@ export class BattleComponent {
       if (pokemonData && pokemonData.length > 0) {
         pokemonFull = {
           pokemon: pokemonData[0] as Pokemon,
+          item: pk.item,
           level: pk.level,
           moves: moves,
           _id: `${pk._id}`,

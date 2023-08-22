@@ -38,6 +38,11 @@
           </option>
         </select>
       </div>
+
+      <div class="sub-group" *ngIf="pokemon.item">
+        <label for="item">Item:</label>
+        <input type="text" [value]="pokemon.item" readonly>
+      </div>
     </div>
 
     <div class="row">
