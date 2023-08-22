@@ -423,6 +423,13 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
     return color || "#FFFFFF";
   }
 
+  getPerceptualDamage(damage: Damage) {
+    const rivalHP = this.statsRival.hp
+    const damageMin = 100 - ((rivalHP - damage.min)/(rivalHP) * 100)
+    const damageMax = 100 - ((rivalHP - damage.max)/(rivalHP) * 100)
+    return damageMin.toFixed(2) + '% - ' + damageMax.toFixed(2) + '%'
+  }
+
   ngOnDestroy(): void {
     // Desuscribirse de todas las suscripciones activas
     this.subscriptions.forEach((subscription) => {

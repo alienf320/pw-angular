@@ -225,6 +225,15 @@
       >
         Damage: {{ damage[i].min }} - {{ damage[i].max }}
       </div>
+      <div
+        class="damage"
+        *ngIf="damage.length > i"
+        [ngStyle]="{
+          'background-color': getBackgroundColor(damage[i].effectiveness)
+        }"
+      >
+        {{getPerceptualDamage(damage[i])}}
+      </div>
     </div>
   </div>
 </div>
