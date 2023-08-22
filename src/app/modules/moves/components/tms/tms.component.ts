@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { myPokemon } from 'src/app/models/myPokemon.models';
 import { Team } from 'src/app/models/team.models';
 import { TM } from 'src/app/models/tm.models';
+import { Box, BoxService } from 'src/app/services/box.service';
 import { TeamService } from 'src/app/services/team.service';
 import { TmsService } from 'src/app/services/tms.service';
 import { pokemonTypes } from 'src/app/utils/colors';
@@ -14,12 +15,14 @@ import { pokemonTypes } from 'src/app/utils/colors';
 export class TMsComponent implements OnInit {
   team!: Team;
   teams: Team[] = [];
+  box!: Box;
   learnableTMs!: TM[];
   tmInput = '';
 
   constructor(
     private teamService: TeamService,
-    private tmsService: TmsService
+    private tmsService: TmsService,
+    private boxService: BoxService
   ) {
     
   }
@@ -30,6 +33,9 @@ export class TMsComponent implements OnInit {
     });
     this.teamService.getAllTeams().subscribe(data => {
       this.teams = data;
+    });
+    this.boxService.currentBox$.subscribe(data => {
+      this.box = data;
     })
   }
 
@@ -49,5 +55,12 @@ export class TMsComponent implements OnInit {
     this.teamService.setTeamSelected(aux!)
   }
 
+  selectPokemonFromBox(event: any) {
+    const pokemonName = event.target.value;
+    const pokemon = this.box.pokemons.find(pk => pk.pokemon.name === pokemonName)
+    if(pokemon) {
+      this.teamService.addPokemonToTeamMomentously(pokemon)
+    }
 
+  }
 }

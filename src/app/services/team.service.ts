@@ -72,6 +72,12 @@ export class TeamService {
       });
   }
 
+  addPokemonToTeamMomentously(pokemon: myPokemon) {
+    let team = this.getTeamSelected()
+    team.pokemons.push(pokemon)
+    this.setTeamSelected(team)
+  }
+
   deletePokemonFromTeam(pokemon: myPokemon) {
     const teamId = this.teamSelected.value._id
     //console.log('TeamId - PokemonId: ', teamId, pokemon._id)

@@ -17,6 +17,13 @@
         <option [value]="team._id" *ngFor="let team of teams">{{team.name}}</option>
       </select>
     </div>
+    <div class="input-teams">
+      <label for="box">Teams</label>
+      <select name="box" id="teams" (change)="selectPokemonFromBox($event)">
+        <option value=""></option>
+        <option [value]="pk.pokemon.internalName" *ngFor="let pk of box.pokemons">{{pk.pokemon.internalName}}</option>
+      </select>
+    </div>
   </div>
   <app-team-select
     [team]="team"
