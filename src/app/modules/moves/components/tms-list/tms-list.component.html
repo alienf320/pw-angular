@@ -1,6 +1,6 @@
 <main>
   <div class="tms-container">
-    <div class="tm" *ngFor="let tm of tms" (click)="onTMSelected(tm)">
+    <div class="tm" *ngFor="let tm of tms" (click)="onTMSelected(tm)" [class.selected]="tm.move.displayName === moveSelected">
       <div class="tm-prop name">{{tm.move.displayName | titlecase}}</div>
       <div class="tm-prop">{{tm.move.category}}</div>
       <div class="tm-prop">{{tm.move.type}}</div>

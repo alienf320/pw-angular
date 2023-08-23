@@ -59,9 +59,10 @@
             <th>Level</th>
             <th>Name</th>
           </tr>
-          <tr *ngFor="let move of pokemon.moves">
+          <tr *ngFor="let move of pokemon.moves" >
             <td>{{ move.level }}</td>
             <td>{{ move.move.name | titlecase }}</td>
+            <td tooltip [tooltip]="move.move" [typeTooltip]="'default'"> + </td>
           </tr>
         </table>
       </div>

@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { TeamSelectComponent } from '../components/input-autocomplete/team-select/team-select.component';
 import { SentenceFormatPipe } from '../pipes/sentence-format';
 import { TypeTagComponent } from '../components/type-tag/type-tag.component';
+import { TooltipDirective } from '../directives/tooltip.directive';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { TypeTagComponent } from '../components/type-tag/type-tag.component';
     TeamSelectComponent,
     SentenceFormatPipe,
     TypeTagComponent,
+    TooltipDirective
   ],
   imports: [
     CommonModule,
@@ -33,7 +35,8 @@ import { TypeTagComponent } from '../components/type-tag/type-tag.component';
     TeamSelectComponent,
     SentenceFormatPipe,
     InputAutocompleteComponent,
-    TypeTagComponent
+    TypeTagComponent,
+    TooltipDirective
   ],
 })
 export class SharedModule {}

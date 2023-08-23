@@ -16,6 +16,15 @@ main {
       gap: 10px;
     }    
 
+    .tm:hover {
+      color:blueviolet
+    }
+
+    .selected {
+      color:chocolate;
+      font-weight: 800;
+    }
+
     .name {
       font-size: 1.05em;
       font-weight: 700;

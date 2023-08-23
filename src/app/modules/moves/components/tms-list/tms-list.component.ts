@@ -13,6 +13,7 @@ import { TmsService } from 'src/app/services/tms.service';
 export class TMsListComponent implements OnInit {
   teamSelected!: Team;
   pokemonSelected!: myPokemon;
+  moveSelected: string = '';
   tms: TM[] = [];
   canLearn: {
     [key: string]: boolean;
@@ -38,6 +39,7 @@ export class TMsListComponent implements OnInit {
 
   onTMSelected(tm: TM) {
     //console.log("Tms: ", tm)
+    this.moveSelected = tm.move.displayName
     this.tmsService
       .CanTeamLearnTm(this.teamSelected._id, tm._id!)
       .subscribe((data) => {
