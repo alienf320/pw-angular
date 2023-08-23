@@ -28,7 +28,7 @@
           </option>
         </select>
       </div>
-      <app-box-small [pokemon]="pokemonSelected"></app-box-small>
+      <app-box-small [pokemon]="newPokemon"></app-box-small>
     </div>
   </mat-sidenav>
 
@@ -65,22 +65,10 @@
       <app-team-select
         [team]="selectedTeam"
         [editable]="true"
+        (selectionEvent)="onPokemonSelection($event)"
         (deleteEvent)="deletePokemonFromTeam($event)"
       ></app-team-select>
-      <app-team-analytics [inputTeam]="selectedTeam"></app-team-analytics>
-      <!-- <h3>My Box</h3>
-    <div class="box" *ngIf="box">
-      <div class="box-container">
-        <div class="pokemon-box" *ngFor="let pk of box">
-          <app-pokemon-box-card
-            [myPokemon]="pk"
-            (modify)="modifyPokemon($event)"
-            (delete)="deletePokemon($event)"
-            (details)="openDetails($event)"
-          ></app-pokemon-box-card>
-        </div>
-      </div>
-    </div> -->
+      <app-team-analytics [inputTeam]="selectedTeam" [pokemonSelected]="pokemonSelected"></app-team-analytics>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -21,7 +21,8 @@ export class MyPokemonsComponent implements OnInit {
   boxes: Box[] = [];
   teams!: Team[];
   overlayRef: OverlayRef | null = null;
-  pokemonSelected!: Pokemon;
+  newPokemon!: Pokemon;
+  pokemonSelected!: myPokemon;
   inputVisible = false;
   inputValue = '';
   selectedTeam!: Team;
@@ -69,13 +70,17 @@ export class MyPokemonsComponent implements OnInit {
     const pokemonFull = this.pokemonsFiltered.find(
       (p) => p.internalName === pokemonName
     );
-    this.pokemonSelected = pokemonFull!;
+    this.newPokemon = pokemonFull!;
     //this.boxService.savePokemon(pokemonName, boxId._id!, {pokemon: pokemonFull}).pipe(take(1)).subscribe()
   }
 
   selectTeam(team: Team) {
     this.selectedTeam = team;
     this.teamService.setTeamSelected(team);
+  }
+
+  onPokemonSelection(pk: myPokemon) {
+    this.pokemonSelected = pk;
   }
 
   deletePokemonFromTeam(pk: myPokemon) {
