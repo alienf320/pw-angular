@@ -52,7 +52,16 @@
   font-size: 1rem;
   padding: 5px;
   cursor: pointer;
+
+  i:hover {
+    color: purple;
+  }
+
+  i:active {
+    font-weight: 700;
+  }
 }
+
 
 .modify-button {
   position: absolute;

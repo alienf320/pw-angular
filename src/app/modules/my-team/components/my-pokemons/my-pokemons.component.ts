@@ -27,7 +27,11 @@ export class MyPokemonsComponent implements OnInit {
   inputValue = '';
   selectedTeam!: Team;
 
-  constructor(private pokemonService: PokemonService, private teamService: TeamService, private boxService: BoxService) {}
+  constructor(
+    private pokemonService: PokemonService,
+    private teamService: TeamService,
+    private boxService: BoxService
+  ) {}
 
   ngOnInit() {
     this.searchPokemon();
@@ -35,18 +39,18 @@ export class MyPokemonsComponent implements OnInit {
   }
 
   loadTeams() {
-    this.teamService.teams$.subscribe( data => {
+    this.teamService.teams$.subscribe((data) => {
       this.teams = data;
-      this.teamService.setTeamSelected(data[0])
-    })
+      //this.teamService.setTeamSelected(data[0]);
+    });
 
-    this.teamService.teamSelected$.subscribe( t => {
+    this.teamService.teamSelected$.subscribe((t) => {
       this.selectedTeam = t;
-    })
+    });
 
-    this.boxService.getAllBox().subscribe( data => {
-      this.boxes = data
-    })
+    this.boxService.getAllBox().subscribe((data) => {
+      this.boxes = data;
+    });
   }
 
   searchPokemon() {
@@ -65,7 +69,7 @@ export class MyPokemonsComponent implements OnInit {
   }
 
   addToBox(event: any) {
-    const boxId = this.boxService.getBox()
+    const boxId = this.boxService.getBox();
     const pokemonName = event.target.innerText;
     const pokemonFull = this.pokemonsFiltered.find(
       (p) => p.internalName === pokemonName
@@ -84,7 +88,7 @@ export class MyPokemonsComponent implements OnInit {
   }
 
   deletePokemonFromTeam(pk: myPokemon) {
-    this.teamService.deletePokemonFromTeam(pk)
+    this.teamService.deletePokemonFromTeam(pk);
   }
 
   showInput() {
@@ -97,7 +101,10 @@ export class MyPokemonsComponent implements OnInit {
 
   onInputEnter() {
     if (this.inputValue.trim() !== '') {
-      this.teamService.createTeam(this.inputValue.trim()).pipe(take(1)).subscribe()
+      this.teamService
+        .createTeam(this.inputValue.trim())
+        .pipe(take(1))
+        .subscribe();
       this.inputValue = '';
       this.hideInput();
     }

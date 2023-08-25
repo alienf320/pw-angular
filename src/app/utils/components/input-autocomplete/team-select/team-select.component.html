@@ -4,7 +4,7 @@
   (mouseleave)="toggleComponentVisibility()"
   [ngClass]="{ collapsed: !isComponentVisible, 'right': position === 'right'}"
   [class.vertical]="vertical"
-  *ngIf="team"
+  *ngIf="team | async as team"
 >
   <div class="icon" *ngIf="!isComponentVisible && vertical"><i class="ri-expand-right-fill"></i></div>
   <div

@@ -57,6 +57,7 @@ export class TeamService {
   addPokemonToTeam(pokemon: myPokemon) {
     const updatedTeam = this.teamSelected.value;
     updatedTeam.pokemons.push(pokemon);
+    this.setTeamSelected(updatedTeam)
   
     this.http.post<any>(this.apiUrl + '/add-pokemon', { teamId: updatedTeam._id, pokemon })
       .subscribe(response => {
@@ -84,7 +85,7 @@ export class TeamService {
     const uri = `${this.apiUrl}/${teamId}/pokemons/${pokemon._id}`
     this.http.delete<any>(uri)
       .subscribe(data => {
-        //console.log('Así queda el team despues del delete: ', data)
+        console.log('Así queda el team despues del delete: ', data)
         this.setTeamSelected(data)
       });
   }
@@ -92,6 +93,7 @@ export class TeamService {
 
   setTeamSelected(team: Team) {
     this.teamSelected.next(team)
+    this.updateTeams(team)
   }
 
   getTeamSelected() {
@@ -106,5 +108,10 @@ export class TeamService {
     const data = { teamId: teamId, pokemon: pokemonData };
     //console.log('Update pokemon in Team', data);
     return this.http.put(this.apiUrl, data);
+  }
+
+  updateTeams(team: Team) {
+    const newTeams = this.teamsSubject.value.filter( t => t._id !== team._id)
+    this.teamsSubject.next([...newTeams, team])
   }
 }
