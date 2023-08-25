@@ -1,8 +1,10 @@
 import {
   Component,
+  EventEmitter,
   Input,
   OnChanges,
   OnInit,
+  Output,
   SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -43,6 +45,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   subscriptions: Subscription[] = [];
   valueChanges = new Observable();
   statChanges: number[] = [-6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6];
+  @Output() savePokemonEvent: EventEmitter<myPokemon> = new EventEmitter();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -296,8 +299,13 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   }
 
   savePokemon() {
-    //console.log(this.pokemonForm.value, this.pokemon)
+    console.log("Save my pokemon: ", this.pokemonForm.value, this.pokemon)
     this.battleService.updatePokemonFull(this.pokemon);
+  }
+
+  saveRivalPokemon() {
+    //console.log(this.pokemonForm.value, this.pokemon)
+    this.savePokemonEvent.emit(this.pokemon)
   }
 
   loadAttacks() {

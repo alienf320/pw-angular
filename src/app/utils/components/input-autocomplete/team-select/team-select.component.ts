@@ -13,6 +13,7 @@ export class TeamSelectComponent implements OnInit {
   @Input() pokemonSelected!: myPokemon;
   @Input() vertical = false;
   @Input() editable = false;
+  @Input() position: 'left' | 'right' = 'left';
   @Output() selectionEvent: EventEmitter<myPokemon> = new EventEmitter();
   @Output() deleteEvent: EventEmitter<myPokemon> = new EventEmitter();
   isComponentVisible = false;

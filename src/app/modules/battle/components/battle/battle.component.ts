@@ -25,6 +25,7 @@ export class BattleComponent {
   pokemonName!: string;
   allBoxes: Box[] = [];
   rivalPokemons!: { pokemons: myPokemon[] };
+  recentPokemon: Team = {_id: '1', name: 'recent', pokemons: []};
   teams: Team[] = [];
   teamSelected!: Team;
   pokemonSelected!: myPokemon;
@@ -61,6 +62,9 @@ export class BattleComponent {
     const data = this.localStorageService.loadStateForBattle()
     if(data?.yourPokemon) {
       this.loadTrainer(data.yourPokemon)
+    }
+    if(data?.recentPokemon) {
+      this.recentPokemon = data.recentPokemon;
     }
   }
 
@@ -105,6 +109,7 @@ export class BattleComponent {
 
     //console.log(pk)
     console.log('Ahí te envío rival', pk)
+    this.recentPokemon.pokemons.push(pk)
     this.battleService.updateRivalPokemon(pk);
   }
 
@@ -176,6 +181,18 @@ export class BattleComponent {
       moves: []
     }
     this.battleService.updateRivalPokemon(fullPokemon);
+  }
+
+  addRecentPokemon(event: myPokemon) {
+    if(this.recentPokemon.pokemons.length === 6) {
+      this.recentPokemon.pokemons.shift()
+    }
+    this.recentPokemon.pokemons.push(event);
+    this.localStorageService.saveStateForRivalBattle(this.recentPokemon)
+  }
+
+  loadRecentPokemon(event: myPokemon) {
+    this.battleService.updateRivalPokemon(event)
   }
 
   fillMoves(pokemon: Pokemon, level: number) {

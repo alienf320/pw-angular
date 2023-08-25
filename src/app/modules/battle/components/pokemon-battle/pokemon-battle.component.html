@@ -17,6 +17,7 @@
       </div>
       <div class="sub-group">
         <button (click)="savePokemon()" *ngIf="type === 'Mine'">Save</button>
+        <button (click)="saveRivalPokemon()" *ngIf="type !== 'Mine'">Save</button>
       </div>
       <div class="sub-group" *ngIf="megas">
         <select name="megas" id="megas" (change)="megaevolve($event)">

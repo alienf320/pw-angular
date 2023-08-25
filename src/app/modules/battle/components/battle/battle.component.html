@@ -16,7 +16,9 @@
       <label for="teams">Teams</label>
       <select name="teams" id="teams" (change)="selectTeam($event)">
         <option value=""></option>
-        <option [value]="team._id" *ngFor="let team of teams">{{team.name}}</option>
+        <option [value]="team._id" *ngFor="let team of teams">
+          {{ team.name }}
+        </option>
       </select>
     </div>
     <!-- <label for="search-pokemon"></label>
@@ -63,10 +65,18 @@
         </option>
       </select>
     </div>
+
+    <app-team-select
+      *ngIf="recentPokemon.pokemons.length > 0"
+      [team]="recentPokemon"
+      [vertical]="true"
+      position="right"
+      (selectionEvent)="loadRecentPokemon($event)"
+    ></app-team-select>
   </div>
 </div>
 
 <div class="container">
   <app-pokemon-battle [type]="'Mine'"></app-pokemon-battle>
-  <app-pokemon-battle [type]="'Rival'"></app-pokemon-battle>
+  <app-pokemon-battle [type]="'Rival'" (savePokemonEvent)="addRecentPokemon($event)"></app-pokemon-battle>
 </div>
