@@ -52,7 +52,13 @@ export class BattleComponent {
 
     this.teamService.teamSelected$.subscribe( team => {
       this.teamSelected = team;
+      console.log("Battle component - ngOnInit - team: ", team)
       this.pokemonSelected = team.pokemons[0];
+      // if(!this.pokemonSelected) {
+      //   setTimeout(() => {
+      //     this.battleService.updateMyPokemon(team.pokemons[0])        
+      //   }, 0);
+      // }
     })
 
     this.checkLocalStorage();
@@ -60,8 +66,9 @@ export class BattleComponent {
 
   checkLocalStorage() {
     const data = this.localStorageService.loadStateForBattle()
+    console.log('Trainer loaded?: ', data?.yourPokemon)
     if(data?.yourPokemon) {
-      this.loadTrainer(data.yourPokemon)
+      this.loadTrainer(undefined, data.yourPokemon)
     }
     if(data?.recentPokemon) {
       this.recentPokemon = data.recentPokemon;
@@ -78,7 +85,7 @@ export class BattleComponent {
     });
   }
 
-  selectPokemon(event: any) {
+  selectPokemon(event: any, pokemon?: myPokemon) {
     const pokemonName = event.target.value;
     const pk = this.box.find((pk) => pk.pokemon.internalName === pokemonName)!;
 
@@ -120,9 +127,18 @@ export class BattleComponent {
     this.teamService.setTeamSelected(team!)
   }
 
-  async loadTrainer(event: Trainer) {
-    this.localStorageService.saveStateForBattle(undefined, event)
-    const team = (event as Trainer).team;
+  async loadTrainer(event?: Trainer, dataStorage?: Trainer) {
+    let trainer;
+    if(event) {
+      this.localStorageService.saveStateForBattle(undefined, event)
+    }
+    if(dataStorage) {
+      trainer = dataStorage
+    } else {
+      trainer = event
+    }
+    console.log("team de trainer: ", trainer!.team)
+    const team = (trainer as Trainer).team;
     let box: myPokemon[] = [];
 
     for (const pk of team) {

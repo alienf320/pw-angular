@@ -11,7 +11,7 @@ import { TeamService } from 'src/app/services/team.service';
 })
 export class TeamSelectComponent implements OnInit {
 
-  @Input() team: Observable<Team> = this.teamService.teamSelected$;
+  @Input() team!: Team;
   @Input() pokemonSelected!: myPokemon;
   @Input() vertical = false;
   @Input() editable = false;

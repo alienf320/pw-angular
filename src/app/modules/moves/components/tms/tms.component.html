@@ -26,6 +26,7 @@
     </div>
   </div>
   <app-team-select
+    [team]="team"
     (selectionEvent)="pokemonSelected($event)"
   ></app-team-select>
   <router-outlet></router-outlet>

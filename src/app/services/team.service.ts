@@ -104,10 +104,13 @@ export class TeamService {
     this.teamPokemonSelected.next(pk)
   }
 
-  updatePokemonInTeam(teamId: string, pokemonData: any): Observable<any> {
+  updatePokemonInTeam(teamId: string, pokemonData: any) {
     const data = { teamId: teamId, pokemon: pokemonData };
     //console.log('Update pokemon in Team', data);
-    return this.http.put(this.apiUrl, data);
+    this.http.put<Team>(this.apiUrl, data).subscribe(data => {
+      //console.log('Esto es un team?: ', data)
+      this.teamSelected.next(data)
+    });
   }
 
   updateTeams(team: Team) {

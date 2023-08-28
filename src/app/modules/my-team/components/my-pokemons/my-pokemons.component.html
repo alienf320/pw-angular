@@ -63,6 +63,7 @@
         </div>
       </div>
       <app-team-select
+        [team]="selectedTeam"
         [editable]="true"
         (selectionEvent)="onPokemonSelection($event)"
         (deleteEvent)="deletePokemonFromTeam($event)"

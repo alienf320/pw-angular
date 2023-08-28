@@ -24,6 +24,7 @@
     <!-- <label for="search-pokemon"></label>
     <input type="text" name="search-pokemon" [(ngModel)]="pokemonName"> -->
     <app-team-select
+      [team]="teamSelected"
       (selectionEvent)="loadMyPokemon($event)"
       [pokemonSelected]="pokemonSelected"
       [vertical]="true"
@@ -66,6 +67,7 @@
     </div>
 
     <app-team-select
+      [team]="recentPokemon"
       *ngIf="recentPokemon.pokemons.length > 0"
       [vertical]="true"
       position="right"

@@ -116,10 +116,10 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
     this.subscriptions.push(subs1, subs2, subs3, subs4);
 
     const attacksFormGroup = this.formBuilder.group({
-      attack1: [this.pokemon.moves[0]?.displayName], // Selector de Ataque 1
-      attack2: [this.pokemon.moves[1]?.displayName], // Selector de Ataque 2
-      attack3: [this.pokemon.moves[2]?.displayName], // Selector de Ataque 3
-      attack4: [this.pokemon.moves[3]?.displayName], // Selector de Ataque 4
+      attack1: [this.pokemon.moves[0]?.displayName],
+      attack2: [this.pokemon.moves[1]?.displayName], 
+      attack3: [this.pokemon.moves[2]?.displayName], 
+      attack4: [this.pokemon.moves[3]?.displayName],
     });
 
     this.pokemonForm = this.formBuilder.group({
@@ -154,7 +154,7 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
         evSpeed: [0],
         statChangeSpeed: [0],
       }),
-      attacks: attacksFormGroup, // Agrega el FormGroup de ataques
+      attacks: attacksFormGroup, 
     });
 
     this.recalculate();
@@ -195,13 +195,11 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
 
   check() {
     if (this.formValueChangesEnabled && this.pokemonForm) {
-      //console.log('entro al if: ', this.pokemon)
       this.formValueChangesEnabled = false;
       this.populateForm();
       //console.log('recalculate - check');
       this.recalculate();
     } else {
-      //console.log('entro al else: ', this.pokemon)
       if (this.pokemon) {
         this.stats = this.statsService.calculateStats(this.pokemon, this.type);
       }
@@ -220,14 +218,11 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   }
 
   recalculate() {
-    //console.log('recalculate: ', this.pokemon.moves)
     this.stats = this.statsService.calculateStats(this.pokemon, this.type);
     this.statsRival = this.statsService.calculateStats(
       this.rivalPokemon,
       this.type === 'Mine' ? 'Rival' : 'Mine'
     );
-    // console.log("Ahora voy a recalcular el daño de: ", this.pokemon.pokemon.internalName)
-    // console.log("Los stats de mi rival son: ", this.statsRival)
     if (this.stats) {
       this.damage = [];
       this.pokemon.moves.forEach((move) => {
@@ -283,7 +278,6 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
       },
     });
 
-    //console.log('Aca hace patch con estos moves: ', this.pokemon.moves);
     const attacksFormGroup = this.pokemonForm.get('attacks') as FormGroup;
     for (const attackKey in this.pokemon.moves) {
       const key = 'attack' + (Number(attackKey) + 1);
@@ -294,7 +288,6 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
         });
       }
     }
-    // console.log('Así quedó después del patch: ', attacksFormGroup.value)
     this.formValueChangesEnabled = true;
   }
 
@@ -347,9 +340,9 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
     attackStat: number,
     defenseStat: number
   ): Damage {
-    const level = this.pokemonForm.value.basic.level || 50; // Nivel predeterminado si no se proporciona uno
-    const power = move.power || 0; // Poder del movimiento o 0 si no se proporciona
-    const typeMultiplier = this.getTypeMultiplier(move, this.rivalPokemon); // Obtener el multiplicador de tipo para el movimiento
+    const level = this.pokemonForm.value.basic.level || 50; 
+    const power = move.power || 0; 
+    const typeMultiplier = this.getTypeMultiplier(move, this.rivalPokemon); 
 
     // if(this.type === 'Mine') {
     //   console.log('calculateBaseDamage: ', level, power, typeMultiplier, attackStat, defenseStat)
@@ -386,7 +379,6 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
     const m1: number = type1 ? WRTABLE[type1][move.type] : 1;
     const m2: number = type2 ? WRTABLE[type2][move.type] : 1;
 
-    //console.log('el multiplicador de: ', move.name, ' es ', m1*m2)
     return m1 * m2;
   }
 
@@ -430,17 +422,17 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   getBackgroundColor(effectiveness: number): string {
     switch (effectiveness) {
       case 0.25:
-        return 'mediumslateblue'; // Puedes cambiar el color a lo que necesites
+        return 'mediumslateblue'; 
       case 0.5:
-        return 'lightblue'; // Puedes cambiar el color a lo que necesites
+        return 'lightblue'; 
       case 1:
-        return 'white'; // Puedes cambiar el color a lo que necesites
+        return 'white'; 
       case 2:
-        return 'orange'; // Puedes cambiar el color a lo que necesites
+        return 'orange'; 
       case 4:
-        return 'red'; // Puedes cambiar el color a lo que necesites
+        return 'red'; 
       default:
-        return 'white'; // Puedes cambiar el color a lo que necesites
+        return 'white'; 
     }
   }
 
@@ -472,7 +464,6 @@ export class PokemonBattleComponent implements OnInit, OnChanges {
   }
 
   ngOnDestroy(): void {
-    // Desuscribirse de todas las suscripciones activas
     this.subscriptions.forEach((subscription) => {
       subscription.unsubscribe();
     });
