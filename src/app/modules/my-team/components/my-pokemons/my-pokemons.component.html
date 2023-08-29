@@ -22,7 +22,8 @@
         </div>
       </div>
       <div class="box-selector" mode="over">
-        <select name="box-selector" id="box-selector">
+        <select name="box-selector" id="box-selector" placeholder="Select a box">
+          <option value="">Select a box</option>
           <option value="box.name" *ngFor="let box of boxes">
             {{ box.name }}
           </option>
