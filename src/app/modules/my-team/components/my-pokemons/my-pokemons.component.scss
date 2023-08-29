@@ -25,6 +25,18 @@
   small-box {
     width: 100%;
   }
+
+  .box-selector {
+    width: 90%;
+    display: flex;
+
+    select {
+      width: 50%;
+      margin: 20px auto;
+      text-align: center;
+      background-color: #f2f2f2;
+    }
+  }
 }
 
 .right-container {
@@ -69,7 +81,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 30px 30px 0;
+  margin: 30px 0;
 }
 
 .input-container {
@@ -103,6 +115,25 @@ button:hover {
   background-color: #45a049;
 }
 
+select {
+  padding: 8px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  border-radius: 4px;
+  appearance: none; 
+  background-color: white; 
+  cursor: pointer;
+}
+
+select:focus {
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+
+select option {
+  padding: 8px;
+  font-size: 16px;
+}
 
 .teams-container {
   display: flex; 

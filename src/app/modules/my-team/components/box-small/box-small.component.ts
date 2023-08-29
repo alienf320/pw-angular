@@ -17,6 +17,7 @@ import { TeamService } from 'src/app/services/team.service';
 })
 export class BoxSmallComponent {
   box!: myPokemon[]
+  boxFull!: myPokemon[];
   overlayRef: OverlayRef | null = null;
   @Input() set pokemon(pk: Pokemon) {
     if(pk) {
@@ -38,6 +39,7 @@ export class BoxSmallComponent {
   loadBox() {
     this.boxService.currentBox$.subscribe( data => {
       this.box = data.pokemons;
+      this.boxFull = data.pokemons;
     })
   }
 
@@ -109,7 +111,7 @@ export class BoxSmallComponent {
     // console.log('Datos del Pokémon que actualizo:', pokemonData);
 
     this.boxService.updatePokemon(pkID, pokemonData).subscribe((data) => {
-      console.log('Respuesta del server: ', data)
+      //console.log('Respuesta del server: ', data)
       this.box = data;
     });
   }
@@ -118,19 +120,33 @@ export class BoxSmallComponent {
     this.teamService.addPokemonToTeam(event)
   }
 
+  orderBox(event: any) {
+    const order = event.checked
+    if(order) {
+      this.box.sort( (a,b) => a.level! - b.level!)
+    } else {
+      this.box.sort( (a,b) => b.level! - a.level!)
+    }
+  }
+
+  filterBox(event: any) {
+    const input = event.target.value
+    if(input) {
+      this.box = this.box.filter( b => b.pokemon.name.includes(input) )
+    } else {
+      this.box = this.boxFull
+    }
+  }
+
   modifyPokemon(pk: myPokemon) {
     this.openOverlay(pk.pokemon, pk)
   }
 
   openDetails(event: myPokemon) {
-    //console.log('target', event)
-
-    this.openOverlayDetails(event)
-  
+    this.openOverlayDetails(event)  
   }
 
   openOverlayDetails(myPokemon: myPokemon) {
-    // Cerrar el overlay si ya está abierto
     this.closeOverlay();
   
     const positionStrategy = this.overlay.position()
@@ -140,16 +156,13 @@ export class BoxSmallComponent {
   
     this.overlayRef = this.overlay.create({ positionStrategy });
   
-    // Adjuntar el componente del formulario al overlay
+
     const portal = new ComponentPortal(PokemonBoxDetailsComponent);
     const componentRef = this.overlayRef.attach(portal);
   
-    // Pasar el nombre del Pokémon al componente del overlay
-
     componentRef.instance.myPokemon = myPokemon
     componentRef.instance.overlayRef = this.overlayRef;
   
-    // Escuchar el evento de cierre del overlay
     this.overlayRef.backdropClick().subscribe(() => {
       this.closeOverlay();
     });

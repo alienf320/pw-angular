@@ -1,5 +1,13 @@
-<div class="box-container">
-  <h3>My Box</h3>
+<div class="container">
+  <div class="controls">
+    <div class="control">
+      <mat-slide-toggle (change)="orderBox($event)">Order by level</mat-slide-toggle>
+    </div>
+    <div class="control">
+      <label for="filter">Filter by name</label>
+      <input type="text" name="filter" (input)="filterBox($event)">
+    </div>
+  </div>
   <div class="box" *ngIf="box">
     <div class="box-container">
       <div class="pokemon-box" *ngFor="let pk of box">

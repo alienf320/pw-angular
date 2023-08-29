@@ -14,7 +14,7 @@ import { Box, BoxService } from 'src/app/services/box.service';
   styleUrls: ['./my-pokemons.component.scss'],
 })
 export class MyPokemonsComponent implements OnInit {
-  pokemonName: string = 'aron';
+  pokemonName: string = '';
   pokemons!: string[];
   pokemonsFiltered!: Pokemon[];
   box!: myPokemon[];

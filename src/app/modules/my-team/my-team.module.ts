@@ -16,6 +16,7 @@ import { TeamSelectComponent } from 'src/app/utils/components/input-autocomplete
 import { TeamAnalyticsComponent } from './components/team-analytics/team-analytics.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import {MatMenuModule} from '@angular/material/menu'; 
+import {MatSlideToggleModule} from '@angular/material/slide-toggle'; 
 
 const routes: Routes = [
   {
@@ -43,6 +44,7 @@ const routes: Routes = [
     SharedModule,
     MatSidenavModule,
     MatMenuModule,
+    MatSlideToggleModule,
     RouterModule.forChild(routes)
   ]
 })
