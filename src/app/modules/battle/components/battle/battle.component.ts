@@ -25,7 +25,7 @@ export class BattleComponent {
   pokemonName!: string;
   allBoxes: Box[] = [];
   rivalPokemons!: { pokemons: myPokemon[] };
-  recentPokemon: Team = {_id: '1', name: 'recent', pokemons: []};
+  recentPokemon: Team = { _id: '1', name: 'recent', pokemons: [] };
   teams: Team[] = [];
   teamSelected!: Team;
   pokemonSelected!: myPokemon;
@@ -46,31 +46,31 @@ export class BattleComponent {
       this.update();
     }
 
-    this.teamService.teams$.subscribe (teams => {
+    this.teamService.teams$.subscribe((teams) => {
       this.teams = teams;
-    })
+    });
 
-    this.teamService.teamSelected$.subscribe( team => {
+    this.teamService.teamSelected$.subscribe((team) => {
       this.teamSelected = team;
-      console.log("Battle component - ngOnInit - team: ", team)
+      console.log('Battle component - ngOnInit - team: ', team);
       this.pokemonSelected = team.pokemons[0];
       // if(!this.pokemonSelected) {
       //   setTimeout(() => {
-      //     this.battleService.updateMyPokemon(team.pokemons[0])        
+      //     this.battleService.updateMyPokemon(team.pokemons[0])
       //   }, 0);
       // }
-    })
+    });
 
     this.checkLocalStorage();
   }
 
   checkLocalStorage() {
-    const data = this.localStorageService.loadStateForBattle()
-    console.log('Trainer loaded?: ', data?.yourPokemon)
-    if(data?.yourPokemon) {
-      this.loadTrainer(undefined, data.yourPokemon)
+    const data = this.localStorageService.loadStateForBattle();
+    console.log('Trainer loaded?: ', data?.yourPokemon);
+    if (data?.yourPokemon) {
+      this.loadTrainer(undefined, data.yourPokemon);
     }
-    if(data?.recentPokemon) {
+    if (data?.recentPokemon) {
       this.recentPokemon = data.recentPokemon;
     }
   }
@@ -91,7 +91,7 @@ export class BattleComponent {
 
     //console.log("Acá cambia el pokemon seleccionado: ", this.pokemonSelected)
     this.pokemonSelected = pk;
-      //console.log("Cambió: ", this.pokemonSelected)
+    //console.log("Cambió: ", this.pokemonSelected)
     this.battleService.updateMyPokemon(pk);
   }
 
@@ -104,40 +104,41 @@ export class BattleComponent {
 
   pokemonRivalSelected(event?: any, index = 0) {
     let pk;
-    if(event) {
+    if (event) {
       const pokemonName = event.target.value;
       pk = this.rivalPokemons.pokemons.find((pk) => {
         //console.log("cada poke", pk.pokemon.internalName, pokemonName)
         return pk.pokemon.internalName === pokemonName;
-      })!;      
+      })!;
     } else {
-      pk = this.rivalPokemons.pokemons[index]
+      pk = this.rivalPokemons.pokemons[index];
     }
 
     //console.log(pk)
-    console.log('Ahí te envío rival', pk)
-    this.recentPokemon.pokemons.push(pk)
+    console.log('Ahí te envío rival', pk);
+    this.addRecentPokemon(pk);
+
     this.battleService.updateRivalPokemon(pk);
   }
 
   selectTeam(event: any) {
     const teamId = event.target.value;
-    const team = this.teams.find( t => t._id === teamId)
+    const team = this.teams.find((t) => t._id === teamId);
     //console.log('selecTeam: ', this.teams, team)
-    this.teamService.setTeamSelected(team!)
+    this.teamService.setTeamSelected(team!);
   }
 
   async loadTrainer(event?: Trainer, dataStorage?: Trainer) {
     let trainer;
-    if(event) {
-      this.localStorageService.saveStateForBattle(undefined, event)
+    if (event) {
+      this.localStorageService.saveStateForBattle(undefined, event);
     }
-    if(dataStorage) {
-      trainer = dataStorage
+    if (dataStorage) {
+      trainer = dataStorage;
     } else {
-      trainer = event
+      trainer = event;
     }
-    console.log("team de trainer: ", trainer!.team)
+    console.log('team de trainer: ', trainer!.team);
     const team = (trainer as Trainer).team;
     let box: myPokemon[] = [];
 
@@ -145,10 +146,10 @@ export class BattleComponent {
       let pokemonFull: myPokemon;
       let moves: Move[] = [];
       const movePromises: Promise<Move[]>[] = [];
-      
+
       const pokemonData = await this.pokemonService
-      .getPokemonByName('', pk.name, true)
-      .toPromise();
+        .getPokemonByName('', pk.name, true)
+        .toPromise();
 
       if (pk.moves.length === 0) {
         //console.log("Estos deberían ser los moves: ", pokemonData![0].moves)
@@ -156,17 +157,16 @@ export class BattleComponent {
         //console.log("Moves completados: ", moves)
       } else {
         for (const move of pk.moves) {
-          if(move.length > 2) {
+          if (move.length > 2) {
             movePromises.push(this.moveService.getMoveByName(move).toPromise());
           }
         }
-  
+
         const movesData = await Promise.all(movePromises);
         moves = movesData.map((moveArray) => {
           const move = moveArray[0];
           return move;
         });
-
       }
 
       if (pokemonData && pokemonData.length > 0) {
@@ -183,32 +183,39 @@ export class BattleComponent {
     }
 
     this.rivalPokemons = { pokemons: box };
-    this.pokemonRivalSelected()
+    this.pokemonRivalSelected();
   }
 
   async loadMyPokemon(pokemon: myPokemon) {
     this.pokemonSelected = pokemon;
-    this.battleService.updateMyPokemon(pokemon)
+    this.battleService.updateMyPokemon(pokemon);
   }
 
   async loadRivalPokemon(pokemon: Pokemon) {
     const fullPokemon: myPokemon = {
       pokemon: pokemon,
-      moves: []
-    }
+      moves: [],
+    };
     this.battleService.updateRivalPokemon(fullPokemon);
   }
 
   addRecentPokemon(event: myPokemon) {
-    if(this.recentPokemon.pokemons.length > 5) {
-      this.recentPokemon.pokemons.shift()
+    //console.log("recentPokemons length: ", this.recentPokemon.pokemons.length)
+    if (
+      !this.recentPokemon.pokemons
+        .map((pk) => pk.pokemon.internalName)
+        .includes(event.pokemon.internalName)
+    ) {
+      if (this.recentPokemon.pokemons.length > 5) {
+        this.recentPokemon.pokemons = this.recentPokemon.pokemons.slice(1, 6);
+      }
+      this.recentPokemon.pokemons.push(event);
+      this.localStorageService.saveStateForRivalBattle(this.recentPokemon);
     }
-    this.recentPokemon.pokemons.push(event);
-    this.localStorageService.saveStateForRivalBattle(this.recentPokemon)
   }
 
   loadRecentPokemon(event: myPokemon) {
-    this.battleService.updateRivalPokemon(event)
+    this.battleService.updateRivalPokemon(event);
   }
 
   fillMoves(pokemon: Pokemon, level: number) {
