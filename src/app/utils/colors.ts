@@ -34,7 +34,7 @@ export const pokemonTypes: { [key: string]: { color: string, fontColor: string }
   nuclear: { color: '#00FF00', fontColor: '#000000' },
   virus: { color: '#FF4500', fontColor: '#000000' },
   cyber: { color: '#00FFFF', fontColor: '#000000' },
-  glass: { color: '#FFFFFF', fontColor: '#000000' },
+  glass: { color: 'linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(237,237,254,1) 35%, rgba(200,241,250,1) 100%)', fontColor: '#000000' },
   plastic: { color: '#5be64d', fontColor: '#FFFFFF' },
   fabric: { color: '#0b7e9e', fontColor: '#000000' },
   chaos: { color: '#000000', fontColor: '#FFFFFF' },

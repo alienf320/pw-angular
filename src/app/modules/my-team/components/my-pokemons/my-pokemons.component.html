@@ -38,6 +38,7 @@
       <div class="controls">
         <div class="sidenav">
           <button (click)="sidenav.toggle()">Sidebar</button>
+          <button (click)="isTeamSelectorVisible = !isTeamSelectorVisible">Pokemon selector</button>
         </div>
         <div class="new-team-container">
           <button (click)="showInput()">+</button>
@@ -48,7 +49,7 @@
           />
         </div>        
       </div>
-      <div class="teams-container" *ngIf="teams">
+      <div class="teams-container" *ngIf="teams && isTeamSelectorVisible">
         <div
           class="team"
           *ngFor="let team of teams"
@@ -68,6 +69,7 @@
         [editable]="true"
         (selectionEvent)="onPokemonSelection($event)"
         (deleteEvent)="deletePokemonFromTeam($event)"
+        
       ></app-team-select>
       <app-team-analytics [inputTeam]="selectedTeam" [pokemonSelected]="pokemonSelected"></app-team-analytics>
     </div>

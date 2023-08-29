@@ -1,0 +1,19 @@
+<main>
+  <div class="left">
+    <div class="resistance" *ngFor="let resistance of resistances">
+      {{ resistance }}
+    </div>
+  </div>
+  <div class="right">
+    <div class="attack" *ngFor="let atk of moves">
+      <div class="move-name">
+        {{ atk.displayName | titlecase }}
+      </div>
+      <div class="move-effectiveness">
+        <div class="item" *ngFor="let item of effective[atk.displayName]">
+          {{ item | titlecase }}
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

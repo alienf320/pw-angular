@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Move } from 'src/app/models/move.models';
 import { myPokemon } from 'src/app/models/myPokemon.models';
 import { Team } from 'src/app/models/team.models';
 import { WRTABLE } from 'src/app/utils/WRTable';
@@ -21,9 +22,14 @@ export class TeamAnalyticsComponent implements OnInit {
     }
   }
   @Input() set pokemonSelected(pk: myPokemon) {
-    this.moveCoverage(pk);
+    this.moves = pk.moves
+    this.effective = this.moveCoverage(pk);
+    this.resistances = this.getResistances(pk)
   }
   team!: Team;
+  resistances!: Set<string>;
+  moves: Move[] = [];
+  effective: {[type: string]: string[]} = {}
 
   constructor() {}
 
@@ -117,15 +123,19 @@ export class TeamAnalyticsComponent implements OnInit {
   };
 
   moveCoverage(pk: myPokemon) {
+    const obj: {[type: string]: string[]} = {}
     for (let move of pk.moves) {
       if(move.category !== 'status') {
-        console.log(
-          'Effectiveness: ',
-          move.displayName,
-          this.getEffectiveness(move.type)
-        );
+        // console.log(
+        //   'Effectiveness: ',
+        //   move.displayName,
+        //   this.getEffectiveness(move.type)
+        // );
+
+        obj[move.displayName] = this.getEffectiveness(move.type)
       }
     }
+    return obj
   }
 
   getEffectiveness(attacker: string) {
@@ -139,6 +149,27 @@ export class TeamAnalyticsComponent implements OnInit {
       }
     }
 
+    return arr;
+  }
+
+  getResistances(pk: myPokemon) {
+    const {type1, type2} = pk.pokemon
+    const values = WRTABLE[type1];
+    const arr = new Set<string>();
+
+    for(let defender of [type1, type2]) {
+      if(defender) {
+        for (let attacker in values) {
+          let value = WRTABLE[defender][attacker];
+          if (value < 1) {
+            arr.add(attacker);
+          }
+        }
+    
+        console.log('resistance of PK: ', arr)
+        return arr;
+      }
+    }
     return arr;
   }
 }

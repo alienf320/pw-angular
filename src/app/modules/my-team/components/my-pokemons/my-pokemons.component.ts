@@ -26,6 +26,7 @@ export class MyPokemonsComponent implements OnInit {
   inputVisible = false;
   inputValue = '';
   selectedTeam!: Team;
+  isTeamSelectorVisible = false;
 
   constructor(
     private pokemonService: PokemonService,

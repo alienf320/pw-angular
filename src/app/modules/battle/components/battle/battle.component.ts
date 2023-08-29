@@ -200,7 +200,7 @@ export class BattleComponent {
   }
 
   addRecentPokemon(event: myPokemon) {
-    if(this.recentPokemon.pokemons.length === 6) {
+    if(this.recentPokemon.pokemons.length > 5) {
       this.recentPokemon.pokemons.shift()
     }
     this.recentPokemon.pokemons.push(event);

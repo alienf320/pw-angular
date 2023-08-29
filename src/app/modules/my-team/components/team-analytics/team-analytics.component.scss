@@ -1,0 +1,27 @@
+main {
+  display: flex;
+  justify-content: space-between;
+
+  .left, .right {
+    margin: 20px;
+    padding: 10px;
+  }
+
+  .right {
+    display: flex;
+    justify-content: space-around;
+    flex-basis: 50%;
+
+    .attack {
+      text-align: center;
+
+      .move-name {
+        font-size: 1.1em;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+    }
+    
+    
+  }
+}
